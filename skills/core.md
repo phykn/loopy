@@ -74,7 +74,7 @@ Do not keep a working note or temporary theory file as a second source of truth 
 
 Review decides the next path:
 
-- `pass` -> stop when the current goal is reached, or continue to the next slice;
+- `pass` -> stop only when every current queue item has a named decision, or continue to the next slice;
 - code violation -> return to `loopy-implement`;
 - theory gap -> return to `loopy-theory`;
 - missing rejection check -> return to `loopy-implement`;

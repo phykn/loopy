@@ -66,17 +66,17 @@ read sources -> draft claim -> reject -> revise -> reread -> carry survivor -> r
 2. Draft one unstable claim.
    - Read the user request and any named theory file.
    - If continuing a target, first inspect existing `.loopy/cycles` notes and any named or relevant `theories/THEORY_*.md` final theory file.
-   - Choose the smallest claim, boundary, or condition that matters.
+   - Choose the smallest claim whose truth would change the target's boundary, minimum condition, or decision.
    - If the target is vague, write the current best interpretation as an assumption.
 
 3. Test it.
    - Use evidence that could reject the claim.
-   - Evidence must be strong enough to change the claim.
+   - Evidence must be able to force a boundary, minimum-condition, or decision change if it rejects the claim.
    - Use an isolated Critic agent for the rejection test when separate agents are available.
    - If separate agents are available but no isolated Critic is used, do not promote the survivor.
    - If the host requires the user to explicitly request sub-agents, stop before promotion and ask for that request instead of marking the critic unavailable.
    - Acceptable evidence includes prior cycle notes, existing theory text, user constraints, code behavior, cited sources, and concrete counterexamples.
-   - Prefer the strongest objection, not the easiest one.
+   - Use the objection that would force the largest boundary, minimum-condition, or decision change if true.
    - For external factual claims, use cited sources or mark the claim as unverified.
    - Do not invent evidence.
    - Mark hypotheses as hypotheses. Do not treat them as evidence.
@@ -93,9 +93,9 @@ read sources -> draft claim -> reject -> revise -> reread -> carry survivor -> r
 5. Reread and decide whether it became stable.
    - Re-read the survivor against the target, this skill, and any final theory file it would replace.
    - Promote only if the survivor changes a boundary, minimum condition, or decision.
-   - Do not promote a first-pass draft just because it is coherent. Treat it as unstable and run another rejection cycle unless it already comes from a prior survivor or existing final theory.
+   - Do not promote because of cycle number. Promote only when the survivor has a visible evidence chain: source read, rejection applied, revision made, sources reread, and named weak points either rejected, carried forward, or shown unable to change the boundary, minimum condition, or decision.
    - A second rejection test inside the same cycle does not satisfy the loop. Start a new cycle with the survivor as the next unstable claim.
-   - Do not create or update final theory for a new target until at least one prior survivor has become the unstable claim of a later cycle.
+   - For a new target, do not create or update final theory merely because the first survivor is coherent. Continue if carrying the survivor into another cycle could still change its boundary, minimum condition, or decision.
    - Keep it as a cycle note if it is only wording, confidence, or exploration.
    - Replace the claim if revisions keep adding exceptions.
 
@@ -118,7 +118,7 @@ Track this state across cycles:
 - Rejection test
 - Survivor
 - Prior survivor used as the next unstable claim
-- Next weak point
+- Named weak points and their decision: reject, carry forward, blocked, or no boundary effect
 - Decision
 
 On later runs, resume from the latest relevant cycle note and final theory before drafting a new claim. Find the final theory by user-named path first, then by cycle-note references, then by target match across existing `theories/THEORY_*.md` files. If multiple final theory files plausibly match and none is named by the user or cycle notes, do not choose silently; record the ambiguity and keep the revision as rough notes unless the user provides a target file. Do not create a new final theory file when an existing one already owns the target boundary. Do not start a new cycle from scratch unless the claim must be replaced.
@@ -153,7 +153,7 @@ Loop status:
 - phase: theory
 - cycle:
 - decision:
-- independent critic: used | unavailable | not needed
+- independent critic: used | unavailable | blocked
 ```
 
 When file edits are not allowed by Execution Mode, return the cycle result in the response instead of writing files.
@@ -196,6 +196,7 @@ Each cycle note must include:
 - Decision
 - Process recommendation, if the loop process was weak but skill edits are not allowed
 - Prior survivor carried into the next cycle, if any
+- Named weak points and decisions
 - Progress toward target
 - Next question
 
@@ -232,5 +233,5 @@ Stop the loop when:
 - new evidence changes only examples or wording, not the claim's decisions, predictions, or boundaries;
 - the revision keeps adding exceptions and the claim should be replaced;
 - evidence is blocked and the block is explicit;
-- the current request's goal is reached and no target in the queue has a remaining weak point that could change its boundary, minimum condition, or decision;
+- the current request's goal is reached and every target in the queue has a named final decision: promoted, blocked, deferred by explicit user choice, or rejected as unable to change its boundary, minimum condition, or decision;
 - the user explicitly stops the loop.
