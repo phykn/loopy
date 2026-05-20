@@ -1,5 +1,0 @@
-# OpenAI interface metadata only. Role behavior lives in SKILL.md.
-interface:
-  display_name: "Loopy Review"
-  short_description: "Test theory-to-code mappings"
-  default_prompt: "Use $loopy-review to check this implementation slice against its theory."

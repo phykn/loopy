@@ -1,0 +1,5 @@
+# OpenAI interface metadata only. Role behavior lives in SKILL.md.
+interface:
+  display_name: "Loopy"
+  short_description: "Improve work through counterexamples"
+  default_prompt: "Use $loopy to improve this through counterexamples until it is done, blocked, or out of scope."

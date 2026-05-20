@@ -1,5 +1,0 @@
-# OpenAI interface metadata only. Role behavior lives in SKILL.md.
-interface:
-  display_name: "Loopy Loop"
-  short_description: "Coordinate the full Loopy process"
-  default_prompt: "Use $loopy-loop to run the full theory -> implement -> review process."

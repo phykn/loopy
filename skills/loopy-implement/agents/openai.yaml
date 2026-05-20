@@ -1,5 +1,0 @@
-# OpenAI interface metadata only. Role behavior lives in SKILL.md.
-interface:
-  display_name: "Loopy Implement"
-  short_description: "Map stable theory into code slices"
-  default_prompt: "Use $loopy-implement to implement this theory as traceable code slices."

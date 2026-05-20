@@ -1,7 +1,7 @@
 {
   "name": "loopy",
   "version": "0.1.0",
-  "description": "A small skill system for turning unstable theory-first coding work into tested survivors.",
+  "description": "A small skill system for counterexample-driven improvement.",
   "author": {
     "name": "phykn",
     "url": "https://github.com/phykn"
@@ -10,7 +10,7 @@
   "repository": "https://github.com/phykn/loopy",
   "keywords": [
     "skills",
-    "theory",
+    "counterexamples",
     "testing",
     "refinement",
     "workflow"
@@ -18,8 +18,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "loopy",
-    "shortDescription": "Turn unstable work into tested survivors",
-    "longDescription": "Use Loopy to coordinate theory-first coding loops: refine theory, map stable theory into traceable implementation slices, then review theory compliance through rejection tests until each current item has a named decision.",
+    "shortDescription": "Improve work through counterexamples",
+    "longDescription": "Use Loopy to define done, find the strongest useful counterexample, make the smallest improvement, check the result, and repeat until the target is done, blocked, or out of scope.",
     "developerName": "phykn",
     "category": "Productivity",
     "capabilities": [
@@ -28,12 +28,8 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Use loopy:loopy-loop to run the full theory -> implement -> review process.",
-      "Use loopy:loopy-theory to refine this claim.",
-      "Use loopy:loopy-theory to test this theory.",
-      "Use loopy:loopy-theory to improve this process rule.",
-      "Use loopy:loopy-implement to implement this theory as traceable code slices.",
-      "Use loopy:loopy-review to check this implementation slice against its theory."
+      "Use loopy to improve this through counterexamples.",
+      "Use loopy to keep iterating until this target is done, blocked, or out of scope."
     ],
     "websiteURL": "https://github.com/phykn/loopy",
     "brandColor": "#2563EB",
