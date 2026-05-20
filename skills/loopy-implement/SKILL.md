@@ -30,6 +30,8 @@ A review-ready slice is not stable code. It is a rejectable mapping from one the
 
 A slice is review-ready only when another reviewer can reject it without inferring hidden intent.
 
+There is no numeric slice limit. Continue with the next implementation slice while the current request's goal still has a theory-backed responsibility to implement.
+
 From this skill file, read `../core.md` as the parent philosophy when it exists.
 
 ## Minimum
@@ -72,6 +74,7 @@ If a required responsibility has no theory condition, it is a theory gap, not im
    - If the theory is missing, return to `loopy-theory`.
    - If the implementation exists, hand it off to `loopy-review` when available.
    - If `loopy-review` is unavailable, return the review handoff note instead of pretending review ran.
+   - Handoff to review is loop continuation, not abandonment of autonomous progress.
 
 ## Output
 
@@ -103,12 +106,13 @@ Rejection check:
 Files changed:
 ```
 
-## Stop Conditions
+## Phase Stop And Handoff
 
-Stop when:
+Stop the implement phase or hand off when:
 
 - the next responsibility has no theory condition;
 - the implementation requires changing the theory source;
 - the next change would add unsupported convenience behavior, fallback behavior, or architecture;
 - the current slice has no rejection check;
-- implementation exists and should be reviewed by `loopy-review` or a review handoff note.
+- the current request's implementation goal is reached;
+- the current slice should be reviewed by `loopy-review` or a review handoff note before more implementation continues.

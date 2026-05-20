@@ -81,9 +81,9 @@ If file edits are not allowed or not requested, return the completed cycle in th
 
 5. Pick the next question, then self-check.
    - Choose the next weakest point.
-   - Before starting another cycle, self-check that the next cycle still has a current target, one unstable claim, evidence that could reject it, and remaining cycle budget.
+   - Before starting another cycle, self-check that the next cycle still has a current target, one unstable claim, and evidence that could reject it.
    - If the weakest point is in this skill's process, record a process recommendation unless the user explicitly asked to improve this skill or the current task is this skill's development.
-   - Continue from `Next question` only while it is still needed for the current user request and the cycle budget is not spent.
+   - Continue from `Next question` only while it is still needed to reach the current user request's goal.
 
 ## Loop State
 
@@ -175,7 +175,7 @@ Each final theory update should answer, as briefly as possible:
 
 After each cycle, choose the applicable action or actions:
 
-- Continue: use `Next question` for the next cycle within the current request and cycle budget.
+- Continue: use `Next question` for the next cycle while it still moves the current request toward its goal.
 - Promote: if file edits are allowed, update the final theory file with only the stable conclusion; otherwise, return the promotable conclusion in the response.
 - Promote process: update this skill only when the user explicitly asked to improve this skill or the current task is this skill's development.
 - Replace: discard the unstable claim and draft a better one under the same target.
@@ -185,7 +185,7 @@ Use `Promote` and `Promote process` together when one cycle produces both a stab
 
 Do not continue merely because another question exists. Continue only when the next question could change the survivor's boundary, minimum condition, or decision.
 
-Default cycle budget is exactly one completed cycle per user request. Continue only when the user explicitly asks to keep looping or gives a cycle count. Prefer promoting when the revision changes a real boundary and can be stated more simply than before. Prefer stopping when more cycles would only rename or rephrase the same claim.
+There is no numeric cycle limit. Continue until the current request's goal is reached, evidence is blocked, or the next cycle would only rename or rephrase the same claim. Prefer promoting when the revision changes a real boundary and can be stated more simply than before.
 
 ## Stop Conditions
 
@@ -196,5 +196,5 @@ Stop the loop when:
 - new evidence changes only examples or wording, not the claim's decisions, predictions, or boundaries;
 - the revision keeps adding exceptions and the claim should be replaced;
 - evidence is blocked and the block is explicit;
-- the default cycle budget for the current user request is reached;
-- the user-set cycle limit is reached.
+- the current request's goal is reached;
+- the user explicitly stops the loop.

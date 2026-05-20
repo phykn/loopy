@@ -55,6 +55,8 @@ Loopy does not advance because a step finished.
 
 Loopy advances only when the current phase produces a survivor stable enough for the next phase.
 
+Loopy has no numeric cycle limit. Continue while the next cycle can still move the current goal toward a stable survivor.
+
 A survivor is stable enough when it has:
 
 - a named artifact;
@@ -68,7 +70,7 @@ Do not keep a working note or temporary theory file as a second source of truth 
 
 Review decides the next path:
 
-- `pass` -> stop or next slice;
+- `pass` -> stop when the current goal is reached, or continue to the next slice;
 - code violation -> return to `loopy-implement`;
 - theory gap -> return to `loopy-theory`;
 - missing rejection check -> return to `loopy-implement`;

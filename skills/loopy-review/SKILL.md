@@ -23,6 +23,8 @@ In this skill, the unstable artifact is the implementation slice under review.
 The rejection test is the boundary test against the theory source.
 The stable artifact is code that preserves the theory boundary after review.
 
+There is no numeric review limit. Continue with the next review slice while the current request's goal still has unreviewed implementation slices.
+
 From this skill file, read `../core.md` as the parent philosophy when it exists.
 
 ## Minimum
@@ -105,4 +107,4 @@ Stop when:
 - the finding is only generic code quality and does not prove a theory violation;
 - the code need is real but no stable theory source exists, or the theory is missing or too weak; Decision: `return to loopy-theory`;
 - the slice is missing a rejection check; Decision: `return to loopy-implement`;
-- the slice passes and no next revision is needed.
+- the current review goal is reached and no next revision is needed.
