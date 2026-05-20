@@ -112,7 +112,7 @@ Do not split context for ordinary drafting, formatting, or archival work. Use th
 
 Separate rough cycle notes from clean final theory.
 
-When file edits are not allowed by Execution Mode, return the cycle note in the response instead of writing it.
+When file edits are not allowed by Execution Mode, return the cycle result in the response instead of writing files.
 
 For review-only requests, start with a concise verdict. Return the full cycle-note format only when the user asks for a formal cycle record.
 
