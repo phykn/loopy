@@ -26,7 +26,6 @@ Every Loopy skill must preserve:
 Child skills may specialize the artifact and the test.
 
 - `loopy-theory` tests claims.
-- `loopy-review` may test code, designs, or decisions.
 
 They must not remove rejection from the loop.
 

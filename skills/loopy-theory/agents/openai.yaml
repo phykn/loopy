@@ -1,3 +1,4 @@
+# OpenAI interface metadata only. Role behavior lives in SKILL.md.
 interface:
   display_name: "Loopy Theory"
   short_description: "Run evidence-backed theory refinement cycles"

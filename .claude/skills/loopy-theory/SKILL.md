@@ -5,7 +5,7 @@ description: Use when refining ideas, design principles, research notes, process
 
 # Loopy Theory
 
-Use the canonical skill instructions in `../../../skills/loopy-theory/SKILL.md`.
+This is a Claude Code compatibility wrapper. Use the canonical runtime skill instructions in `../../../skills/loopy-theory/SKILL.md`.
 
 Before running the loop, also read the parent philosophy in `../../../skills/core.md` when it exists.
 
