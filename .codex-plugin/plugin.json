@@ -1,7 +1,7 @@
 {
   "name": "loopy",
   "version": "0.1.0",
-  "description": "A small skill system for turning unstable work into tested survivors.",
+  "description": "A small skill system for turning unstable theory-first coding work into tested survivors.",
   "author": {
     "name": "phykn",
     "url": "https://github.com/phykn"
@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "loopy",
     "shortDescription": "Turn unstable work into tested survivors",
-    "longDescription": "Use Loopy to refine claims, theory, process rules, and design principles through rejection tests until the smallest stable survivor remains.",
+    "longDescription": "Use Loopy to refine theory-first coding claims, then map stable theory into traceable implementation slices through rejection tests until the smallest stable survivor remains.",
     "developerName": "phykn",
     "category": "Productivity",
     "capabilities": [
@@ -30,7 +30,8 @@
     "defaultPrompt": [
       "Use loopy:loopy-theory to refine this claim.",
       "Use loopy:loopy-theory to test this theory.",
-      "Use loopy:loopy-theory to improve this process rule."
+      "Use loopy:loopy-theory to improve this process rule.",
+      "Use loopy:loopy-implement to implement this theory as traceable code slices."
     ],
     "websiteURL": "https://github.com/phykn/loopy",
     "brandColor": "#2563EB",

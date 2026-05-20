@@ -1,5 +1,5 @@
 {
   "name": "loopy",
   "version": "0.1.0",
-  "description": "A small skill system for turning unstable claims, theories, and process rules into tested survivors."
+  "description": "A small skill system for theory-first coding: refine stable theory, then map it into traceable implementation slices."
 }

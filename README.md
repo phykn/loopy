@@ -1,6 +1,6 @@
 # Loopy
 
-Loopy is a Claude Code and Codex plugin for making unstable work survive a test.
+Loopy is a Claude Code and Codex plugin for theory-first coding.
 
 ```text
 Unstable -> Tested -> Stable
@@ -28,5 +28,6 @@ Restart Codex after installation.
 | Skill | Use when |
 |---|---|
 | `loopy:loopy-theory` | Turning a rough claim, theory, process rule, or design principle into a tested survivor |
+| `loopy:loopy-implement` | Mapping a stable theory into traceable code slices |
 
 There is no build step. Editing the Markdown is the development cycle.

@@ -26,6 +26,7 @@ Every Loopy skill must preserve:
 Child skills may specialize the artifact and the test.
 
 - `loopy-theory` tests claims.
+- `loopy-implement` tests theory-to-code mappings.
 
 They must not remove rejection from the loop.
 
