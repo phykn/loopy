@@ -143,6 +143,8 @@ Do not split context for ordinary formatting or archival work. Use the main cont
 
 Separate rough cycle notes from clean final theory.
 
+Also return the Phase Handoff Contract fields required by `loopy-loop`: `item`, `artifact`, `decision`, `next_route`, `queue_delta`, `blocker`, and `independence`.
+
 Always include a brief loop status before the detailed result:
 
 ```text

@@ -83,6 +83,8 @@ read theory and slice -> test boundary -> decide route -> return result
 
 ## Output
 
+Also return the Phase Handoff Contract fields required by `loopy-loop`: `item`, `artifact`, `decision`, `next_route`, `queue_delta`, `blocker`, and `independence`.
+
 End with:
 
 - Loop status
