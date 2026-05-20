@@ -19,6 +19,8 @@ Prefer the simplest theory that still draws a real boundary. Code, examples, and
 
 Rough claims stay in cycle notes. Only survivors become final theory.
 
+When `loopy/CORE.md` exists, treat it as the parent philosophy. This skill may specialize Loopy for theory work, but it must preserve the core requirements: unstable artifact, change loop, rejection test, and stable survivor.
+
 ## Goal
 
 Start by naming the theory target in one sentence, including the current user-request scope it must stay within.
@@ -41,7 +43,7 @@ Do not create or modify files unless:
 
 - the user explicitly asks to save, update, promote, or edit;
 - the user names a target theory file;
-- the current task is development of this skill or Loopy's theory files.
+- the current task explicitly asks to develop this skill or Loopy's theory files.
 
 If file edits are not allowed or not requested, return the completed cycle in the response.
 
@@ -49,7 +51,7 @@ If file edits are not allowed or not requested, return the completed cycle in th
 
 1. Draft one unstable claim.
    - Read the user request and any named theory file.
-   - If continuing a target, first inspect existing `docs/research/cycles` notes and any named or relevant `docs/research/THEORY_*.md` final theory file.
+   - If continuing a target, first inspect existing `.loopy/cycles` notes and any named or relevant `theories/THEORY_*.md` final theory file.
    - Choose the smallest claim, boundary, or condition that matters.
    - If the target is vague, write the current best interpretation as an assumption.
 
@@ -91,11 +93,11 @@ Track this state across cycles:
 - Next weak point
 - Decision
 
-On later runs, resume from the latest relevant cycle note and final theory before drafting a new claim. Find the final theory by user-named path first, then by cycle-note references, then by target match across existing `docs/research/THEORY_*.md` files. If multiple final theory files plausibly match and none is named by the user or cycle notes, do not choose silently; record the ambiguity and keep the revision as rough notes unless the user provides a target file. Do not create a new final theory file when an existing one already owns the target boundary. Do not start a new cycle from scratch unless the claim must be replaced.
+On later runs, resume from the latest relevant cycle note and final theory before drafting a new claim. Find the final theory by user-named path first, then by cycle-note references, then by target match across existing `theories/THEORY_*.md` files. If multiple final theory files plausibly match and none is named by the user or cycle notes, do not choose silently; record the ambiguity and keep the revision as rough notes unless the user provides a target file. Do not create a new final theory file when an existing one already owns the target boundary. Do not start a new cycle from scratch unless the claim must be replaced.
 
 ## Roles
 
-Use isolated agents for Critic or Editor roles when the user asks for agents, a grade, an external review, or a role-separated loop, and the tool environment supports them.
+Use isolated agents for Critic or Editor roles when independent judgment materially changes the test, and the tool environment supports them. This includes requests for agents, a grade, external review, or a role-separated loop.
 
 - Theorist: identifies the target and writes the claim.
 - Critic: tests the claim with evidence that could reject it. Run this role in an isolated context when subagents are available.
@@ -104,19 +106,23 @@ Use isolated agents for Critic or Editor roles when the user asks for agents, a 
 
 Do not simulate an isolated critic by pretending inside the same context if the user specifically asks for agent-based critique.
 
+Do not split context for ordinary drafting, formatting, or archival work. Use the main context when independence would not change the rejection test.
+
 ## Output
 
 Separate rough cycle notes from clean final theory.
 
 When file edits are not allowed by Execution Mode, return the cycle note in the response instead of writing it.
 
+For review-only requests, start with a concise verdict. Return the full cycle-note format only when the user asks for a formal cycle record.
+
 When file edits are allowed, save each completed cycle note as:
 
 ```text
-docs/research/cycles/theory_YYYYMMDD_HHMMSS.md
+.loopy/cycles/theory_YYYYMMDD_HHMMSS.md
 ```
 
-Create `docs/research/cycles` first if it does not exist.
+Create `.loopy/cycles` first if it does not exist.
 If the timestamped cycle-note filename already exists, append the smallest numeric suffix, such as `_2`, that avoids overwriting an existing note.
 
 Cycle notes are working documents. They may include objections, failed claims, uncertainty, and revision history.
@@ -124,7 +130,7 @@ Cycle notes are working documents. They may include objections, failed claims, u
 When a revision is stable enough to become the current theory, update the relevant final theory file:
 
 ```text
-docs/research/THEORY_<name>.md
+theories/THEORY_<name>.md
 ```
 
 Update or create a final theory file only when file edits are allowed by Execution Mode.

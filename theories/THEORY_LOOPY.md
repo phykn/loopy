@@ -1,10 +1,12 @@
 # Loopy
 
-Loopy is a loop that lets unstable work become stable only by surviving a test.
+Loopy is the core loop that lets unstable work become stable only by surviving a test.
 
 ```text
 Loopy = Loop(Unstable -> Tested -> Stable)
 ```
+
+The core philosophy is defined in `loopy/CORE.md`.
 
 Rough work stays in the loop.
 
