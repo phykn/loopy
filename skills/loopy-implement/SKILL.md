@@ -38,7 +38,7 @@ From this skill file, read `../core.md` as the parent philosophy when it exists.
 
 A valid implementation slice contains:
 
-- Theory source: the `THEORY_*.md` being implemented.
+- Theory source: the `THEORY_*.md` being implemented, a theory survivor, or an explicit working theory from `loopy-loop`.
 - Stable source boundary: final theory files under `theories/` are implementation sources; `.loopy/cycles` notes are working notes, not implementation sources.
 - Theory condition: one claim, minimum condition, boundary, or prohibition.
 - Code responsibility: the function, interface, schema, prompt, or module responsibility created or changed.
@@ -58,7 +58,7 @@ read theory -> map responsibility -> implement slice -> add rejection check -> r
 
 1. Read theory.
    - Use the named `THEORY_*.md` file when provided.
-   - If no stable theory exists, return to `loopy-theory`.
+   - If no stable theory or explicit working theory exists, return to `loopy-theory`.
    - Re-read the theory source and current request before starting each new slice.
 
 2. Extract one theory condition.

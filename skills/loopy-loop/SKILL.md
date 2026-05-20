@@ -44,10 +44,12 @@ resume -> choose phase -> run one cycle -> update queue -> checkpoint -> choose 
 2. Choose phase.
    - Missing or weak theory -> `loopy-theory`.
    - Stable theory with unimplemented responsibility -> `loopy-implement`.
+   - Explicit user constraint that already names the boundary and rejection criteria -> mark theory as `skipped`, use it as the current working theory, then route to `loopy-implement`.
    - Review-ready slice -> `loopy-review`.
    - Code violation or missing rejection check -> `loopy-implement`.
    - Theory gap -> `loopy-theory`.
    - Oversized item -> split it.
+   - Before routing to `loopy-implement`, name a stable theory artifact, a theory survivor, or an explicit working theory from user constraints.
 
 3. Run one cycle.
    - Run only the selected phase skill.
@@ -60,6 +62,18 @@ resume -> choose phase -> run one cycle -> update queue -> checkpoint -> choose 
 
 5. Checkpoint.
    - Return a resume state that lets the next invocation continue without guessing.
+
+6. Continue available routes.
+   - After each phase cycle, choose the next route immediately.
+   - If the next route can run in the current turn, run that next phase cycle before finalizing.
+   - Do not stop after `loopy-implement` when it produced a review-ready slice and `loopy-review` is available.
+   - If the next route is not run, state why in the resume state.
+
+7. Check completion.
+   - Before finalizing, decide `complete` or `incomplete`.
+   - `complete` requires every current queue item to have a terminal status: `passed`, `blocked`, or `out_of_scope`.
+   - `incomplete` requires a named next route or blocker.
+   - Do not present incomplete work as complete.
 
 ## Phase Handoff Contract
 
@@ -77,10 +91,17 @@ Use these queue item statuses:
 
 - `pending`
 - `running`
+- `skipped`
 - `passed`
 - `returned_to_theory`
 - `returned_to_implement`
 - `split`
+- `blocked`
+- `out_of_scope`
+
+Terminal statuses are:
+
+- `passed`
 - `blocked`
 - `out_of_scope`
 
@@ -104,6 +125,7 @@ Loop status:
 - cycle:
 - decision:
 - queue:
+- completion:
 - independence:
 ```
 
@@ -117,6 +139,7 @@ Resume state:
 - current artifact:
 - last decision:
 - next route:
+- completion:
 - blocker:
 ```
 
