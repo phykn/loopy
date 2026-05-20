@@ -1,0 +1,4 @@
+interface:
+  display_name: "Loopy Theory"
+  short_description: "Run evidence-backed theory refinement cycles"
+  default_prompt: "Use $loopy-theory to refine this idea into a stronger theory."
