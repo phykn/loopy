@@ -81,7 +81,7 @@ Each phase cycle must return:
 
 - item:
 - artifact:
-- decision:
+- decision: the queue status value for this item.
 - next_route:
 - queue_delta:
 - blocker:
@@ -92,6 +92,7 @@ Use these queue item statuses:
 - `pending`
 - `running`
 - `skipped`
+- `review_ready`
 - `passed`
 - `returned_to_theory`
 - `returned_to_implement`
@@ -104,6 +105,56 @@ Terminal statuses are:
 - `passed`
 - `blocked`
 - `out_of_scope`
+
+## Route Vocabulary
+
+Use only these `next_route` values:
+
+- `loopy-theory`
+- `loopy-implement`
+- `loopy-review`
+- `complete`
+- `blocked`
+
+Use the queue statuses from the Phase Handoff Contract. `review_ready` is non-terminal. It means `loopy-implement` produced a slice that must route to `loopy-review`.
+
+## Decision Mapping
+
+Map phase results to queue status and next route:
+
+- theory survivor ready for implementation:
+  - status: `pending`
+  - next_route: `loopy-implement`
+- theory needs another cycle:
+  - status: `running`
+  - next_route: `loopy-theory`
+- theory blocked:
+  - status: `blocked`
+  - next_route: `blocked`
+- implementation produced review-ready slice:
+  - status: `review_ready`
+  - next_route: `loopy-review`
+- implementation found theory gap:
+  - status: `returned_to_theory`
+  - next_route: `loopy-theory`
+- implementation missing rejection check:
+  - status: `returned_to_implement`
+  - next_route: `loopy-implement`
+- review passed:
+  - status: `passed`
+  - next_route: `complete` if no pending queue item remains, otherwise the next pending route
+- review found code violation:
+  - status: `returned_to_implement`
+  - next_route: `loopy-implement`
+- review found theory gap:
+  - status: `returned_to_theory`
+  - next_route: `loopy-theory`
+- item split:
+  - status: `split`
+  - next_route: route for the first split item
+- item out of scope:
+  - status: `out_of_scope`
+  - next_route: `complete` if no pending queue item remains, otherwise the next pending route
 
 ## Agent Boundary
 

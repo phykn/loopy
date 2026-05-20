@@ -91,6 +91,8 @@ read theory -> map responsibility -> implement slice -> add rejection check -> r
 
 Also return the Phase Handoff Contract fields required by `loopy-loop`: `item`, `artifact`, `decision`, `next_route`, `queue_delta`, `blocker`, and `independence`.
 
+Use `decision`, `next_route`, and queue status values from the vocabulary defined in `loopy-loop`.
+
 End with:
 
 - Loop status
@@ -120,6 +122,8 @@ Code responsibility:
 Boundary preserved:
 Rejection check:
 Files changed:
+Decision: review_ready | returned_to_theory | returned_to_implement | blocked | out_of_scope
+Next route:
 ```
 
 ## Cycle Stop And Handoff
@@ -130,5 +134,5 @@ Stop the cycle or hand off when:
 - the implementation requires changing the theory source;
 - the next change would add unsupported convenience behavior, fallback behavior, or architecture;
 - the current slice has no rejection check;
-- the current responsibility has a named decision: implemented, handed off, blocked by theory gap, or rejected as unsupported;
+- the current responsibility has a queue status from `loopy-loop`: `review_ready`, `returned_to_theory`, `returned_to_implement`, `blocked`, or `out_of_scope`;
 - review is needed to decide or unblock the next responsibility.

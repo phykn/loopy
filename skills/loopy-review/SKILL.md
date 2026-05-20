@@ -33,13 +33,13 @@ From this skill file, read `../core.md` as the parent philosophy when it exists.
 
 A valid review unit contains:
 
-- Theory source: the `THEORY_*.md` used by the implementation.
+- Theory source: the `THEORY_*.md`, theory survivor, or explicit working theory used by the implementation.
 - Theory condition: the claim, minimum condition, boundary, or prohibition being tested.
 - Implementation slice: the code responsibility produced by `loopy-implement`.
-- Rejection check: the test, static check, named review criterion, or failure case attached to the slice; if missing, Decision: `return to loopy-implement`.
-- Applied rejection: a `pass` decision must name how the rejection check was applied and what result survived.
-- Decision: `pass`, `return to loopy-implement`, or `return to loopy-theory`.
-- Queue decision: `pass`, `return to loopy-implement`, `return to loopy-theory`, `split`, or `out of scope`.
+- Rejection check: the test, static check, named review criterion, or failure case attached to the slice; if missing, Decision: `returned_to_implement`.
+- Applied rejection: a `passed` decision must name how the rejection check was applied and what result survived.
+- Decision: use the `decision`, `next_route`, and queue status vocabulary from `loopy-loop`.
+- Queue decision: `passed`, `returned_to_implement`, `returned_to_theory`, `split`, or `out_of_scope`.
 
 Generic code quality is outside `loopy-review` unless it proves a theory violation.
 
@@ -65,12 +65,12 @@ read theory and slice -> test boundary -> decide route -> return result
 3. Test boundary preservation.
    - Ask whether the code crosses a prohibition, widens the theory claim, or adds unsupported behavior.
    - Use the slice's rejection check.
-   - If the slice has no rejection check, decide `return to loopy-implement`.
+   - If the slice has no rejection check, decide `returned_to_implement`.
 
 4. Decide.
-   - `pass`: the slice preserves the theory boundary and survives the rejection check.
-   - `return to loopy-implement`: the theory is sufficient but the code violates it, or the slice is missing a rejection check.
-   - `return to loopy-theory`: the code need is real but the theory is missing or too weak.
+   - `passed`: the slice preserves the theory boundary and survives the rejection check.
+   - `returned_to_implement`: the theory is sufficient but the code violates it, or the slice is missing a rejection check.
+   - `returned_to_theory`: the code need is real but the theory is missing or too weak.
    - A code need is real only when required by the implementation slice or user request and not justified or forbidden by the current theory. Reviewer preference is not a real code need.
    - A slice cannot pass only because no violation was noticed. It passes only when the boundary test was applied and the implementation survived it.
    - If routing after one slice, name the remaining review queue and the decision state for each item.
@@ -84,6 +84,8 @@ read theory and slice -> test boundary -> decide route -> return result
 ## Output
 
 Also return the Phase Handoff Contract fields required by `loopy-loop`: `item`, `artifact`, `decision`, `next_route`, `queue_delta`, `blocker`, and `independence`.
+
+Use `decision`, `next_route`, and queue status values from the vocabulary defined in `loopy-loop`.
 
 End with:
 
@@ -112,7 +114,7 @@ Use this slice format when useful:
 Theory condition:
 Implementation slice:
 Boundary test:
-Decision: pass | return to loopy-implement | return to loopy-theory
+Decision: passed | returned_to_implement | returned_to_theory
 Evidence:
 Next revision:
 ```
@@ -121,8 +123,8 @@ Next revision:
 
 Stop the cycle or route when:
 
-- the implementation slice omits its theory source; Decision: `return to loopy-implement`;
+- the implementation slice omits its theory source; Decision: `returned_to_implement`;
 - the finding is only generic code quality and does not prove a theory violation;
-- the code need is real but no stable theory source exists, or the theory is missing or too weak; Decision: `return to loopy-theory`;
-- the slice is missing a rejection check; Decision: `return to loopy-implement`;
+- the code need is real but no stable theory source exists, or the theory is missing or too weak; Decision: `returned_to_theory`;
+- the slice is missing a rejection check; Decision: `returned_to_implement`;
 - the current slice has a named decision.

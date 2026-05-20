@@ -145,6 +145,8 @@ Separate rough cycle notes from clean final theory.
 
 Also return the Phase Handoff Contract fields required by `loopy-loop`: `item`, `artifact`, `decision`, `next_route`, `queue_delta`, `blocker`, and `independence`.
 
+Use `decision`, `next_route`, and queue status values from the vocabulary defined in `loopy-loop`.
+
 Always include a brief loop status before the detailed result:
 
 ```text
@@ -211,11 +213,10 @@ Each final theory update should answer, as briefly as possible:
 
 After the cycle, return one result:
 
-- `next theory cycle`: return `Next question` as the next unstable claim for `loopy-loop`.
-- `promote theory`: if file edits are allowed, update the final theory file with only the stable conclusion; otherwise, return the promotable conclusion in the response.
-- `process recommendation`: return a recommendation only when this cycle exposed a skill/process weakness and skill edits are not in scope.
-- `replace claim`: discard the unstable claim and return the replacement target for `loopy-loop`.
+- `running`: return `Next question` as the next unstable claim for `loopy-loop`.
+- `pending`: if the survivor is ready for implementation, return it to `loopy-loop` with `next_route: loopy-implement`.
 - `blocked`: explain which block was reached.
+- `out_of_scope`: return a process recommendation only when this cycle exposed a skill/process weakness and skill edits are not in scope.
 
 Do not request another theory cycle merely because another question exists. Request it only when the next question could change the survivor's boundary, minimum condition, or decision.
 
@@ -228,5 +229,5 @@ Return a stop or route decision when:
 - new evidence changes only examples or wording, not the claim's decisions, predictions, or boundaries;
 - the revision keeps adding exceptions and the claim should be replaced;
 - evidence is blocked and the block is explicit;
-- the current target has a named cycle decision: promote theory, next theory cycle, replace claim, process recommendation, or blocked;
+- the current target has a queue status from `loopy-loop`: `pending`, `running`, `blocked`, or `out_of_scope`;
 - the user explicitly stops the loop.
