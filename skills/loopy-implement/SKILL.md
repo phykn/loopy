@@ -1,6 +1,6 @@
 ---
 name: loopy-implement
-description: Use when implementing one code, prompt, schema, interface, or module slice from a stable THEORY_*.md file; use when an agent must translate one theory condition into one traceable implementation responsibility instead of inventing behavior or architecture.
+description: Use when implementing one code, prompt, schema, interface, or module slice from a stable .loopy/theories/THEORY_*.md file; use when an agent must translate one theory condition into one traceable implementation responsibility instead of inventing behavior or architecture.
 ---
 
 # Loopy Implement
@@ -38,8 +38,8 @@ From this skill file, read `../core.md` as the parent philosophy when it exists.
 
 A valid implementation slice contains:
 
-- Theory source: the `THEORY_*.md` being implemented, a theory survivor, or an explicit working theory from `loopy-loop`.
-- Stable source boundary: final theory files under `theories/` are implementation sources; `.loopy/cycles` notes are working notes, not implementation sources.
+- Theory source: the `.loopy/theories/THEORY_*.md` being implemented, a theory survivor, or an explicit working theory from `loopy-loop`.
+- Stable source boundary: final theory files under `.loopy/theories/` are implementation sources; `.loopy/cycles` notes are working notes, not implementation sources.
 - Theory condition: one claim, minimum condition, boundary, or prohibition.
 - Code responsibility: the function, interface, schema, prompt, or module responsibility created or changed.
 - Boundary preservation: the code does not cross a theory prohibition, widen the theory's claim, or add unsupported behavior.
@@ -57,7 +57,7 @@ read theory -> map responsibility -> implement slice -> add rejection check -> r
 ```
 
 1. Read theory.
-   - Use the named `THEORY_*.md` file when provided.
+   - Use the named `.loopy/theories/THEORY_*.md` file when provided.
    - If no stable theory or explicit working theory exists, return to `loopy-theory`.
    - Re-read the theory source and current request before starting each new slice.
 

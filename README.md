@@ -39,8 +39,8 @@ Good requests:
 ```text
 Use loopy:loopy-loop to build and apply a server/UI ownership theory.
 Use loopy:loopy-theory to run one manual theory cycle for a server/UI claim.
-Use loopy:loopy-implement to map THEORY_SERVER.md into the smallest code slices.
-Use loopy:loopy-review to check these changes against THEORY_UI.md.
+Use loopy:loopy-implement to map .loopy/theories/THEORY_SERVER.md into the smallest code slices.
+Use loopy:loopy-review to check these changes against .loopy/theories/THEORY_UI.md.
 ```
 
 Use `loopy:loopy-loop` for the full process. Use the phase skills directly only when you want one manual theory, implement, or review cycle.

@@ -1,6 +1,6 @@
 ---
 name: loopy-theory
-description: Run one evidence-backed theory refinement cycle for ideas, design principles, research notes, process rules, or conceptual documents. Use when an agent needs to test one unstable claim, update a THEORY_*.md document from a survivor, or return the next theory route to loopy-loop.
+description: Run one evidence-backed theory refinement cycle for ideas, design principles, research notes, process rules, or conceptual documents. Use when an agent needs to test one unstable claim, update a .loopy/theories/THEORY_*.md document from a survivor, or return the next theory route to loopy-loop.
 ---
 
 # Loopy Theory
@@ -36,19 +36,18 @@ Good targets:
 - define the minimum condition for a concept;
 - decide which boundary separates two cases;
 - turn a loose idea into a reusable rule;
-- strengthen an existing `THEORY_*.md` document;
+- strengthen an existing `.loopy/theories/THEORY_*.md` document;
 - find the weakest point in a current theory and improve it.
 
 ## Execution Mode
 
-Default mode is review-only.
+Default mode is autonomous when invoked through `loopy-loop`.
 
-Do not create or modify files unless:
+When `loopy-loop` runs a full process and file edits are available, write cycle notes and route artifacts without waiting for another explicit save or edit instruction.
 
-- the user explicitly asks to save, update, promote, edit, or otherwise write files;
-- the current task explicitly asks to develop this skill or Loopy's theory files.
+For standalone review-only requests, return the cycle result in the response unless the user asks to write files.
 
-If file edits are not allowed or not requested, return the completed cycle in the response.
+If file edits are blocked by the host or user scope, return the completed cycle in the response.
 
 ## Workflow
 
@@ -65,7 +64,7 @@ read sources -> draft claim -> reject -> revise -> reread -> return survivor
 
 2. Draft one unstable claim.
    - Read the user request and any named theory file.
-   - If continuing a target, first inspect existing `.loopy/cycles` notes and any named or relevant `theories/THEORY_*.md` final theory file.
+   - If continuing a target, first inspect existing `.loopy/cycles` notes and any named or relevant `.loopy/theories/THEORY_*.md` final theory file.
    - Choose the smallest claim whose truth would change the target's boundary, minimum condition, or decision.
    - If the target is vague, write the current best interpretation as an assumption.
 
@@ -118,7 +117,7 @@ Track this state for the current cycle and handoff:
 - Decision
 - Next route
 
-On later runs, use the resume target supplied by `loopy-loop`. Re-read the latest relevant cycle note and final theory before drafting a new claim. Find the final theory by user-named path first, then by cycle-note references, then by target match across existing `theories/THEORY_*.md` files. If multiple final theory files plausibly match and none is named by the user or cycle notes, do not choose silently; record the ambiguity and keep the revision as rough notes unless the user provides a target file. Do not create a new final theory file when an existing one already owns the target boundary.
+On later runs, use the resume target supplied by `loopy-loop`. Re-read the latest relevant cycle note and final theory before drafting a new claim. Find the final theory by user-named path first, then by cycle-note references, then by target match across existing `.loopy/theories/THEORY_*.md` files. If multiple final theory files plausibly match and none is named by the user or cycle notes, do not choose silently; record the ambiguity and keep the revision as rough notes unless the user provides a target file. Do not create a new final theory file when an existing one already owns the target boundary.
 
 ## Roles
 
@@ -175,7 +174,7 @@ Cycle notes are working documents. They may include objections, failed claims, u
 When a revision is stable enough to become the current theory, update the relevant final theory file:
 
 ```text
-theories/THEORY_<name>.md
+.loopy/theories/THEORY_<name>.md
 ```
 
 Update or create a final theory file only when file edits are allowed by Execution Mode.

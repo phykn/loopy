@@ -1,6 +1,6 @@
 ---
 name: loopy-review
-description: Use when reviewing code, prompts, schemas, interfaces, or modules against a stable THEORY_*.md source; use when an agent must decide whether an implementation slice passes, needs code revision, or exposes a theory gap.
+description: Use when reviewing code, prompts, schemas, interfaces, or modules against a stable .loopy/theories/THEORY_*.md source; use when an agent must decide whether an implementation slice passes, needs code revision, or exposes a theory gap.
 ---
 
 # Loopy Review

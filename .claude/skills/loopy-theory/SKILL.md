@@ -11,6 +11,6 @@ Before running the cycle, also read the parent philosophy in `../../../skills/co
 
 For Claude Code project use:
 
-- treat `theories/THEORY_<name>.md` as stable theory output;
+- treat `.loopy/theories/THEORY_<name>.md` as stable theory output;
 - treat `.loopy/cycles/theory_YYYYMMDD_HHMMSS.md` as rough cycle output;
 - do not write to `docs/` unless the user explicitly names a file there.

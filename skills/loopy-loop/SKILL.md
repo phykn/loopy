@@ -29,6 +29,8 @@ Do not stop because one phase cycle finished.
 
 Stop only when every current queue item has a named decision, or the next route is blocked.
 
+A full-process loop is autonomous by default. When file edits are available, write the artifacts required to preserve the loop: cycle notes, implementation slices, review handoffs, and completion state. Do not wait for separate save/edit approval unless the user limits scope or asks for review-only mode.
+
 ## Workflow
 
 ```text
@@ -62,6 +64,10 @@ resume -> choose phase -> run one cycle -> update queue -> checkpoint -> choose 
 
 5. Checkpoint.
    - Return a resume state that lets the next invocation continue without guessing.
+   - Preserve required full-process artifacts under `.loopy/`.
+   - Use phase-owned artifact paths when a phase names them, such as theory cycle notes under `.loopy/cycles/` and final theory files under `.loopy/theories/`.
+   - When no narrower artifact path is named, preserve implementation slices and review handoffs in the current relevant cycle note.
+   - Write completion state to `.loopy/completion.md` before finalizing.
 
 6. Continue available routes.
    - After each phase cycle, choose the next route immediately.

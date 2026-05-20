@@ -96,7 +96,7 @@ The status is not a full note. It only shows that a loop is active and whether t
 
 `skills/` stores public Loopy skills.
 
-`.loopy/` stores private or working loop artifacts such as cycle notes.
+`.loopy/` stores loop artifacts such as cycle notes, review handoffs, completion state, and final theory files.
 
 ## Agent Boundary
 

@@ -1,6 +1,6 @@
 ---
 name: loopy-review
-description: Use when reviewing one code, prompt, schema, interface, or module slice against a stable THEORY_*.md source; use when an agent must decide whether one implementation slice passes, needs code revision, or exposes a theory gap.
+description: Use when reviewing one code, prompt, schema, interface, or module slice against a stable .loopy/theories/THEORY_*.md source; use when an agent must decide whether one implementation slice passes, needs code revision, or exposes a theory gap.
 ---
 
 # Loopy Review
@@ -33,7 +33,7 @@ From this skill file, read `../core.md` as the parent philosophy when it exists.
 
 A valid review unit contains:
 
-- Theory source: the `THEORY_*.md`, theory survivor, or explicit working theory used by the implementation.
+- Theory source: the `.loopy/theories/THEORY_*.md`, theory survivor, or explicit working theory used by the implementation.
 - Theory condition: the claim, minimum condition, boundary, or prohibition being tested.
 - Implementation slice: the code responsibility produced by `loopy-implement`.
 - Rejection check: the test, static check, named review criterion, or failure case attached to the slice; if missing, Decision: `returned_to_implement`.
