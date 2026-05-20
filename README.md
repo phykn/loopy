@@ -6,9 +6,11 @@ Loopy is a Claude Code and Codex plugin for theory-first coding.
 Unstable -> Tested -> Stable
 ```
 
-A result is stable only when it survives a rejection test. Loopy keeps cycling until the current work has a decision.
+A result is stable only when it survives a rejection test. Loopy keeps cycling until every current queue item has a terminal decision.
 
 Use an independent Critic or Reviewer when the host supports it. If not, Loopy continues with a stricter self-objection cycle, records `independence: unavailable`, and does not pretend independent review happened.
+
+Self-objection can keep the loop moving, but `loopy-theory` does not promote final theory from a non-independent loop unless the user explicitly accepts that boundary.
 
 See `skills/core.md` for the full philosophy.
 
@@ -31,7 +33,7 @@ Restart Codex after installation.
 
 | Skill | Use when |
 |---|---|
-| `loopy:loopy-loop` | Running the full theory -> implement -> review process until every current item has a named decision |
+| `loopy:loopy-loop` | Running the full theory -> implement -> review process until every current item has a terminal decision |
 | `loopy:loopy-theory` | Turning a rough claim, theory, process rule, or design principle into a tested survivor |
 | `loopy:loopy-implement` | Mapping a stable theory into traceable code slices |
 | `loopy:loopy-review` | Checking whether an implementation slice preserves its theory boundary |
@@ -53,7 +55,7 @@ Loop trace:
 
 ```text
 loopy-loop
--> loopy-theory: passed / next_route=loopy-implement
+-> loopy-theory: pending / next_route=loopy-implement
 -> loopy-implement: review_ready / next_route=loopy-review
 -> loopy-review: passed / next_route=complete
 ```
@@ -83,6 +85,6 @@ Claude Code uses `.claude/skills/` wrappers that point back to the same canonica
 
 When isolated agents are available, Loopy may use them for independent criticism or review. When they are unavailable, Loopy continues with self-objection and records `independence: unavailable`.
 
-Loopy is not a TODO checklist. A checklist completes steps. `loopy-loop` keeps cycling through the phase skills until each target, responsibility, or review slice has a named decision that survived a rejection test.
+Loopy is not a TODO checklist. A checklist completes steps. `loopy-loop` keeps cycling through the phase skills until each target, responsibility, or review slice has a terminal decision recorded by the completion gate.
 
 There is no build step. Editing the Markdown is the development cycle.

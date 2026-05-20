@@ -71,6 +71,8 @@ read theory and slice -> test boundary -> decide route -> return result
    - `passed`: the slice preserves the theory boundary and survives the rejection check.
    - `returned_to_implement`: the theory is sufficient but the code violates it, or the slice is missing a rejection check.
    - `returned_to_theory`: the code need is real but the theory is missing or too weak.
+   - `split`: the review unit contains multiple independent slices that need separate decisions.
+   - `out_of_scope`: the slice is outside the current theory or user-requested boundary.
    - A code need is real only when required by the implementation slice or user request and not justified or forbidden by the current theory. Reviewer preference is not a real code need.
    - A slice cannot pass only because no violation was noticed. It passes only when the boundary test was applied and the implementation survived it.
    - If routing after one slice, name the remaining review queue and the decision state for each item.
@@ -114,7 +116,7 @@ Use this slice format when useful:
 Theory condition:
 Implementation slice:
 Boundary test:
-Decision: passed | returned_to_implement | returned_to_theory
+Decision: passed | returned_to_implement | returned_to_theory | split | out_of_scope
 Evidence:
 Next revision:
 ```
@@ -127,4 +129,6 @@ Stop the cycle or route when:
 - the finding is only generic code quality and does not prove a theory violation;
 - the code need is real but no stable theory source exists, or the theory is missing or too weak; Decision: `returned_to_theory`;
 - the slice is missing a rejection check; Decision: `returned_to_implement`;
+- the review unit must be divided into independently rejectable slices; Decision: `split`;
+- the slice is outside the current theory or requested boundary; Decision: `out_of_scope`;
 - the current slice has a named decision.

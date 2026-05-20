@@ -1,6 +1,6 @@
 ---
 name: loopy-implement
-description: Use when implementing one code, prompt, schema, interface, or module slice from a stable .loopy/theories/THEORY_*.md file; use when an agent must translate one theory condition into one traceable implementation responsibility instead of inventing behavior or architecture.
+description: Use when implementing one code, prompt, schema, interface, or module slice from a stable .loopy/theories/THEORY_*.md file, theory survivor, or explicit working theory; use when an agent must translate one theory condition into one traceable implementation responsibility instead of inventing behavior or architecture.
 ---
 
 # Loopy Implement

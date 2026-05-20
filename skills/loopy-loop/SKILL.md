@@ -1,6 +1,6 @@
 ---
 name: loopy-loop
-description: Coordinate the full Loopy process across theory, implement, review, and revision phases. Use when an agent must keep the whole goal moving until every current target, responsibility, or review slice has a named decision.
+description: Coordinate the full Loopy process across theory, implement, review, and revision phases. Use when an agent must keep the whole goal moving until every current target, responsibility, or review slice has a terminal decision.
 ---
 
 # Loopy Loop
@@ -46,7 +46,7 @@ resume -> choose phase -> run one cycle -> update queue -> checkpoint -> choose 
 2. Choose phase.
    - Missing or weak theory -> `loopy-theory`.
    - Stable theory with unimplemented responsibility -> `loopy-implement`.
-   - Explicit user constraint that already names the boundary and rejection criteria -> mark theory as `skipped`, use it as the current working theory, then route to `loopy-implement`.
+   - Explicit user constraint that already names the boundary and rejection criteria -> record theory as skipped in evidence, mark the queue item `pending`, use the constraint as the current working theory, then route to `loopy-implement`.
    - Review-ready slice -> `loopy-review`.
    - Code violation or missing rejection check -> `loopy-implement`.
    - Theory gap -> `loopy-theory`.
@@ -67,19 +67,83 @@ resume -> choose phase -> run one cycle -> update queue -> checkpoint -> choose 
    - Preserve required full-process artifacts under `.loopy/`.
    - Use phase-owned artifact paths when a phase names them, such as theory cycle notes under `.loopy/cycles/` and final theory files under `.loopy/theories/`.
    - When no narrower artifact path is named, preserve implementation slices and review handoffs in the current relevant cycle note.
-   - Write completion state to `.loopy/completion.md` before finalizing.
+   - Write completion state to `.loopy/completion.md` before any final response.
+   - The completion state must include a queue table that can reject a false `complete` decision.
 
 6. Continue available routes.
    - After each phase cycle, choose the next route immediately.
    - If the next route can run in the current turn, run that next phase cycle before finalizing.
    - Do not stop after `loopy-implement` when it produced a review-ready slice and `loopy-review` is available.
+   - Do not ask whether to continue when the completion gate fails and a valid next route exists.
    - If the next route is not run, state why in the resume state.
 
 7. Check completion.
    - Before finalizing, decide `complete` or `incomplete`.
-   - `complete` requires every current queue item to have a terminal status: `passed`, `blocked`, or `out_of_scope`.
+   - `complete` requires every current queue item to have a terminal status: `passed`, `blocked`, or `out_of_scope`, recorded in `.loopy/completion.md`.
    - `incomplete` requires a named next route or blocker.
    - Do not present incomplete work as complete.
+
+## Completion Gate
+
+The completion gate is mandatory before any final response.
+
+Before writing `.loopy/completion.md`, derive the active queue from the first available source in this order:
+
+1. Provided `Resume state`.
+2. Existing `.loopy/completion.md`.
+3. Latest relevant `.loopy/cycles` note.
+4. Current user request.
+
+Do not remove an existing queue item unless it is recorded as `passed`, `blocked`, or `out_of_scope`. If a prior item is not terminal and no longer appears relevant, mark it `blocked` or ask only if the scope is genuinely ambiguous.
+
+Update `.loopy/completion.md` with a queue table containing every current queue item:
+
+```text
+| item | status | next_route | evidence |
+|---|---|---|---|
+```
+
+Each row must use exactly one queue status from the Phase Handoff Contract.
+
+Also include this checklist above the queue table:
+
+```text
+- [ ] Active queue was derived from the required source order.
+- [ ] No non-terminal item was dropped from the previous queue.
+- [ ] Every current queue item appears in the table.
+- [ ] Every row uses one Phase Handoff Contract status.
+- [ ] Completion is `complete` only if every row is terminal.
+```
+
+Check an item with `[x]` only when it is true for the current loop state. If any checklist item remains unchecked, the loop is incomplete.
+
+The loop is complete only when every row has a terminal status:
+
+- `passed`
+- `blocked`
+- `out_of_scope`
+
+The loop is incomplete if any row has a non-terminal status:
+
+- `pending`
+- `running`
+- `skipped`
+- `review_ready`
+- `returned_to_theory`
+- `returned_to_implement`
+- `split`
+
+`skipped` is a transitional queue status only. Before completion, convert it to `pending` with the next route, `blocked`, or `out_of_scope`; do not leave `skipped` as a terminal decision.
+
+If the gate is incomplete and a valid `next_route` exists, continue immediately without asking the user whether to continue.
+
+Ask the user only when:
+
+- `next_route` is `blocked`;
+- the queue item scope is genuinely ambiguous;
+- required file edits or tools are unavailable.
+
+Do not write `completion: complete`, whole-loop `decision: passed`, or equivalent final wording unless `.loopy/completion.md` shows all checklist items checked and every current queue item terminal. A single passed cycle closes only that item, not the whole loop.
 
 ## Phase Handoff Contract
 
@@ -131,6 +195,10 @@ Map phase results to queue status and next route:
 - theory survivor ready for implementation:
   - status: `pending`
   - next_route: `loopy-implement`
+- explicit user constraint supplies the working theory:
+  - status: `pending`
+  - next_route: `loopy-implement`
+  - evidence: theory phase skipped by explicit user boundary and rejection criteria
 - theory needs another cycle:
   - status: `running`
   - next_route: `loopy-theory`
