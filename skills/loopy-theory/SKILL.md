@@ -52,17 +52,29 @@ If file edits are not allowed or not requested, return the completed cycle in th
 
 ## Workflow
 
-1. Draft one unstable claim.
+Repeat this cycle until the request goal is reached or a stop condition is hit:
+
+```text
+read sources -> draft claim -> reject -> revise -> reread -> carry survivor -> read sources
+```
+
+1. Read sources.
+   - Re-read the user request, the current target, and this skill's loop rules.
+   - If files exist, re-read the current cycle note and any relevant final theory before drafting the next claim.
+   - If code or examples are evidence for the target, re-check the relevant source instead of relying on memory.
+
+2. Draft one unstable claim.
    - Read the user request and any named theory file.
    - If continuing a target, first inspect existing `.loopy/cycles` notes and any named or relevant `theories/THEORY_*.md` final theory file.
    - Choose the smallest claim, boundary, or condition that matters.
    - If the target is vague, write the current best interpretation as an assumption.
 
-2. Test it.
+3. Test it.
    - Use evidence that could reject the claim.
    - Evidence must be strong enough to change the claim.
    - Use an isolated Critic agent for the rejection test when separate agents are available.
    - If separate agents are available but no isolated Critic is used, do not promote the survivor.
+   - If the host requires the user to explicitly request sub-agents, stop before promotion and ask for that request instead of marking the critic unavailable.
    - Acceptable evidence includes prior cycle notes, existing theory text, user constraints, code behavior, cited sources, and concrete counterexamples.
    - Prefer the strongest objection, not the easiest one.
    - For external factual claims, use cited sources or mark the claim as unverified.
@@ -71,22 +83,27 @@ If file edits are not allowed or not requested, return the completed cycle in th
    - Use the best available evidence; do not stall for exhaustive research unless the user asks.
    - If the available material can only improve wording, examples, or confidence, do not treat it as a theory revision.
 
-3. Keep the smallest survivor.
+4. Keep the smallest survivor.
    - Make it explain more than itself.
    - Make it imply a decision, prediction, or boundary.
    - Prefer narrowing scope before renaming terms.
    - Prefer clarifying terms before rewriting definitions.
    - Prefer definition changes before replacing the core claim.
 
-4. Decide whether it became stable.
+5. Reread and decide whether it became stable.
+   - Re-read the survivor against the target, this skill, and any final theory file it would replace.
    - Promote only if the survivor changes a boundary, minimum condition, or decision.
    - Do not promote a first-pass draft just because it is coherent. Treat it as unstable and run another rejection cycle unless it already comes from a prior survivor or existing final theory.
+   - A second rejection test inside the same cycle does not satisfy the loop. Start a new cycle with the survivor as the next unstable claim.
+   - Do not create or update final theory for a new target until at least one prior survivor has become the unstable claim of a later cycle.
    - Keep it as a cycle note if it is only wording, confidence, or exploration.
    - Replace the claim if revisions keep adding exceptions.
 
-5. Pick the next question, then self-check.
+6. Carry forward and return to sources.
    - Choose the next weakest point.
    - Before starting another cycle, self-check that the next cycle still has a current target, one unstable claim, and evidence that could reject it.
+   - Carry the survivor forward as the next cycle's unstable claim when it can still be rejected.
+   - Return to step 1 and re-read sources before drafting the next claim.
    - If the weakest point is in this skill's process, record a process recommendation unless the user explicitly asked to improve this skill or the current task is this skill's development.
    - Continue from `Next question` only while it is still needed to reach the current user request's goal.
 
@@ -96,9 +113,11 @@ Track this state across cycles:
 
 - Theory target
 - Target queue, when the request has multiple targets
+- Cycle number per target
 - Unstable claim
 - Rejection test
 - Survivor
+- Prior survivor used as the next unstable claim
 - Next weak point
 - Decision
 
@@ -110,7 +129,9 @@ Use an isolated Critic agent for theory rejection when the tool environment supp
 
 Use an isolated Editor agent when applying critic findings to this skill or another maintained artifact.
 
-If separate agents are unavailable, continue only as a non-independent loop and mark the loop status accordingly. Do not present the result as independently tested.
+If separate agents are unavailable, continue only as a non-independent rough loop and mark the loop status accordingly. Do not promote final theory from a non-independent loop unless the user explicitly accepts a non-independent result.
+
+If separate agents are blocked only because the host requires explicit user delegation, stop and ask the user to request an isolated Critic agent. Do not treat that as true unavailability.
 
 - Theorist: identifies the target and writes the claim.
 - Critic: tests the claim with evidence that could reject it. Run this role in an isolated context when subagents are available.
@@ -158,11 +179,14 @@ theories/THEORY_<name>.md
 
 Update or create a final theory file only when file edits are allowed by Execution Mode.
 
+Do not update or create a final theory file from a non-independent loop unless the user explicitly accepts a non-independent result.
+
 Use a short, stable `<name>` that identifies the theory target, such as `LOOPY`, `AGENCY`, or `REVIEW`, only when exactly one final theory owner is clear and no existing final theory file already owns the target boundary. A revision is promotable only if it changes a boundary, minimum condition, or decision and can be stated without cycle history. Final theory files are clean documents. Keep them short, simple, and boundary-bearing. Include only the surviving core claim, minimum condition, and boundary. Do not copy cycle history, operational policy, or every useful detail into the final theory.
 
 Each cycle note must include:
 
 - Target
+- Cycle number
 - Claim
 - Evidence
 - Objection
@@ -171,6 +195,7 @@ Each cycle note must include:
 - Why it is stronger
 - Decision
 - Process recommendation, if the loop process was weak but skill edits are not allowed
+- Prior survivor carried into the next cycle, if any
 - Progress toward target
 - Next question
 

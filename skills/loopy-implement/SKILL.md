@@ -50,9 +50,16 @@ If a required responsibility has no theory condition, it is a theory gap, not im
 
 ## Workflow
 
-1. Select the theory source.
+Repeat this cycle until the implementation goal is reached or a handoff condition is hit:
+
+```text
+read theory -> map responsibility -> implement slice -> add rejection check -> hand off -> read theory
+```
+
+1. Read theory.
    - Use the named `THEORY_*.md` file when provided.
    - If no stable theory exists, return to `loopy-theory`.
+   - Re-read the theory source and current request before starting each new slice.
 
 2. Extract one theory condition.
    - Use one claim, minimum condition, boundary, or prohibition.
@@ -75,6 +82,7 @@ If a required responsibility has no theory condition, it is a theory gap, not im
    - If the implementation exists, hand it off to `loopy-review` when available.
    - If `loopy-review` is unavailable, return the review handoff note instead of pretending review ran.
    - Handoff to review is loop continuation, not abandonment of autonomous progress.
+   - After review returns `pass` and theory-backed responsibility remains, return to step 1 for the next slice.
 
 ## Output
 

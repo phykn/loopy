@@ -44,7 +44,14 @@ Generic code quality is outside `loopy-review` unless it proves a theory violati
 
 ## Workflow
 
-1. Select the review unit.
+Repeat this cycle until the review goal is reached or a routing decision returns to another phase:
+
+```text
+read theory and slice -> test boundary -> decide route -> carry result -> read next slice
+```
+
+1. Read theory and select the review unit.
+   - Re-read the theory source, current request, and implementation slice before each review cycle.
    - Use one implementation slice when provided.
    - If no slice is provided, reconstruct the smallest slice from the changed code and its theory source.
 
@@ -69,6 +76,7 @@ Generic code quality is outside `loopy-review` unless it proves a theory violati
 5. Return the smallest next revision.
    - Do not produce a generic improvement list.
    - Do not rewrite theory inside review.
+   - If the slice passes and unreviewed slices remain for the current goal, carry the result forward and return to step 1 for the next slice.
 
 ## Output
 
@@ -102,9 +110,9 @@ Evidence:
 Next revision:
 ```
 
-## Stop Conditions
+## Review Stop And Routing
 
-Stop when:
+Stop review or route when:
 
 - the implementation slice omits its theory source; Decision: `return to loopy-implement`;
 - the finding is only generic code quality and does not prove a theory violation;

@@ -39,6 +39,10 @@ A cycle is one rejection unit:
 unstable artifact -> rejection test -> survivor
 ```
 
+A second rejection test inside the same unit is still the same cycle.
+
+A loop is visible only when a survivor becomes the next cycle's unstable artifact.
+
 A phase is a group of cycles with one purpose:
 
 - theory phase;
