@@ -30,7 +30,9 @@ Child skills may specialize the artifact and the test.
 
 They must not remove rejection from the loop.
 
-`loopy/` stores public Loopy philosophy and reusable definitions.
+## Repository Layout
+
+`skills/` stores public Loopy skills.
 
 `.loopy/` stores private or working loop artifacts such as cycle notes.
 

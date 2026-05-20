@@ -1,0 +1,20 @@
+{
+  "name": "loopy",
+  "owner": {
+    "name": "phykn"
+  },
+  "metadata": {
+    "description": "The loopy plugin marketplace — single-plugin marketplace hosting the loopy plugin."
+  },
+  "plugins": [
+    {
+      "name": "loopy",
+      "description": "A small skill system for turning unstable claims, theories, and process rules into tested survivors.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/phykn/loopy.git",
+        "ref": "main"
+      }
+    }
+  ]
+}

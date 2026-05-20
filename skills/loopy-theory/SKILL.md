@@ -1,6 +1,6 @@
 ---
 name: loopy-theory
-description: Run evidence-backed theory refinement cycles for ideas, design principles, research notes, process rules, or conceptual documents. Use when Codex needs to turn a loose idea into a stronger theory, critique an existing theory with evidence, update THEORY_*.md documents, or continue a claim-objection-revision loop such as THEORY_LOOP.md.
+description: Run evidence-backed theory refinement cycles for ideas, design principles, research notes, process rules, or conceptual documents. Use when an agent needs to turn a loose idea into a stronger theory, critique an existing theory with evidence, update THEORY_*.md documents, or continue a claim-objection-revision loop such as THEORY_LOOP.md.
 ---
 
 # Loopy Theory
@@ -19,7 +19,7 @@ Prefer the simplest theory that still draws a real boundary. Code, examples, and
 
 Rough claims stay in cycle notes. Only survivors become final theory.
 
-When `loopy/CORE.md` exists, treat it as the parent philosophy. This skill may specialize Loopy for theory work, but it must preserve the core requirements: unstable artifact, change loop, rejection test, and stable survivor.
+When `../core.md` exists, treat it as the parent philosophy. This skill may specialize Loopy for theory work, but it must preserve the core requirements: unstable artifact, change loop, rejection test, and stable survivor.
 
 ## Goal
 

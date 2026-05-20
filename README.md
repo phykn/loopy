@@ -1,46 +1,32 @@
 # Loopy
 
-Loopy is a small skill system for autonomous agents.
-
-## Background
-
-Agents often finish steps without testing whether the result should survive.
-
-Loopy starts from a different rule:
+Loopy is a Claude Code and Codex plugin for making unstable work survive a test.
 
 ```text
-Loopy = Loop(Unstable -> Tested -> Stable)
+Unstable -> Tested -> Stable
 ```
 
-Work is stable only when it survives a test that could reject it.
-
-## Purpose
-
-Loopy provides reusable skills that turn rough work into stable output through a loop.
-
-Current structure:
-
-- `loopy/CORE.md`: shared Loopy philosophy.
-- `loopy/loopy-theory/SKILL.md`: Codex skill for refining claims into theory.
-- `.claude/skills/loopy-theory/SKILL.md`: Claude Code project skill wrapper.
+A result is stable only when it survives a rejection test. See `skills/core.md` for the full philosophy.
 
 ## Install
 
-Clone the repository:
-
-```powershell
-git clone https://github.com/phykn/loopy.git
-cd loopy
-```
-
-For Codex, use the skill from:
+### Claude Code
 
 ```text
-loopy/loopy-theory/SKILL.md
+/plugin marketplace add phykn/loopy
+/plugin install loopy@loopy
 ```
 
-For Claude Code, open the repository as a project. Claude Code will load:
+### Codex
 
-```text
-.claude/skills/loopy-theory/SKILL.md
-```
+Codex reads `.codex-plugin/plugin.json` and loads the `skills/` directory. In Codex, open Plugins from the top-left menu, create a new plugin, and point it at this repo root.
+
+Restart Codex after installation.
+
+## Skills
+
+| Skill | Use when |
+|---|---|
+| `loopy:loopy-theory` | Turning a rough claim, theory, process rule, or design principle into a tested survivor |
+
+There is no build step. Editing the Markdown is the development cycle.

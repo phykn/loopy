@@ -5,9 +5,9 @@ description: Use when refining ideas, design principles, research notes, process
 
 # Loopy Theory
 
-Use the canonical skill instructions in `../../../loopy/loopy-theory/SKILL.md`.
+Use the canonical skill instructions in `../../../skills/loopy-theory/SKILL.md`.
 
-Before running the loop, also read the parent philosophy in `../../../loopy/CORE.md` when it exists.
+Before running the loop, also read the parent philosophy in `../../../skills/core.md` when it exists.
 
 For Claude Code project use:
 
