@@ -17,12 +17,18 @@ Follow the Loopy shape:
 Theory -> Code -> Review -> Revision
 ```
 
-Revision either changes the code or returns a theory gap to `loopy-theory`.
+Revision either changes the implementation slice or returns a theory gap to `loopy-theory`.
 
 In this skill, the unstable artifact is the implementation slice.
 The rejection test is the rejection check attached to that slice.
 The output of this skill is a review-ready implementation slice.
 The stable artifact is code that preserves the theory boundary after `loopy-review`.
+
+Do not advance to review because implementation steps are finished. Advance only when the current slice is review-ready.
+
+A review-ready slice is not stable code. It is a rejectable mapping from one theory condition to one code responsibility.
+
+A slice is review-ready only when another reviewer can reject it without inferring hidden intent.
 
 From this skill file, read `../core.md` as the parent philosophy when it exists.
 
@@ -36,6 +42,7 @@ A valid implementation slice contains:
 - Code responsibility: the function, interface, schema, prompt, or module responsibility created or changed.
 - Boundary preservation: the code does not cross a theory prohibition, widen the theory's claim, or add unsupported behavior.
 - Rejection check: a test, static check, named review criterion, or concrete failure case that could reject the mapping.
+- Traceability: every changed behavior can be traced back to the named theory condition.
 
 If a required responsibility has no theory condition, it is a theory gap, not implementation scope.
 
@@ -70,11 +77,21 @@ If a required responsibility has no theory condition, it is a theory gap, not im
 
 End with:
 
+- Loop status
 - Theory source
 - Implemented slices
 - Theory gaps
 - Rejection checks
 - Handoff: `loopy-review`, `loopy-theory`, or the review handoff note when `loopy-review` is unavailable
+
+Use this brief status:
+
+```text
+Loop status:
+- phase: implement
+- cycle:
+- decision:
+```
 
 Use this slice format when useful:
 
@@ -91,6 +108,7 @@ Files changed:
 Stop when:
 
 - the next responsibility has no theory condition;
+- the implementation requires changing the theory source;
 - the next change would add unsupported convenience behavior, fallback behavior, or architecture;
 - the current slice has no rejection check;
 - implementation exists and should be reviewed by `loopy-review` or a review handoff note.

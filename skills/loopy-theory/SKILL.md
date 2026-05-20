@@ -19,6 +19,8 @@ Prefer the simplest theory that still draws a real boundary. Code, examples, and
 
 Rough claims stay in cycle notes. Only survivors become final theory.
 
+A theory survivor is stable only when another phase can use it without reading the cycle history.
+
 When `../core.md` exists, treat it as the parent philosophy. This skill may specialize Loopy for theory work, but it must preserve the core requirements: unstable artifact, change loop, rejection test, and stable survivor.
 
 ## Goal
@@ -41,8 +43,7 @@ Default mode is review-only.
 
 Do not create or modify files unless:
 
-- the user explicitly asks to save, update, promote, or edit;
-- the user names a target theory file;
+- the user explicitly asks to save, update, promote, edit, or otherwise write files;
 - the current task explicitly asks to develop this skill or Loopy's theory files.
 
 If file edits are not allowed or not requested, return the completed cycle in the response.
@@ -57,12 +58,14 @@ If file edits are not allowed or not requested, return the completed cycle in th
 
 2. Test it.
    - Use evidence that could reject the claim.
+   - Evidence must be strong enough to change the claim.
    - Acceptable evidence includes prior cycle notes, existing theory text, user constraints, code behavior, cited sources, and concrete counterexamples.
    - Prefer the strongest objection, not the easiest one.
    - For external factual claims, use cited sources or mark the claim as unverified.
    - Do not invent evidence.
    - Mark hypotheses as hypotheses. Do not treat them as evidence.
    - Use the best available evidence; do not stall for exhaustive research unless the user asks.
+   - If the available material can only improve wording, examples, or confidence, do not treat it as a theory revision.
 
 3. Keep the smallest survivor.
    - Make it explain more than itself.
@@ -78,7 +81,7 @@ If file edits are not allowed or not requested, return the completed cycle in th
 
 5. Pick the next question, then self-check.
    - Choose the next weakest point.
-   - Re-read this skill's rules before starting the next cycle.
+   - Before starting another cycle, self-check that the next cycle still has a current target, one unstable claim, evidence that could reject it, and remaining cycle budget.
    - If the weakest point is in this skill's process, record a process recommendation unless the user explicitly asked to improve this skill or the current task is this skill's development.
    - Continue from `Next question` only while it is still needed for the current user request and the cycle budget is not spent.
 
@@ -111,6 +114,15 @@ Do not split context for ordinary drafting, formatting, or archival work. Use th
 ## Output
 
 Separate rough cycle notes from clean final theory.
+
+Always include a brief loop status before the detailed result:
+
+```text
+Loop status:
+- phase: theory
+- cycle:
+- decision:
+```
 
 When file edits are not allowed by Execution Mode, return the cycle result in the response instead of writing files.
 
@@ -170,6 +182,8 @@ After each cycle, choose the applicable action or actions:
 - Stop: explain which stop condition was reached.
 
 Use `Promote` and `Promote process` together when one cycle produces both a stable theory revision and a stable loop improvement.
+
+Do not continue merely because another question exists. Continue only when the next question could change the survivor's boundary, minimum condition, or decision.
 
 Default cycle budget is exactly one completed cycle per user request. Continue only when the user explicitly asks to keep looping or gives a cycle count. Prefer promoting when the revision changes a real boundary and can be stated more simply than before. Prefer stopping when more cycles would only rename or rephrase the same claim.
 

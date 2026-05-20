@@ -31,7 +31,8 @@
       "Use loopy:loopy-theory to refine this claim.",
       "Use loopy:loopy-theory to test this theory.",
       "Use loopy:loopy-theory to improve this process rule.",
-      "Use loopy:loopy-implement to implement this theory as traceable code slices."
+      "Use loopy:loopy-implement to implement this theory as traceable code slices.",
+      "Use loopy:loopy-review to check this implementation slice against its theory."
     ],
     "websiteURL": "https://github.com/phykn/loopy",
     "brandColor": "#2563EB",

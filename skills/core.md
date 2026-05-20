@@ -14,12 +14,12 @@ Work is stable only when it survives a test that could reject it.
 
 ## Minimum
 
-Every Loopy skill must preserve:
+Every Loopy phase or skill must preserve:
 
 - an unstable artifact;
 - a loop that can change it;
 - a test that can reject the change;
-- a stable artifact that contains only what survived.
+- a survivor appropriate for the next phase.
 
 ## Inheritance
 
@@ -27,8 +27,63 @@ Child skills may specialize the artifact and the test.
 
 - `loopy-theory` tests claims.
 - `loopy-implement` tests theory-to-code mappings.
+- `loopy-review` tests implementation slices against theory boundaries.
 
 They must not remove rejection from the loop.
+
+## Cycle, Phase, Loop
+
+A cycle is one rejection unit:
+
+```text
+unstable artifact -> rejection test -> survivor
+```
+
+A phase is a group of cycles with one purpose:
+
+- theory phase;
+- implement phase;
+- review phase.
+
+A loop is the phase-level control structure:
+
+```text
+theory -> implement -> review -> revision
+```
+
+Loopy does not advance because a step finished.
+
+Loopy advances only when the current phase produces a survivor stable enough for the next phase.
+
+A survivor is stable enough when it has:
+
+- a named artifact;
+- a rejection test that was actually applied;
+- a decision result;
+- an owner in the next phase or final stable artifact.
+
+When a later phase names a survivor as part of its stable source of truth, earlier working artifacts may be removed.
+
+Do not keep a working note or temporary theory file as a second source of truth unless a later phase names it as the current source.
+
+Review decides the next path:
+
+- `pass` -> stop or next slice;
+- code violation -> return to `loopy-implement`;
+- theory gap -> return to `loopy-theory`;
+- missing rejection check -> return to `loopy-implement`;
+- slice too large -> split into smaller cycles.
+
+Expose phase progress with a short loop status:
+
+```text
+Loop status:
+- phase:
+- cycle:
+- decision:
+```
+
+The status is not a full note. It only shows that a loop is active and whether the current phase can advance.
 
 ## Repository Layout
 

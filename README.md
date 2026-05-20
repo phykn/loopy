@@ -29,5 +29,6 @@ Restart Codex after installation.
 |---|---|
 | `loopy:loopy-theory` | Turning a rough claim, theory, process rule, or design principle into a tested survivor |
 | `loopy:loopy-implement` | Mapping a stable theory into traceable code slices |
+| `loopy:loopy-review` | Checking whether an implementation slice preserves its theory boundary |
 
 There is no build step. Editing the Markdown is the development cycle.

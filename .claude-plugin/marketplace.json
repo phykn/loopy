@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "loopy",
-      "description": "A small skill system for theory-first coding: refine stable theory, then map it into traceable implementation slices.",
+      "description": "A small skill system for theory-first coding: test theory until stable, map it into traceable implementation slices, then review theory compliance.",
       "source": {
         "source": "url",
         "url": "https://github.com/phykn/loopy.git",
