@@ -6,7 +6,11 @@ Loopy is a Claude Code and Codex plugin for theory-first coding.
 Unstable -> Tested -> Stable
 ```
 
-A result is stable only when it survives a rejection test. See `skills/core.md` for the full philosophy.
+A result is stable only when it survives a rejection test. Loopy keeps cycling until the current work has a decision.
+
+Use an independent Critic or Reviewer when the host supports it. If not, Loopy continues with a stricter self-objection cycle, records `independence: unavailable`, and does not pretend independent review happened.
+
+See `skills/core.md` for the full philosophy.
 
 ## Install
 
@@ -45,6 +49,15 @@ Use loopy:loopy-review to check these changes against .loopy/theories/THEORY_UI.
 
 Use `loopy:loopy-loop` for the full process. Use the phase skills directly only when you want one manual theory, implement, or review cycle.
 
+Loop trace:
+
+```text
+loopy-loop
+-> loopy-theory: passed / next_route=loopy-implement
+-> loopy-implement: review_ready / next_route=loopy-review
+-> loopy-review: passed / next_route=complete
+```
+
 Bad requests:
 
 ```text
@@ -52,6 +65,23 @@ Make it better.
 Implement whatever seems useful.
 Review this like a normal code review.
 ```
+
+## When Not To Use Loopy
+
+Use a simpler workflow for:
+
+- small bug fixes with an obvious failing test;
+- direct file edits where the boundary is already clear;
+- loose brainstorming without a claim to test;
+- external fact checking where source verification matters more than theory revision.
+
+## Host Compatibility
+
+Codex loads the canonical skills from `skills/`.
+
+Claude Code uses `.claude/skills/` wrappers that point back to the same canonical skill files.
+
+When isolated agents are available, Loopy may use them for independent criticism or review. When they are unavailable, Loopy continues with self-objection and records `independence: unavailable`.
 
 Loopy is not a TODO checklist. A checklist completes steps. `loopy-loop` keeps cycling through the phase skills until each target, responsibility, or review slice has a named decision that survived a rejection test.
 
