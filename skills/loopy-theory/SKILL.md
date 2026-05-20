@@ -1,6 +1,6 @@
 ---
 name: loopy-theory
-description: Run evidence-backed theory refinement cycles for ideas, design principles, research notes, process rules, or conceptual documents. Use when an agent needs to turn a loose idea into a stronger theory, critique an existing theory with evidence, update THEORY_*.md documents, or continue a claim-objection-revision loop such as THEORY_LOOP.md.
+description: Run one evidence-backed theory refinement cycle for ideas, design principles, research notes, process rules, or conceptual documents. Use when an agent needs to test one unstable claim, update a THEORY_*.md document from a survivor, or return the next theory route to loopy-loop.
 ---
 
 # Loopy Theory
@@ -29,7 +29,7 @@ Start by naming the theory target in one sentence, including the current user-re
 
 The target is not a preferred conclusion to force into truth. It is the question, claim, boundary, or condition the loop is trying to explain, distinguish, test, or improve.
 
-For broad requests, split the work into a target queue. A request for multiple theories, surfaces, modules, or ownership boundaries is not one target. Run the loop per target and do not declare the request goal reached while any target still has a weak point that could change its boundary, minimum condition, or decision.
+For broad requests, name the one target this cycle will handle. If multiple targets exist, return the remaining targets to `loopy-loop` instead of managing the queue here.
 
 Good targets:
 
@@ -52,10 +52,10 @@ If file edits are not allowed or not requested, return the completed cycle in th
 
 ## Workflow
 
-Repeat this cycle until the request goal is reached or a stop condition is hit:
+Run one theory cycle. Do not run the next cycle inside this skill; return the survivor and next route to `loopy-loop`.
 
 ```text
-read sources -> draft claim -> reject -> revise -> reread -> carry survivor -> read sources
+read sources -> draft claim -> reject -> revise -> reread -> return survivor
 ```
 
 1. Read sources.
@@ -90,38 +90,35 @@ read sources -> draft claim -> reject -> revise -> reread -> carry survivor -> r
    - Prefer clarifying terms before rewriting definitions.
    - Prefer definition changes before replacing the core claim.
 
-5. Reread and decide whether it became stable.
+5. Reread and classify the survivor.
    - Re-read the survivor against the target, this skill, and any final theory file it would replace.
-   - Promote only if the survivor changes a boundary, minimum condition, or decision.
-   - Do not promote because of cycle number. Promote only when the survivor has a visible evidence chain: source read, rejection applied, revision made, sources reread, and named weak points either rejected, carried forward, or shown unable to change the boundary, minimum condition, or decision.
-   - A second rejection test inside the same cycle does not satisfy the loop. Start a new cycle with the survivor as the next unstable claim.
-   - For a new target, do not create or update final theory merely because the first survivor is coherent. Continue if carrying the survivor into another cycle could still change its boundary, minimum condition, or decision.
+   - Mark it promotable only if it changes a boundary, minimum condition, or decision.
+   - Do not classify it by cycle count. Use the evidence chain: source read, rejection applied, revision made, sources reread, and named weak points either rejected, carried forward, or shown unable to change the boundary, minimum condition, or decision.
+   - A second rejection test inside the same cycle does not satisfy the loop. Return the survivor as a possible next unstable claim.
    - Keep it as a cycle note if it is only wording, confidence, or exploration.
    - Replace the claim if revisions keep adding exceptions.
 
-6. Carry forward and return to sources.
+6. Return survivor and next route.
    - Choose the next weakest point.
-   - Before starting another cycle, self-check that the next cycle still has a current target, one unstable claim, and evidence that could reject it.
-   - Carry the survivor forward as the next cycle's unstable claim when it can still be rejected.
-   - Return to step 1 and re-read sources before drafting the next claim.
+   - Name whether the survivor should be promoted, carried into another theory cycle, handed to `loopy-implement`, or blocked.
+   - If another theory cycle is needed, return the next unstable claim for `loopy-loop` to schedule.
    - If the weakest point is in this skill's process, record a process recommendation unless the user explicitly asked to improve this skill or the current task is this skill's development.
-   - Continue from `Next question` only while it is still needed to reach the current user request's goal.
+   - Continue from `Next question` only when `loopy-loop` routes back into this skill.
 
-## Loop State
+## Cycle State
 
-Track this state across cycles:
+Track this state for the current cycle and handoff:
 
 - Theory target
-- Target queue, when the request has multiple targets
-- Cycle number per target
 - Unstable claim
 - Rejection test
 - Survivor
 - Prior survivor used as the next unstable claim
 - Named weak points and their decision: reject, carry forward, blocked, or no boundary effect
 - Decision
+- Next route
 
-On later runs, resume from the latest relevant cycle note and final theory before drafting a new claim. Find the final theory by user-named path first, then by cycle-note references, then by target match across existing `theories/THEORY_*.md` files. If multiple final theory files plausibly match and none is named by the user or cycle notes, do not choose silently; record the ambiguity and keep the revision as rough notes unless the user provides a target file. Do not create a new final theory file when an existing one already owns the target boundary. Do not start a new cycle from scratch unless the claim must be replaced.
+On later runs, use the resume target supplied by `loopy-loop`. Re-read the latest relevant cycle note and final theory before drafting a new claim. Find the final theory by user-named path first, then by cycle-note references, then by target match across existing `theories/THEORY_*.md` files. If multiple final theory files plausibly match and none is named by the user or cycle notes, do not choose silently; record the ambiguity and keep the revision as rough notes unless the user provides a target file. Do not create a new final theory file when an existing one already owns the target boundary.
 
 ## Roles
 
@@ -136,7 +133,7 @@ If separate agents are blocked only because the host requires explicit user dele
 - Theorist: identifies the target and writes the claim.
 - Critic: tests the claim with evidence that could reject it. Run this role in an isolated context when subagents are available.
 - Synthesizer: keeps the smallest survivor.
-- Archivist: records the cycle, updates loop state, and chooses the next weak point.
+- Archivist: records the cycle and returns the next route.
 
 Do not simulate an isolated critic by pretending inside the same context if the user specifically asks for agent-based critique.
 
@@ -208,30 +205,26 @@ Each final theory update should answer, as briefly as possible:
 - What is the minimum condition?
 - What boundary or decision does it force?
 
-## Autonomous Progress
+## Cycle Result
 
-After each cycle, choose the applicable action or actions:
+After the cycle, return one result:
 
-- Continue: use `Next question` for the next cycle while it still moves the current request toward its goal.
-- Promote: if file edits are allowed, update the final theory file with only the stable conclusion; otherwise, return the promotable conclusion in the response.
-- Promote process: update this skill only when the user explicitly asked to improve this skill or the current task is this skill's development.
-- Replace: discard the unstable claim and draft a better one under the same target.
-- Stop: explain which stop condition was reached.
+- `next theory cycle`: return `Next question` as the next unstable claim for `loopy-loop`.
+- `promote theory`: if file edits are allowed, update the final theory file with only the stable conclusion; otherwise, return the promotable conclusion in the response.
+- `process recommendation`: return a recommendation only when this cycle exposed a skill/process weakness and skill edits are not in scope.
+- `replace claim`: discard the unstable claim and return the replacement target for `loopy-loop`.
+- `blocked`: explain which block was reached.
 
-Use `Promote` and `Promote process` together when one cycle produces both a stable theory revision and a stable loop improvement.
-
-Do not continue merely because another question exists. Continue only when the next question could change the survivor's boundary, minimum condition, or decision.
-
-There is no numeric cycle limit. Continue until the current request's goal is reached, evidence is blocked, or the next cycle would only rename or rephrase the same claim. Prefer promoting when the revision changes a real boundary and can be stated more simply than before.
+Do not request another theory cycle merely because another question exists. Request it only when the next question could change the survivor's boundary, minimum condition, or decision.
 
 ## Stop Conditions
 
-A cycle is complete when it has one claim, evidence-based objection, stronger revision, and next question.
+A cycle is complete when it has one claim, evidence-based objection, stronger revision, and next route.
 
-Stop the loop when:
+Return a stop or route decision when:
 
 - new evidence changes only examples or wording, not the claim's decisions, predictions, or boundaries;
 - the revision keeps adding exceptions and the claim should be replaced;
 - evidence is blocked and the block is explicit;
-- the current request's goal is reached and every target in the queue has a named final decision: promoted, blocked, deferred by explicit user choice, or rejected as unable to change its boundary, minimum condition, or decision;
+- the current target has a named cycle decision: promote theory, next theory cycle, replace claim, process recommendation, or blocked;
 - the user explicitly stops the loop.

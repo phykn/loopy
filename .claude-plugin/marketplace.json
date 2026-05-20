@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "loopy",
-      "description": "A small skill system for theory-first coding: test theory until stable, map it into traceable implementation slices, then review theory compliance.",
+      "description": "A small skill system for theory-first coding: coordinate theory, implementation, and review loops until each current item has a tested decision.",
       "source": {
         "source": "url",
         "url": "https://github.com/phykn/loopy.git",

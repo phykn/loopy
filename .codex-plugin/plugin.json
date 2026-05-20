@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "loopy",
     "shortDescription": "Turn unstable work into tested survivors",
-    "longDescription": "Use Loopy to refine theory-first coding claims, then map stable theory into traceable implementation slices through rejection tests until the smallest stable survivor remains.",
+    "longDescription": "Use Loopy to coordinate theory-first coding loops: refine theory, map stable theory into traceable implementation slices, then review theory compliance through rejection tests until each current item has a named decision.",
     "developerName": "phykn",
     "category": "Productivity",
     "capabilities": [
@@ -28,6 +28,7 @@
       "Write"
     ],
     "defaultPrompt": [
+      "Use loopy:loopy-loop to run the full theory -> implement -> review process.",
       "Use loopy:loopy-theory to refine this claim.",
       "Use loopy:loopy-theory to test this theory.",
       "Use loopy:loopy-theory to improve this process rule.",

@@ -1,6 +1,6 @@
 ---
 name: loopy-review
-description: Use when reviewing code, prompts, schemas, interfaces, or modules against a stable THEORY_*.md source; use when an agent must decide whether an implementation slice passes, needs code revision, or exposes a theory gap.
+description: Use when reviewing one code, prompt, schema, interface, or module slice against a stable THEORY_*.md source; use when an agent must decide whether one implementation slice passes, needs code revision, or exposes a theory gap.
 ---
 
 # Loopy Review
@@ -23,9 +23,7 @@ In this skill, the unstable artifact is the implementation slice under review.
 The rejection test is the boundary test against the theory source.
 The stable artifact is code that preserves the theory boundary after review.
 
-There is no numeric review limit. Continue with the next review slice while the current request's goal still has unreviewed implementation slices.
-
-For multi-slice requests, keep a review queue. Do not declare the review goal reached until every slice has a named decision: pass, return to `loopy-implement`, return to `loopy-theory`, split, or out of scope.
+For multi-slice requests, return the remaining review queue to `loopy-loop`. Do not silently complete the whole review phase inside this skill.
 
 Use an isolated reviewer agent for the boundary test when separate agents are available. If separate agents are unavailable, mark that in the loop status and do not present the result as independently reviewed.
 
@@ -47,10 +45,10 @@ Generic code quality is outside `loopy-review` unless it proves a theory violati
 
 ## Workflow
 
-Repeat this cycle until the review goal is reached or a routing decision returns to another phase with the remaining review queue preserved:
+Run one review cycle. Do not run the next slice inside this skill; return the decision and next route to `loopy-loop`.
 
 ```text
-read theory and slice -> test boundary -> decide route -> carry result -> read next slice
+read theory and slice -> test boundary -> decide route -> return result
 ```
 
 1. Read theory and select the review unit.
@@ -81,7 +79,7 @@ read theory and slice -> test boundary -> decide route -> carry result -> read n
    - Do not produce a generic improvement list.
    - Do not rewrite theory inside review.
    - Smallest means removing any requested revision would leave the boundary violation, missing rejection check, or theory gap unresolved.
-   - If the slice passes and unreviewed slices remain for the current goal, carry the result forward and return to step 1 for the next slice.
+   - If the slice passes and unreviewed slices remain for the current goal, return the remaining review queue for `loopy-loop` to schedule.
 
 ## Output
 
@@ -89,7 +87,7 @@ End with:
 
 - Loop status
 - Theory source
-- Reviewed slices
+- Reviewed slice
 - Decision
 - Evidence
 - Remaining review queue with named decisions
@@ -102,7 +100,7 @@ Loop status:
 - phase: review
 - cycle:
 - decision:
-- independent reviewer: used | unavailable
+- independent reviewer: used | unavailable | blocked | not required
 - review queue:
 ```
 
@@ -117,12 +115,12 @@ Evidence:
 Next revision:
 ```
 
-## Review Stop And Routing
+## Review Cycle Routing
 
-Stop review or route when:
+Stop the cycle or route when:
 
 - the implementation slice omits its theory source; Decision: `return to loopy-implement`;
 - the finding is only generic code quality and does not prove a theory violation;
 - the code need is real but no stable theory source exists, or the theory is missing or too weak; Decision: `return to loopy-theory`;
 - the slice is missing a rejection check; Decision: `return to loopy-implement`;
-- the current review goal is reached and every slice in the review queue has a named decision.
+- the current slice has a named decision.

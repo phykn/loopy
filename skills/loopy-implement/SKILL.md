@@ -1,6 +1,6 @@
 ---
 name: loopy-implement
-description: Use when implementing code, prompts, schemas, interfaces, or modules from a stable THEORY_*.md file; use when an agent must translate theory conditions into traceable implementation slices instead of inventing behavior or architecture.
+description: Use when implementing one code, prompt, schema, interface, or module slice from a stable THEORY_*.md file; use when an agent must translate one theory condition into one traceable implementation responsibility instead of inventing behavior or architecture.
 ---
 
 # Loopy Implement
@@ -30,9 +30,7 @@ A review-ready slice is not stable code. It is a rejectable mapping from one the
 
 A slice is review-ready only when another reviewer can reject it without inferring hidden intent.
 
-There is no numeric slice limit. Continue with the next implementation slice while the current request's goal still has a theory-backed responsibility to implement.
-
-For multi-responsibility requests, keep a responsibility queue. Do not declare the implementation goal reached until every theory-backed responsibility is implemented, handed off, blocked by a theory gap, or rejected as unsupported by the theory.
+For multi-responsibility requests, return the remaining responsibility queue to `loopy-loop`. Do not silently complete the whole implementation phase inside this skill.
 
 From this skill file, read `../core.md` as the parent philosophy when it exists.
 
@@ -52,10 +50,10 @@ If a required responsibility has no theory condition, it is a theory gap, not im
 
 ## Workflow
 
-Repeat this cycle until the implementation queue is exhausted or a routing condition blocks implementation:
+Run one implementation cycle. Do not run the next slice inside this skill; return the slice and next route to `loopy-loop`.
 
 ```text
-read theory -> map responsibility -> implement slice -> add rejection check -> queue for review -> read theory
+read theory -> map responsibility -> implement slice -> add rejection check -> return route
 ```
 
 1. Read theory.
@@ -84,10 +82,10 @@ read theory -> map responsibility -> implement slice -> add rejection check -> q
    - If the theory is missing, return to `loopy-theory`.
    - If the implementation exists, add it to the pending review queue.
    - If `loopy-review` is unavailable, return the review handoff note instead of pretending review ran.
-   - Do not hand off after one slice while theory-backed responsibilities remain, unless review is needed to decide or unblock the next responsibility.
+   - Do not decide the whole implementation phase after one slice while theory-backed responsibilities remain.
    - When handing off, name the pending review queue, remaining responsibility queue, and the decision for each item.
    - Handoff to review is loop continuation, not abandonment of autonomous progress.
-   - If theory-backed responsibility remains and review is not needed to unblock it, return to step 1 for the next slice.
+   - If theory-backed responsibility remains and review is not needed to unblock it, return the next responsibility for `loopy-loop` to schedule.
 
 ## Output
 
@@ -95,7 +93,7 @@ End with:
 
 - Loop status
 - Theory source
-- Implemented slices
+- Implemented slice
 - Theory gaps
 - Rejection checks
 - Pending review queue
@@ -122,13 +120,13 @@ Rejection check:
 Files changed:
 ```
 
-## Phase Stop And Handoff
+## Cycle Stop And Handoff
 
-Stop the implement phase or hand off when:
+Stop the cycle or hand off when:
 
 - the next responsibility has no theory condition;
 - the implementation requires changing the theory source;
 - the next change would add unsupported convenience behavior, fallback behavior, or architecture;
 - the current slice has no rejection check;
-- the current request's implementation goal is reached and every responsibility in the queue has a named decision: implemented, handed off, blocked by theory gap, or rejected as unsupported;
+- the current responsibility has a named decision: implemented, handed off, blocked by theory gap, or rejected as unsupported;
 - review is needed to decide or unblock the next responsibility.
