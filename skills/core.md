@@ -99,6 +99,10 @@ Use a separate agent context when the test depends on independent judgment.
 
 Do not use a separate agent only to imitate independence.
 
+If separate agents are available and the cycle depends on critique, review, or promotion, use one for the rejection test.
+
+If separate agents are not available, say so in the loop status and do not present the result as independently tested.
+
 ## Boundary
 
 A checklist completes steps.

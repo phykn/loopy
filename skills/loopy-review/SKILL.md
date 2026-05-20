@@ -25,6 +25,8 @@ The stable artifact is code that preserves the theory boundary after review.
 
 There is no numeric review limit. Continue with the next review slice while the current request's goal still has unreviewed implementation slices.
 
+Use an isolated reviewer agent for the boundary test when separate agents are available. If separate agents are unavailable, mark that in the loop status and do not present the result as independently reviewed.
+
 From this skill file, read `../core.md` as the parent philosophy when it exists.
 
 ## Minimum
@@ -86,6 +88,7 @@ Loop status:
 - phase: review
 - cycle:
 - decision:
+- independent reviewer: used | unavailable
 ```
 
 Use this slice format when useful:

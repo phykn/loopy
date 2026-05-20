@@ -29,6 +29,8 @@ Start by naming the theory target in one sentence, including the current user-re
 
 The target is not a preferred conclusion to force into truth. It is the question, claim, boundary, or condition the loop is trying to explain, distinguish, test, or improve.
 
+For broad requests, split the work into a target queue. A request for multiple theories, surfaces, modules, or ownership boundaries is not one target. Run the loop per target and do not declare the request goal reached while any target still has a weak point that could change its boundary, minimum condition, or decision.
+
 Good targets:
 
 - define the minimum condition for a concept;
@@ -59,6 +61,8 @@ If file edits are not allowed or not requested, return the completed cycle in th
 2. Test it.
    - Use evidence that could reject the claim.
    - Evidence must be strong enough to change the claim.
+   - Use an isolated Critic agent for the rejection test when separate agents are available.
+   - If separate agents are available but no isolated Critic is used, do not promote the survivor.
    - Acceptable evidence includes prior cycle notes, existing theory text, user constraints, code behavior, cited sources, and concrete counterexamples.
    - Prefer the strongest objection, not the easiest one.
    - For external factual claims, use cited sources or mark the claim as unverified.
@@ -76,6 +80,7 @@ If file edits are not allowed or not requested, return the completed cycle in th
 
 4. Decide whether it became stable.
    - Promote only if the survivor changes a boundary, minimum condition, or decision.
+   - Do not promote a first-pass draft just because it is coherent. Treat it as unstable and run another rejection cycle unless it already comes from a prior survivor or existing final theory.
    - Keep it as a cycle note if it is only wording, confidence, or exploration.
    - Replace the claim if revisions keep adding exceptions.
 
@@ -90,6 +95,7 @@ If file edits are not allowed or not requested, return the completed cycle in th
 Track this state across cycles:
 
 - Theory target
+- Target queue, when the request has multiple targets
 - Unstable claim
 - Rejection test
 - Survivor
@@ -100,7 +106,11 @@ On later runs, resume from the latest relevant cycle note and final theory befor
 
 ## Roles
 
-Use isolated agents for Critic or Editor roles when independent judgment materially changes the test, and the tool environment supports them. This includes requests for agents, a grade, external review, or a role-separated loop.
+Use an isolated Critic agent for theory rejection when the tool environment supports separate agents.
+
+Use an isolated Editor agent when applying critic findings to this skill or another maintained artifact.
+
+If separate agents are unavailable, continue only as a non-independent loop and mark the loop status accordingly. Do not present the result as independently tested.
 
 - Theorist: identifies the target and writes the claim.
 - Critic: tests the claim with evidence that could reject it. Run this role in an isolated context when subagents are available.
@@ -109,7 +119,7 @@ Use isolated agents for Critic or Editor roles when independent judgment materia
 
 Do not simulate an isolated critic by pretending inside the same context if the user specifically asks for agent-based critique.
 
-Do not split context for ordinary drafting, formatting, or archival work. Use the main context when independence would not change the rejection test.
+Do not split context for ordinary formatting or archival work. Use the main context only when independence would not change the rejection test.
 
 ## Output
 
@@ -122,6 +132,7 @@ Loop status:
 - phase: theory
 - cycle:
 - decision:
+- independent critic: used | unavailable | not needed
 ```
 
 When file edits are not allowed by Execution Mode, return the cycle result in the response instead of writing files.
@@ -196,5 +207,5 @@ Stop the loop when:
 - new evidence changes only examples or wording, not the claim's decisions, predictions, or boundaries;
 - the revision keeps adding exceptions and the claim should be replaced;
 - evidence is blocked and the block is explicit;
-- the current request's goal is reached;
+- the current request's goal is reached and no target in the queue has a remaining weak point that could change its boundary, minimum condition, or decision;
 - the user explicitly stops the loop.
