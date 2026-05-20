@@ -10,6 +10,8 @@ A result is stable only when it survives a rejection test. Loopy keeps cycling u
 
 Use an independent Critic or Reviewer when the host supports it. If not, Loopy continues with a stricter self-objection cycle, records `independence: unavailable`, and does not pretend independent review happened.
 
+Invoking `loopy:loopy-loop` authorizes the isolated Critic or Reviewer agents required by the routed phase skills unless you explicitly forbid sub-agents.
+
 Self-objection can keep the loop moving, but `loopy-theory` does not promote final theory from a non-independent loop unless the user explicitly accepts that boundary.
 
 See `skills/core.md` for the full philosophy.

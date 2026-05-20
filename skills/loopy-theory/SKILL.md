@@ -73,7 +73,8 @@ read sources -> draft claim -> reject -> revise -> reread -> return survivor
    - Evidence must be able to force a boundary, minimum-condition, or decision change if it rejects the claim.
    - Use an isolated Critic agent for the rejection test when separate agents are available.
    - If separate agents are available but no isolated Critic is used, do not promote the survivor.
-   - If the host requires the user to explicitly request sub-agents, stop before promotion and ask for that request instead of marking the critic unavailable.
+   - When invoked through `loopy-loop`, treat the user's `loopy-loop` request as authorization for the isolated Critic required by this skill unless the user explicitly forbids sub-agents.
+   - If invoked outside `loopy-loop` and the host requires the user to explicitly request sub-agents, stop before promotion and ask for that request instead of marking the critic unavailable.
    - Acceptable evidence includes prior cycle notes, existing theory text, user constraints, code behavior, cited sources, and concrete counterexamples.
    - Use the objection that would force the largest boundary, minimum-condition, or decision change if true.
    - For external factual claims, use cited sources or mark the claim as unverified.
@@ -127,7 +128,7 @@ Use an isolated Editor agent when applying critic findings to this skill or anot
 
 If separate agents are unavailable, continue only as a non-independent rough loop and mark the loop status accordingly. Do not promote final theory from a non-independent loop unless the user explicitly accepts a non-independent result.
 
-If separate agents are blocked only because the host requires explicit user delegation, stop and ask the user to request an isolated Critic agent. Do not treat that as true unavailability.
+If separate agents are blocked only because the host requires explicit user delegation, first check whether this cycle was routed by `loopy-loop`. A `loopy-loop` invocation authorizes the isolated Critic required by this skill unless the user explicitly forbids sub-agents. Outside `loopy-loop`, stop and ask the user to request an isolated Critic agent. Do not treat that as true unavailability.
 
 - Theorist: identifies the target and writes the claim.
 - Critic: tests the claim with evidence that could reject it. Run this role in an isolated context when subagents are available.

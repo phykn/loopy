@@ -234,11 +234,12 @@ Map phase results to queue status and next route:
 
 Agent rules belong to the phase that owns the rejection test.
 
+- Invoking `loopy-loop` authorizes the isolated Critic or Reviewer agents required by the routed phase skills, unless the user explicitly forbids sub-agents.
 - `loopy-theory` decides whether it needs an isolated Critic.
 - `loopy-review` decides whether it needs an isolated reviewer.
 - `loopy-implement` prepares review-ready slices.
 
-This skill only records whether independence was used, unavailable, blocked, or not required.
+This skill records whether independence was used, unavailable, blocked, or not required. Do not block a phase only to ask for separate sub-agent permission after the user has invoked `loopy-loop`.
 
 ## Output
 

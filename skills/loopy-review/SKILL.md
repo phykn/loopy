@@ -25,7 +25,7 @@ The stable artifact is code that preserves the theory boundary after review.
 
 For multi-slice requests, return the remaining review queue to `loopy-loop`. Do not silently complete the whole review phase inside this skill.
 
-Use an isolated reviewer agent for the boundary test when separate agents are available. If separate agents are unavailable, mark that in the loop status and do not present the result as independently reviewed.
+Use an isolated reviewer agent for the boundary test when separate agents are available. When invoked through `loopy-loop`, treat the user's `loopy-loop` request as authorization for the isolated reviewer required by this skill unless the user explicitly forbids sub-agents. If separate agents are unavailable, mark that in the loop status and do not present the result as independently reviewed.
 
 From this skill file, read `../core.md` as the parent philosophy when it exists.
 
