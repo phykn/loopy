@@ -25,9 +25,10 @@ Every Loopy phase or skill must preserve:
 
 Child skills may specialize the artifact and the test.
 
-- `loopy-theory` tests claims.
-- `loopy-implement` tests theory-to-code mappings.
-- `loopy-review` tests implementation slices against theory boundaries.
+- `loopy-loop` coordinates phase routing, queue ownership, and resume state.
+- `loopy-theory` runs one theory cycle.
+- `loopy-implement` runs one implementation slice.
+- `loopy-review` runs one review slice.
 
 They must not remove rejection from the loop.
 

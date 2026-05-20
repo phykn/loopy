@@ -61,6 +61,29 @@ resume -> choose phase -> run one cycle -> update queue -> checkpoint -> choose 
 5. Checkpoint.
    - Return a resume state that lets the next invocation continue without guessing.
 
+## Phase Handoff Contract
+
+Each phase cycle must return:
+
+- item:
+- artifact:
+- decision:
+- next_route:
+- queue_delta:
+- blocker:
+- independence:
+
+Use these queue item statuses:
+
+- `pending`
+- `running`
+- `passed`
+- `returned_to_theory`
+- `returned_to_implement`
+- `split`
+- `blocked`
+- `out_of_scope`
+
 ## Agent Boundary
 
 Agent rules belong to the phase that owns the rejection test.
