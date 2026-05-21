@@ -22,7 +22,7 @@ Define done -> Find a counterexample -> Improve -> Check -> Repeat
 2. Find the strongest counterexample.
    - Look for the most useful way the target or current output could fail.
    - Use the available context: existing code, tests, examples, tone, rules, user constraints, or concrete edge cases.
-   - Prefer a counterexample that would break the user's goal, can be checked now, and would change the next action if true.
+   - Prefer counterexamples in this order: user-visible failure, failed verification, violated constraint, then maintainability or style risk.
    - Do not collect every possible issue. Pick the counterexample that most changes the next action.
 
 3. Improve one thing.
@@ -36,7 +36,7 @@ Define done -> Find a counterexample -> Improve -> Check -> Repeat
 
 5. Decide.
    - `repeat`: another important in-scope counterexample remains.
-   - `done`: the target is satisfied and no important in-scope counterexample remains. Before `done`, name the last counterexample considered and why it is no longer important.
+   - `done`: the target is satisfied and no important in-scope counterexample remains. Before `done`, name the last important counterexample considered and why it no longer changes the next action.
    - `blocked`: the next check or change needs missing information, access, or a user decision.
    - `out_of_scope`: the next counterexample belongs outside the current request.
 
