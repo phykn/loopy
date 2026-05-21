@@ -22,6 +22,7 @@ Define done -> Find a counterexample -> Improve -> Check -> Repeat
 2. Find the strongest counterexample.
    - Look for the most useful way the target or current output could fail.
    - Use the available context: existing code, tests, examples, tone, rules, user constraints, or concrete edge cases.
+   - Prefer a counterexample that would break the user's goal, can be checked now, and would change the next action if true.
    - Do not collect every possible issue. Pick the counterexample that most changes the next action.
 
 3. Improve one thing.
@@ -35,7 +36,7 @@ Define done -> Find a counterexample -> Improve -> Check -> Repeat
 
 5. Decide.
    - `repeat`: another important in-scope counterexample remains.
-   - `done`: the target is satisfied and no important in-scope counterexample remains.
+   - `done`: the target is satisfied and no important in-scope counterexample remains. Before `done`, name the last counterexample considered and why it is no longer important.
    - `blocked`: the next check or change needs missing information, access, or a user decision.
    - `out_of_scope`: the next counterexample belongs outside the current request.
 
@@ -65,4 +66,4 @@ Write `.loopy/loop.md` only when the user asks for durable loop state or the wor
 
 ## Output
 
-Keep normal responses concise. Include the compact state only when it clarifies progress, blockers, or why another cycle is needed.
+Keep normal responses concise. For multi-step work, show the current Target, Check, and Decision when it helps the user track progress. Include the compact state only when it clarifies progress, blockers, or why another cycle is needed.
