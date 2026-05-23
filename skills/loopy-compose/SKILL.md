@@ -21,6 +21,14 @@ Target -> Counterexample -> Change -> Check -> Decision -> Next
 - Do not create abstractions for imagined future needs.
 - Avoid vague boundary names such as `utils`, `helpers`, `common`, `misc`, `core`, `manager`, or `service` unless the project already gives that name a strict responsibility.
 
+## Routing Boundary
+
+Use loopy-compose when the strongest problem is structural fragmentation: the current shape hides a concept, scatters responsibility, or misleads future changes.
+
+If the main problem is broken behavior, fix or lock that behavior first. If the main problem is a new feature, implement the feature first, then compose only if the new code creates or exposes a structural counterexample.
+
+Do not use loopy-compose merely because code could be reorganized.
+
 ## Slot Mapping
 
 - `Target`: the structure should express the real concept clearly.
