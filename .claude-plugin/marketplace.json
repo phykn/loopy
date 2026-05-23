@@ -4,12 +4,12 @@
     "name": "phykn"
   },
   "metadata": {
-    "description": "The loopy plugin marketplace: single-plugin marketplace hosting the loopy plugin."
+    "description": "The loopy plugin marketplace: single-plugin marketplace hosting loopy and loopy-compose."
   },
   "plugins": [
     {
       "name": "loopy",
-      "description": "A small skill system for counterexample-driven improvement.",
+      "description": "A small skill system for counterexample-driven improvement and code-structure recomposition.",
       "source": {
         "source": "url",
         "url": "https://github.com/phykn/loopy.git",

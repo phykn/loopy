@@ -49,6 +49,10 @@ Define done -> Find a counterexample -> Improve -> Check -> Repeat
 - Continue autonomously while the next useful cycle is clear and in scope.
 - Stop when further improvement is lower value than the risk or cost of changing more.
 
+## Application Skills
+
+Other skills may use Loopy as their core loop by specializing what counts as the target, counterexample, change, and check. Application skills should add domain-specific evidence and stop rules, not replace the loop with a separate process.
+
 ## Optional State
 
 Use this compact state when it helps the user or a later turn resume:

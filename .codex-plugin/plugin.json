@@ -1,7 +1,7 @@
 {
   "name": "loopy",
   "version": "0.1.0",
-  "description": "A small skill system for counterexample-driven improvement.",
+  "description": "A small skill system for counterexample-driven improvement and code-structure recomposition.",
   "author": {
     "name": "phykn",
     "url": "https://github.com/phykn"
@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "loopy",
     "shortDescription": "Improve work through counterexamples",
-    "longDescription": "Use Loopy to define done, find the strongest useful counterexample, make the smallest improvement, check the result, and repeat until the target is done, blocked, or out of scope.",
+    "longDescription": "Use Loopy to define done, find the strongest useful counterexample, make the smallest improvement, check the result, and repeat until the target is done, blocked, or out of scope. Use loopy-compose to apply the loop to code-structure recomposition.",
     "developerName": "phykn",
     "category": "Productivity",
     "capabilities": [
@@ -29,7 +29,8 @@
     ],
     "defaultPrompt": [
       "Use loopy to improve this through counterexamples.",
-      "Use loopy to keep iterating until this target is done, blocked, or out of scope."
+      "Use loopy to keep iterating until this target is done, blocked, or out of scope.",
+      "Use loopy-compose to recompose code structure through the loopy improvement loop."
     ],
     "websiteURL": "https://github.com/phykn/loopy",
     "brandColor": "#2563EB",

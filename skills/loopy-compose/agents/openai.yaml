@@ -1,0 +1,5 @@
+# OpenAI interface metadata only. Role behavior lives in SKILL.md.
+interface:
+  display_name: "Loopy Compose"
+  short_description: "Recompose code structure around concepts"
+  default_prompt: "Use $loopy-compose to recompose this code structure around clearer concept boundaries while preserving behavior."

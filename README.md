@@ -28,27 +28,29 @@ Restart Codex after installation.
 | Skill | Use when |
 |---|---|
 | `loopy` | Running the simple counterexample loop until the current target is done, blocked, or out of scope |
+| `loopy-compose` | Recomposing fragmented code structure around clearer concept boundaries while preserving behavior |
 
-`loopy` is the only runtime skill. It handles claims, implementation, and review as ordinary moments inside the same loop.
+`loopy` is the core loop. `loopy-compose` is the first application skill: it applies the same loop to code structure.
 
 ## Examples
 
 Good requests:
 
 ```text
-Use loopy to improve this TRPG narration prompt until the biggest failure cases are handled.
+Use loopy to improve this onboarding email until the biggest confusion cases are handled.
 Use loopy to fix this bug by finding the strongest counterexample, changing one thing, and checking it.
 Use loopy to test this design rule before I build from it.
 Use loopy to check whether this output is actually done.
+Use loopy-compose to recompose this messy helpers folder around the concepts it actually owns.
 ```
 
 Loop trace:
 
 ```text
-Target: narration should be vivid without deciding player actions
-Counterexample: the output says the player feels afraid and backs away
-Change: forbid deciding player feelings or actions
-Check: sample output preserves scene pressure while leaving the choice open
+Target: onboarding email should help new users finish setup without extra support
+Counterexample: the email says "configure your workspace" but never names the first action
+Change: replace the vague instruction with the exact first setup step
+Check: a new user can identify what to click first without reading other docs
 Decision: repeat
 ```
 
