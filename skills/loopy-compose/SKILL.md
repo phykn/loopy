@@ -19,6 +19,7 @@ Target -> Counterexample -> Change -> Check -> Decision -> Next
 - Preserve concepts, not historical names.
 - Change one conceptual boundary per loop.
 - Do not create abstractions for imagined future needs.
+- Avoid vague boundary names such as `utils`, `helpers`, `common`, `misc`, `core`, `manager`, or `service` unless the project already gives that name a strict responsibility.
 
 ## Slot Mapping
 
@@ -45,9 +46,10 @@ Prefer the strongest issue in this order:
 2. Map current concepts before moving them. Identify what each file or folder claims to own, what it actually owns, and which responsibilities are scattered or obsolete.
 3. Pick one boundary to recompose: create, delete, rename, split, merge, move, or update only what that boundary requires.
 4. Update imports, call sites, tests, docs, and examples affected by that boundary.
-5. Remove dead glue created by the change: unused imports, stale exports, duplicate helpers, obsolete wrappers, empty folders, and old names that keep the previous structure alive.
-6. Run the behavior check and a structure check. Reject the change if behavior is not preserved or dependency flow becomes harder to understand.
-7. Repeat only if another important in-scope structure counterexample remains.
+5. If a moved or renamed module is public, preserve compatibility or state the migration explicitly.
+6. Remove dead glue created by the change: unused imports, stale exports, duplicate helpers, obsolete wrappers, empty folders, and old names that keep the previous structure alive.
+7. Run the behavior check and a structure check. Reject the change if behavior is not preserved, a circular dependency appears, or dependency flow becomes harder to understand. When the project already separates domain, UI, adapters, infrastructure, or glue, do not move logic away from the concept that owns it.
+8. Repeat only if another important in-scope structure counterexample remains.
 
 ## Boundary Checks
 

@@ -44,13 +44,23 @@ Use loopy to check whether this output is actually done.
 Use loopy-compose to recompose this messy helpers folder around the concepts it actually owns.
 ```
 
-Loop trace:
+Loopy trace:
 
 ```text
 Target: onboarding email should help new users finish setup without extra support
 Counterexample: the email says "configure your workspace" but never names the first action
 Change: replace the vague instruction with the exact first setup step
 Check: a new user can identify what to click first without reading other docs
+Decision: repeat
+```
+
+Loopy Compose trace:
+
+```text
+Target: helpers folder should be recomposed around real responsibilities
+Counterexample: auth parsing and invoice validation both live in helpers/index.ts
+Change: move invoice validation into billing_rules and update imports
+Check: tests pass, imports are clearer, helpers no longer owns billing behavior
 Decision: repeat
 ```
 
