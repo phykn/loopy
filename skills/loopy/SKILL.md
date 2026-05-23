@@ -16,7 +16,7 @@ Define done -> Find a counterexample -> Improve -> Check -> Repeat
 1. Define done.
    - State the smallest observable success condition for the user's request.
    - For code, include the behavior and verification that would prove it.
-   - For writing, prompts, narration, or design, name the quality bar and the failure it must avoid.
+   - For documents, prompts, workflows, or review, name the quality bar and the failure it must avoid.
    - If "done" is genuinely ambiguous and a wrong guess would be costly, ask one question.
 
 2. Find the strongest counterexample.
