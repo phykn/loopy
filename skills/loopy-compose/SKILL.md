@@ -27,7 +27,7 @@ Use loopy-compose when the strongest problem is structural fragmentation: the cu
 
 If the main problem is broken behavior, fix or lock that behavior first. If the main problem is a new feature, implement the feature first, then compose only if the new code creates or exposes a structural counterexample.
 
-Do not use loopy-compose merely because code could be reorganized.
+Do not use loopy-compose merely because code could be reorganized; use it only when the current structure actively causes confusion, scatters responsibility, misplaces concepts, or makes future changes unsafe.
 
 ## Slot Mapping
 
