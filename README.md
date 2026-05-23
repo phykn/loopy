@@ -6,7 +6,7 @@ Loopy is a Claude Code and Codex plugin for counterexample-driven improvement.
 Define done -> Find a counterexample -> Improve -> Check -> Repeat
 ```
 
-Use Loopy when a request benefits from repeated self-correction: coding, prompts, writing, design, narration, or review. Loopy works on one useful counterexample at a time and stops when the target is done, blocked, or out of scope.
+Use Loopy when a request benefits from repeated self-correction: coding, prompts, documents, workflows, or review. Loopy works on one useful counterexample at a time and stops when the target is done, blocked, or out of scope.
 
 ## Install
 
@@ -39,7 +39,7 @@ Good requests:
 ```text
 Use loopy to improve this onboarding email until the biggest confusion cases are handled.
 Use loopy to fix this bug by finding the strongest counterexample, changing one thing, and checking it.
-Use loopy to test this design rule before I build from it.
+Use loopy to test this workflow rule before I build from it.
 Use loopy to check whether this output is actually done.
 Use loopy-compose to recompose this messy helpers folder around the concepts it actually owns.
 ```
