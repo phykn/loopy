@@ -13,19 +13,31 @@ Loopy Theory treats the current project as imperfect observations. The goal is n
 Observe -> Infer -> Challenge -> Refine -> Imply -> Decide -> Route
 ```
 
-## Agent Policy
+## Done Contract
 
-Before analyzing project evidence, ask the user once whether to use a clean-context critic for this loopy-theory run. Ask in the user's language.
+Before analyzing project evidence, establish a Done Contract. If a goal-setting skill such as `/gole` is available, use it to lock the contract.
 
-Keep the prompt short: recommend one policy, give one short reason, and ask whether to use it for the rest of this run.
+The contract must name:
 
-Choose from:
+- `Target`: what the theory should explain or decide;
+- `Non-goals`: implementation changes or claims outside the current evidence;
+- `Checks`: evidence criteria, gap checks, and final review criteria;
+- `Counterexamples`: gaps that would force another loop;
+- `Stop condition`: what proves no important in-scope gap remains.
+
+If no goal-setting skill is available, define the same contract directly. Keep it compact, but do not start theorizing until the contract is clear enough to test.
+
+## Verification Policy
+
+Before analyzing project evidence, choose the verification path needed to satisfy the Done Contract and Done Gate. Do not ask by default.
+
+Use:
 
 - `none`: use only when the user wants a quick exploratory theory and does not need final confidence.
 - `final clean critic`: default for most theory runs, because the Done Gate depends on judgment rather than an external check.
 - `per-major-revision clean critic`: use for broad or high-stakes theory work where each major theory revision needs independent review.
 
-After the user chooses, keep that policy for the rest of the loop unless the scope changes.
+Ask only when using a critic would add substantial cost or the user asked for a quick or lightweight pass.
 
 ## Core Rules
 

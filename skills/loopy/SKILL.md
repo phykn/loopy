@@ -11,19 +11,31 @@ Use this skill to keep work moving through a small counterexample loop.
 Define done -> Find a counterexample -> Improve -> Check -> Repeat
 ```
 
-## Agent Policy
+## Done Contract
 
-Before analyzing the target, ask the user once whether to use a clean-context critic for this loopy run. Ask in the user's language.
+Before the first loop, establish a Done Contract. If a goal-setting skill such as `/gole` is available, use it to lock the contract.
 
-Keep the prompt short: recommend one policy, give one short reason, and ask whether to use it for the rest of this run.
+The contract must name:
 
-Choose from:
+- `Target`: what must become true;
+- `Non-goals`: what should not be solved in this run;
+- `Checks`: tests, examples, review criteria, or comparisons that can prove progress;
+- `Counterexamples`: what would force another loop;
+- `Stop condition`: what proves no important in-scope counterexample remains.
+
+If no goal-setting skill is available, define the same contract directly. Keep it compact, but do not start improving until the contract is clear enough to test.
+
+## Verification Policy
+
+Before analyzing the target, choose the verification path needed to satisfy the Done Contract and Done Gate. Do not ask by default.
+
+Use:
 
 - `none`: use when tests, typechecks, builds, snapshots, concrete examples, or direct comparisons can decide the Done Gate.
 - `final clean critic`: use when the Done Gate depends on qualitative judgment, final confidence, review, design, prompt, or document quality.
 - `per-major-revision clean critic`: use only when broad or high-stakes judgment could change after each major claim or direction change.
 
-After the user chooses, keep that policy for the rest of the loop unless the scope changes.
+Ask only when using a critic would add substantial cost or the user asked for a quick or lightweight pass.
 
 ## Workflow
 

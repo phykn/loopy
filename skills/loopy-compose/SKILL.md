@@ -13,19 +13,31 @@ Loopy Compose is Loopy applied to code structure. It finds one structural counte
 Target -> Counterexample -> Change -> Check -> Decision -> Next
 ```
 
-## Agent Policy
+## Done Contract
 
-Before analyzing the target structure, ask the user once whether to use a clean-context critic for this loopy-compose run. Ask in the user's language.
+Before analyzing the target structure, establish a Done Contract. If a goal-setting skill such as `/gole` is available, use it to lock the contract.
 
-Keep the prompt short: recommend one policy, give one short reason, and ask whether to use it for the rest of this run.
+The contract must name:
 
-Choose from:
+- `Target`: what the structure should make clearer;
+- `Non-goals`: behavior, topology, or unrelated cleanup that should not change;
+- `Checks`: behavior checks and structure checks;
+- `Counterexamples`: structure failures that would force another loop;
+- `Stop condition`: what proves no important in-scope structure counterexample remains.
+
+If no goal-setting skill is available, define the same contract directly. Keep it compact, but do not start recomposing until the contract is clear enough to test.
+
+## Verification Policy
+
+Before analyzing the target structure, choose the verification path needed to satisfy the Done Contract and Done Gate. Do not ask by default.
+
+Use:
 
 - `none`: use for small structure changes with strong behavior checks.
 - `final clean critic`: use for broad boundary recomposition, public surface changes, or unclear ownership decisions.
 - `per-major-revision clean critic`: use only when several major structure boundaries may be recomposed in one run.
 
-After the user chooses, keep that policy for the rest of the loop unless the scope changes.
+Ask only when using a critic would add substantial cost or the user asked for a quick or lightweight pass.
 
 ## Core Rules
 
