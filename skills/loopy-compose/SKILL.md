@@ -15,9 +15,9 @@ Target -> Counterexample -> Change -> Check -> Decision -> Next
 
 ## Agent Policy
 
-Before analyzing the target structure, ask the user once whether to use a clean-context critic for this loopy-compose run. Recommend one policy and give the reason.
+Before analyzing the target structure, ask the user once whether to use a clean-context critic for this loopy-compose run. Ask in the user's language.
 
-Use this compact prompt shape: `Agent Policy recommendation: <policy>. Reason: <reason>. Use this for the rest of this run?`
+Keep the prompt short: recommend one policy, give one short reason, and ask whether to use it for the rest of this run.
 
 Choose from:
 

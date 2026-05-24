@@ -15,9 +15,9 @@ Observe -> Infer -> Challenge -> Refine -> Imply -> Decide -> Route
 
 ## Agent Policy
 
-Before analyzing project evidence, ask the user once whether to use a clean-context critic for this loopy-theory run. Recommend one policy and give the reason.
+Before analyzing project evidence, ask the user once whether to use a clean-context critic for this loopy-theory run. Ask in the user's language.
 
-Use this compact prompt shape: `Agent Policy recommendation: <policy>. Reason: <reason>. Use this for the rest of this run?`
+Keep the prompt short: recommend one policy, give one short reason, and ask whether to use it for the rest of this run.
 
 Choose from:
 
