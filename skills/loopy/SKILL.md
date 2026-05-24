@@ -11,6 +11,20 @@ Use this skill to keep work moving through a small counterexample loop.
 Define done -> Find a counterexample -> Improve -> Check -> Repeat
 ```
 
+## Agent Policy
+
+Before analyzing the target, ask the user once whether to use a clean-context critic for this loopy run. Recommend one policy and give the reason.
+
+Use this compact prompt shape: `Agent Policy recommendation: <policy>. Reason: <reason>. Use this for the rest of this run?`
+
+Choose from:
+
+- `none`: use when tests, typechecks, builds, snapshots, concrete examples, or direct comparisons can decide the Done Gate.
+- `final clean critic`: use when the Done Gate depends on qualitative judgment, final confidence, review, design, prompt, or document quality.
+- `per-major-revision clean critic`: use only when broad or high-stakes judgment could change after each major claim or direction change.
+
+After the user chooses, keep that policy for the rest of the loop unless the scope changes.
+
 ## Workflow
 
 1. Define done.

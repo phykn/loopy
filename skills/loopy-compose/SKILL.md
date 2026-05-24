@@ -13,6 +13,20 @@ Loopy Compose is Loopy applied to code structure. It finds one structural counte
 Target -> Counterexample -> Change -> Check -> Decision -> Next
 ```
 
+## Agent Policy
+
+Before analyzing the target structure, ask the user once whether to use a clean-context critic for this loopy-compose run. Recommend one policy and give the reason.
+
+Use this compact prompt shape: `Agent Policy recommendation: <policy>. Reason: <reason>. Use this for the rest of this run?`
+
+Choose from:
+
+- `none`: use for small structure changes with strong behavior checks.
+- `final clean critic`: use for broad boundary recomposition, public surface changes, or unclear ownership decisions.
+- `per-major-revision clean critic`: use only when several major structure boundaries may be recomposed in one run.
+
+After the user chooses, keep that policy for the rest of the loop unless the scope changes.
+
 ## Core Rules
 
 - Preserve behavior, not topology, except where topology is the public API.

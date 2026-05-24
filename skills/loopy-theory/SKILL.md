@@ -13,6 +13,20 @@ Loopy Theory treats the current project as imperfect observations. The goal is n
 Observe -> Infer -> Challenge -> Refine -> Imply -> Decide -> Route
 ```
 
+## Agent Policy
+
+Before analyzing project evidence, ask the user once whether to use a clean-context critic for this loopy-theory run. Recommend one policy and give the reason.
+
+Use this compact prompt shape: `Agent Policy recommendation: <policy>. Reason: <reason>. Use this for the rest of this run?`
+
+Choose from:
+
+- `none`: use only when the user wants a quick exploratory theory and does not need final confidence.
+- `final clean critic`: default for most theory runs, because the Done Gate depends on judgment rather than an external check.
+- `per-major-revision clean critic`: use for broad or high-stakes theory work where each major theory revision needs independent review.
+
+After the user chooses, keep that policy for the rest of the loop unless the scope changes.
+
 ## Core Rules
 
 - Treat implementation, docs, UX, naming, removed or deprecated structure when visible, and repeated choices as evidence.
