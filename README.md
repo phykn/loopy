@@ -6,7 +6,7 @@ Loopy is a Claude Code and Codex plugin for counterexample-driven improvement.
 Define done -> Find a counterexample -> Improve -> Check -> Repeat
 ```
 
-Use Loopy when a request benefits from repeated self-correction: coding, prompts, documents, workflows, or review. Loopy works on one useful counterexample at a time and stops when the target is done, blocked, or out of scope.
+Use Loopy when a request benefits from repeated self-correction: coding, prompts, documents, workflows, or review. Loopy works on one useful counterexample at a time and, by default, keeps looping until all important in-scope counterexamples are resolved, blocked, or out of scope.
 
 ## Install
 
@@ -27,10 +27,11 @@ Restart Codex after installation.
 
 | Skill | Use when |
 |---|---|
-| `loopy` | Running the simple counterexample loop until the current target is done, blocked, or out of scope |
+| `loopy` | Running the simple counterexample loop until all important in-scope counterexamples are resolved, blocked, or out of scope |
 | `loopy-compose` | Recomposing fragmented code structure around clearer concept boundaries while preserving behavior |
+| `loopy-theory` | Inferring an evidence-based ideal theory from a project's current traces and opening improvement candidates |
 
-`loopy` is the core loop. `loopy-compose` is the first application skill: it applies the same loop to code structure.
+`loopy` is the core loop. Application skills specialize the same loop for a specific target: `loopy-compose` for code structure and `loopy-theory` for evidence-based project theory.
 
 ## Examples
 
@@ -42,6 +43,7 @@ Use loopy to fix this bug by finding the strongest counterexample, changing one 
 Use loopy to test this workflow rule before I build from it.
 Use loopy to check whether this output is actually done.
 Use loopy-compose to recompose this messy helpers folder around the concepts it actually owns.
+Use loopy-theory to infer the ideal theory suggested by this project's current evidence and identify next improvement candidates.
 ```
 
 Loopy trace:
@@ -62,6 +64,18 @@ Counterexample: auth parsing and invoice validation both live in helpers/index.t
 Change: move invoice validation into billing_rules and update imports
 Check: tests pass, imports are clearer, helpers no longer owns billing behavior
 Decision: repeat
+```
+
+Loopy Theory trace:
+
+```text
+Ideal Theory: setup should be a guided workflow, not a configuration checklist
+Evidence: onboarding screens remove optional choices, docs keep naming the first action, support notes repeat the same setup confusion
+Strongest Gap: settings still expose three equivalent setup paths before the first success
+Refined Theory: setup should preserve one obvious first path until the user reaches a working state
+Next Moves: simplify the first-run setup path, move advanced configuration after success
+Decision: Open improvement candidates
+Next Route: implementation task
 ```
 
 ## When Not To Use Loopy

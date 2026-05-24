@@ -2,4 +2,4 @@
 interface:
   display_name: "Loopy"
   short_description: "Improve work through counterexamples"
-  default_prompt: "Use $loopy to improve this through counterexamples until it is done, blocked, or out of scope."
+  default_prompt: "Use $loopy to improve this until all important in-scope counterexamples are resolved, blocked, or out of scope."

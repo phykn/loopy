@@ -1,6 +1,6 @@
 ---
 name: loopy
-description: Use when a request benefits from repeated self-correction, counterexample-driven improvement, or continuing until the current target is done, blocked, or out of scope.
+description: Use when a request benefits from repeated self-correction, counterexample-driven improvement, or continuing until all important in-scope counterexamples are resolved, blocked, or out of scope.
 ---
 
 # Loopy
@@ -40,6 +40,18 @@ Define done -> Find a counterexample -> Improve -> Check -> Repeat
    - `blocked`: the next check or change needs missing information, access, or a user decision.
    - `out_of_scope`: the next counterexample belongs outside the current request.
 
+## Done Gate
+
+Do not stop just because one loop improved something.
+
+By default, continue looping until all important in-scope counterexamples are resolved, blocked, or out of scope. The user does not need to specify a loop count.
+
+Before `done`, actively look for the next strongest in-scope counterexample. If one exists, repeat. If none exists, state the last counterexample considered and why it no longer changes the next action.
+
+Resolve counterexamples one at a time. Do not collect an exhaustive checklist up front, but keep searching for the next strongest counterexample after each check.
+
+If the user gives a loop count, treat it as a maximum budget, not a required number of changes. If no count is given, keep looping while important in-scope counterexamples remain.
+
 ## Loop Discipline
 
 - Keep one active target.
@@ -47,7 +59,7 @@ Define done -> Find a counterexample -> Improve -> Check -> Repeat
 - Prefer concrete evidence over abstract concern.
 - Do not turn the loop into an exhaustive checklist.
 - Continue autonomously while the next useful cycle is clear and in scope.
-- Stop when further improvement is lower value than the risk or cost of changing more.
+- Stop only when the Done Gate passes, or when further improvement is lower value than the risk or cost of changing more.
 
 ## Application Skills
 

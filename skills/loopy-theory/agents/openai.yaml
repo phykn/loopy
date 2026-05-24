@@ -1,0 +1,4 @@
+interface:
+  display_name: "Loopy Theory"
+  short_description: "Infer project theory from evidence"
+  default_prompt: "Use $loopy-theory to infer the ideal theory suggested by this project's current evidence and identify next improvement candidates."
