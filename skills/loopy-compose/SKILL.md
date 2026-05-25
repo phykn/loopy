@@ -15,7 +15,7 @@ Target -> Counterexample -> Change -> Check -> Decision -> Next
 
 ## Done Contract
 
-Before analyzing the target structure, establish a Done Contract. If a goal-setting skill such as `/gole` is available, use it to lock the contract.
+Before analyzing the target structure, establish a Done Contract. If a goal-setting skill such as `/goal` is available, use it to lock the contract.
 
 The contract must name:
 

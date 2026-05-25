@@ -15,7 +15,7 @@ Observe -> Infer -> Challenge -> Refine -> Imply -> Decide -> Route
 
 ## Done Contract
 
-Before analyzing project evidence, establish a Done Contract. If a goal-setting skill such as `/gole` is available, use it to lock the contract.
+Before analyzing project evidence, establish a Done Contract. If a goal-setting skill such as `/goal` is available, use it to lock the contract.
 
 The contract must name:
 
