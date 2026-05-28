@@ -83,7 +83,8 @@ Prefer the strongest issue in this order:
 5. If a moved or renamed module is public, preserve compatibility or state the migration explicitly.
 6. Remove dead glue created by the change: unused imports, stale exports, duplicate helpers, obsolete wrappers, empty folders, and old names that keep the previous structure alive.
 7. Run the behavior check and a structure check. Reject the change if behavior is not preserved, a circular dependency appears, or dependency flow becomes harder to understand. When the project already separates domain, UI, adapters, infrastructure, or glue, do not move logic away from the concept that owns it.
-8. Apply the Loopy Done Gate before stopping: actively look for the next strongest in-scope structure counterexample, and repeat if one exists.
+8. Before `done`, name the chosen boundary, one competing in-scope boundary, and the strongest remaining structural counterexample. Use an existing plausible owner, caller pattern, responsibility split, or naming pressure; do not invent a competing boundary just to keep looping.
+9. Apply the Loopy Done Gate before stopping: if the competing boundary owns the concept more honestly, switch to it. If both boundaries own different parts of the concept, split or rename the boundary. If the remaining counterexample would change the boundary, repeat. If it would not, state why the chosen boundary is still clearer.
 
 ## Boundary Checks
 

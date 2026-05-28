@@ -10,7 +10,7 @@ Use this skill to apply the Loopy counterexample loop to project theory.
 Loopy Theory treats the current project as imperfect observations. The goal is not to guess prior motives or justify the current implementation. The goal is to infer the simpler and more coherent principle that the current evidence most strongly suggests, then find where the project falls short of that principle.
 
 ```text
-Observe -> Infer -> Challenge -> Refine -> Imply -> Decide -> Route
+Observe -> Infer -> Recheck -> Challenge -> Refine -> Imply -> Decide -> Route
 ```
 
 ## Done Contract
@@ -76,30 +76,37 @@ Do not use loopy-theory for ordinary bug fixes, feature work, or behavior-preser
    - State one ideal theory in one sentence.
    - Phrase it as what the current evidence most strongly suggests, not as a guess about prior intent.
 
-3. Challenge.
+3. Recheck.
+   - Do not finish from the first plausible theory.
+   - Before deciding, produce at least the current best theory, one competing in-scope theory, and the strongest in-scope gap.
+   - If the competing theory explains the evidence better, replace the theory.
+   - If both theories explain different parts of the evidence, try to compress them into a smaller shared principle.
+   - If compression makes the theory vague or loses evidence, keep the stronger theory and explain the rejected alternative.
+
+4. Challenge.
    - Find the strongest gap between the theory and the current project.
    - Prefer gaps in this order: user-visible contradiction, repeated implementation friction, misleading concept boundary, documentation mismatch, then aesthetic or naming weakness.
 
-4. Refine.
+5. Refine.
    - If the gap weakens the theory, revise the theory.
    - If the gap shows the implementation falls short, keep the theory and record an improvement candidate.
    - Change one theory point per loop.
 
-5. Imply.
+6. Imply.
    - Name what the theory would make easier, simpler, or more coherent.
    - Name what the theory would reject as unnecessary, misleading, or out of scope.
 
-6. Decide.
+7. Decide.
    - `Keep theory`: the current theory explains the strongest evidence and survives the strongest gap.
    - `Refine theory`: the strongest gap changes the theory itself.
    - `Open improvement candidates`: the theory is stable enough to guide follow-up work.
 
-7. Route.
+8. Route.
    - `none`: no immediate follow-up is needed.
    - `loopy-compose`: the next work is recomposing structural boundaries while preserving behavior.
    - `implementation task`: the next work is a concrete code, prompt, documentation, UX, or test change.
 
-8. Apply the Loopy Done Gate before stopping.
+9. Apply the Loopy Done Gate before stopping.
    - Do not collect every possible gap.
    - After the strongest gap, check only whether one more in-scope gap would change the theory, candidates, or route.
    - Repeat only if that gap changes the theory or opens a materially different improvement candidate.
