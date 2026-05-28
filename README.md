@@ -53,7 +53,7 @@ Target: onboarding email should help new users finish setup without extra suppor
 Counterexample: the email says "configure your workspace" but never names the first action
 Change: replace the vague instruction with the exact first setup step
 Check: a new user can identify what to click first without reading other docs
-Recheck: the next strongest confusion case does not change the next action
+Recheck: another important confusion case remains in scope
 Decision: repeat
 ```
 
@@ -64,7 +64,7 @@ Target: helpers folder should be recomposed around real responsibilities
 Counterexample: auth parsing and invoice validation both live in helpers/index.ts
 Change: move invoice validation into billing_rules and update imports
 Check: tests pass, imports are clearer, helpers no longer owns billing behavior
-Recheck: a competing boundary would not own invoice validation more honestly
+Recheck: auth parsing still keeps helpers as an unclear boundary
 Decision: repeat
 ```
 

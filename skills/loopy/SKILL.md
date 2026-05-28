@@ -74,7 +74,7 @@ By default, continue looping until all important in-scope counterexamples are re
 
 Before `done`, actively look for the next strongest in-scope counterexample. If one exists, repeat. If none exists, state the last counterexample considered and why it no longer changes the next action.
 
-Before stopping, force one recheck: name one competing answer or counterexample that could change the result, then test whether it actually does.
+Before `done`, force one recheck: name one competing answer or counterexample that could change the result, then test whether it actually does.
 
 Resolve counterexamples one at a time. Do not collect an exhaustive checklist up front, but keep searching for the next strongest counterexample after each check.
 

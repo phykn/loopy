@@ -78,7 +78,7 @@ Do not use loopy-theory for ordinary bug fixes, feature work, or behavior-preser
 
 3. Recheck.
    - Do not finish from the first plausible theory.
-   - Before deciding, produce at least the current best theory, one competing in-scope theory, and the strongest in-scope gap.
+   - Before deciding, produce at least the current best theory, one competing in-scope theory, and one gap that could overturn the theory.
    - If the competing theory explains the evidence better, replace the theory.
    - If both theories explain different parts of the evidence, try to compress them into a smaller shared principle.
    - If compression makes the theory vague or loses evidence, keep the stronger theory and explain the rejected alternative.
