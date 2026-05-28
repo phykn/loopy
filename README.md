@@ -53,6 +53,7 @@ Target: onboarding email should help new users finish setup without extra suppor
 Counterexample: the email says "configure your workspace" but never names the first action
 Change: replace the vague instruction with the exact first setup step
 Check: a new user can identify what to click first without reading other docs
+Recheck: the next strongest confusion case does not change the next action
 Decision: repeat
 ```
 
@@ -63,6 +64,7 @@ Target: helpers folder should be recomposed around real responsibilities
 Counterexample: auth parsing and invoice validation both live in helpers/index.ts
 Change: move invoice validation into billing_rules and update imports
 Check: tests pass, imports are clearer, helpers no longer owns billing behavior
+Recheck: a competing boundary would not own invoice validation more honestly
 Decision: repeat
 ```
 
@@ -74,6 +76,7 @@ Evidence: onboarding screens remove optional choices, docs keep naming the first
 Strongest Gap: settings still expose three equivalent setup paths before the first success
 Refined Theory: setup should preserve one obvious first path until the user reaches a working state
 Next Moves: simplify the first-run setup path, move advanced configuration after success
+Recheck: the competing theory explains less of the repeated setup evidence
 Decision: Open improvement candidates
 Next Route: implementation task
 ```

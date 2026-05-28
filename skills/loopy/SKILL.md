@@ -111,3 +111,5 @@ Write `.loopy/loop.md` only when the user asks for durable loop state or the wor
 ## Output
 
 Keep normal responses concise. For multi-step work, show the current Target, Check, and Decision when it helps the user track progress. Include the compact state only when it clarifies progress, blockers, or why another cycle is needed.
+
+Keep the recheck visible only when it changes confidence, scope, or next action; otherwise summarize it in one short sentence.

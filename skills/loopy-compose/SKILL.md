@@ -116,6 +116,8 @@ Name the last important structural counterexample considered and why it no longe
 
 Keep normal responses concise. When useful, show:
 
+Keep the boundary recheck visible only when it changes confidence, boundary choice, or next action; otherwise summarize it in one short sentence.
+
 ```text
 Target:
 Counterexample:

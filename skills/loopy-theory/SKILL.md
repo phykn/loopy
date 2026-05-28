@@ -129,6 +129,8 @@ Name the last important gap considered and why it no longer changes the next act
 
 Keep normal responses concise. When useful, show:
 
+Keep the recheck visible only when it changes confidence, route, or next action; otherwise summarize it in one short sentence.
+
 ```text
 Ideal Theory:
 Evidence:
