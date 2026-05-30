@@ -13,9 +13,19 @@ Loopy Theory treats the current project as imperfect observations. The goal is n
 Observe -> Infer -> Recheck -> Challenge -> Refine -> Imply -> Decide -> Route
 ```
 
+## Invocation Contract
+
+When invoked, start by establishing a compact Done Contract before inferring a theory.
+
+Do not mark the theory stable or open final candidates until the theory Done Gate has run:
+
+1. name the strongest gap considered;
+2. name one competing in-scope theory or gap that could overturn the result;
+3. either refine, or explain why it no longer changes the theory, candidates, or next route.
+
 ## Done Contract
 
-Before analyzing project evidence, establish a Done Contract. If a goal-setting skill such as `/goal` is available, use it to lock the contract.
+Before analyzing project evidence, establish a Done Contract.
 
 The contract must name:
 
@@ -25,7 +35,7 @@ The contract must name:
 - `Counterexamples`: gaps that would force another loop;
 - `Stop condition`: what proves no important in-scope gap remains.
 
-If no goal-setting skill is available, define the same contract directly. Keep it compact, but do not start theorizing until the contract is clear enough to test.
+Keep it compact, but do not start theorizing until the contract is clear enough to test.
 
 ## Verification Policy
 
@@ -33,7 +43,7 @@ Before analyzing project evidence, choose the verification path needed to satisf
 
 Use:
 
-- `none`: use only when the user wants a quick exploratory theory and does not need final confidence.
+- `self-check only`: use only when the user wants a quick exploratory theory and does not need final critic confidence.
 - `final clean critic`: default for most theory runs, because the Done Gate depends on judgment rather than an external check.
 - `per-major-revision clean critic`: use for broad or high-stakes theory work where each major theory revision needs independent review.
 
@@ -46,6 +56,7 @@ Ask only when using a critic would add substantial cost or the user asked for a 
 - Do not invent prior motives.
 - Do not treat the current implementation as the ideal.
 - Prefer the smallest theory that explains the strongest evidence and guides the next change.
+- Inherit Loopy's one-strongest-counterexample discipline: address one gap per cycle, then search again.
 - Do not directly edit code or docs unless the user separately asks for implementation.
 
 ## Routing Boundary
@@ -127,9 +138,9 @@ Name the last important gap considered and why it no longer changes the next act
 
 ## Output
 
-Keep normal responses concise. When useful, show:
+Keep normal responses concise. Always include a one-line theory Done Gate/recheck summary before a final `done`. Expand it only when it changes confidence, route, or next action.
 
-Keep the recheck visible only when it changes confidence, route, or next action; otherwise summarize it in one short sentence.
+When useful, show:
 
 ```text
 Ideal Theory:

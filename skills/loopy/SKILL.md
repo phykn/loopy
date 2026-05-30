@@ -11,9 +11,19 @@ Use this skill to keep work moving through a small counterexample loop.
 Define done -> Find a counterexample -> Improve -> Check -> Repeat
 ```
 
+## Invocation Contract
+
+When invoked, start by establishing a compact Done Contract before making or recommending changes.
+
+Do not mark `done` until the Done Gate has run:
+
+1. name the strongest remaining in-scope counterexample;
+2. either repeat, or explain why that counterexample no longer changes the next action;
+3. run one competing-answer or competing-counterexample recheck.
+
 ## Done Contract
 
-Before the first loop, establish a Done Contract. If a goal-setting skill such as `/goal` is available, use it to lock the contract.
+Before the first loop, establish a Done Contract.
 
 The contract must name:
 
@@ -23,7 +33,7 @@ The contract must name:
 - `Counterexamples`: what would force another loop;
 - `Stop condition`: what proves no important in-scope counterexample remains.
 
-If no goal-setting skill is available, define the same contract directly. Keep it compact, but do not start improving until the contract is clear enough to test.
+Keep it compact, but do not start improving until the contract is clear enough to test.
 
 ## Verification Policy
 
@@ -31,7 +41,7 @@ Before analyzing the target, choose the verification path needed to satisfy the 
 
 Use:
 
-- `none`: use when tests, typechecks, builds, snapshots, concrete examples, or direct comparisons can decide the Done Gate.
+- `self-check only`: use when tests, typechecks, builds, snapshots, concrete examples, or direct comparisons can decide the Done Gate without a critic.
 - `final clean critic`: use when the Done Gate depends on qualitative judgment, final confidence, review, design, prompt, or document quality.
 - `per-major-revision clean critic`: use only when broad or high-stakes judgment could change after each major claim or direction change.
 
@@ -112,4 +122,4 @@ Write `.loopy/loop.md` only when the user asks for durable loop state or the wor
 
 Keep normal responses concise. For multi-step work, show the current Target, Check, and Decision when it helps the user track progress. Include the compact state only when it clarifies progress, blockers, or why another cycle is needed.
 
-Keep the recheck visible only when it changes confidence, scope, or next action; otherwise summarize it in one short sentence.
+Always include a one-line Done Gate/recheck summary before a final `done`. Expand it only when it changes confidence, scope, or next action.

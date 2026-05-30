@@ -13,9 +13,21 @@ Loopy Compose is Loopy applied to code structure. It finds one structural counte
 Target -> Counterexample -> Change -> Check -> Decision -> Next
 ```
 
+## Invocation Contract
+
+When invoked, start by establishing a compact Done Contract before recomposing structure.
+
+Do not mark `done` until the structure Done Gate has run:
+
+1. name the chosen boundary;
+2. name one real competing in-scope boundary;
+3. name the strongest remaining structural counterexample;
+4. test whether the competing boundary or counterexample changes the result;
+5. either repeat, or explain why the chosen boundary still owns the concept more clearly.
+
 ## Done Contract
 
-Before analyzing the target structure, establish a Done Contract. If a goal-setting skill such as `/goal` is available, use it to lock the contract.
+Before analyzing the target structure, establish a Done Contract.
 
 The contract must name:
 
@@ -25,7 +37,7 @@ The contract must name:
 - `Counterexamples`: structure failures that would force another loop;
 - `Stop condition`: what proves no important in-scope structure counterexample remains.
 
-If no goal-setting skill is available, define the same contract directly. Keep it compact, but do not start recomposing until the contract is clear enough to test.
+Keep it compact, but do not start recomposing until the contract is clear enough to test.
 
 ## Verification Policy
 
@@ -33,7 +45,7 @@ Before analyzing the target structure, choose the verification path needed to sa
 
 Use:
 
-- `none`: use for small structure changes with strong behavior checks.
+- `self-check only`: use for small structure changes with strong behavior checks and no critic.
 - `final clean critic`: use for broad boundary recomposition, public surface changes, or unclear ownership decisions.
 - `per-major-revision clean critic`: use only when several major structure boundaries may be recomposed in one run.
 
@@ -44,6 +56,7 @@ Ask only when using a critic would add substantial cost or the user asked for a 
 - Preserve behavior, not topology, except where topology is the public API.
 - Preserve concepts, not historical names.
 - Change one conceptual boundary per loop.
+- Inherit Loopy's one-strongest-counterexample discipline: address one structural counterexample per cycle, then search again.
 - Do not create abstractions for imagined future needs.
 - Avoid vague boundary names such as `utils`, `helpers`, `common`, `misc`, `core`, `manager`, or `service` unless the project already gives that name a strict responsibility.
 
@@ -84,7 +97,7 @@ Prefer the strongest issue in this order:
 6. Remove dead glue created by the change: unused imports, stale exports, duplicate helpers, obsolete wrappers, empty folders, and old names that keep the previous structure alive.
 7. Run the behavior check and a structure check. Reject the change if behavior is not preserved, a circular dependency appears, or dependency flow becomes harder to understand. When the project already separates domain, UI, adapters, infrastructure, or glue, do not move logic away from the concept that owns it.
 8. Before `done`, name the chosen boundary, one competing in-scope boundary, and the strongest remaining structural counterexample. Use an existing plausible owner, caller pattern, responsibility split, or naming pressure; do not invent a competing boundary just to keep looping.
-9. Apply the Loopy Done Gate before stopping: if the competing boundary owns the concept more honestly, switch to it. If both boundaries own different parts of the concept, split or rename the boundary. If the remaining counterexample would change the boundary, repeat. If it would not, state why the chosen boundary is still clearer.
+9. Apply the Loopy Done Gate before stopping: test whether the competing boundary or remaining counterexample changes the result. If the competing boundary owns the concept more honestly, switch to it. If both boundaries own different parts of the concept, split or rename the boundary. If the remaining counterexample would change the boundary, repeat. If it would not, state why the chosen boundary is still clearer.
 
 ## Boundary Checks
 
@@ -114,9 +127,9 @@ Name the last important structural counterexample considered and why it no longe
 
 ## Output
 
-Keep normal responses concise. When useful, show:
+Keep normal responses concise. Always include a one-line structure Done Gate/recheck summary before a final `done`. Expand it only when it changes confidence, boundary choice, or next action.
 
-Keep the boundary recheck visible only when it changes confidence, boundary choice, or next action; otherwise summarize it in one short sentence.
+When useful, show:
 
 ```text
 Target:
