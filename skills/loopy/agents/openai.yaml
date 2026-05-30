@@ -2,4 +2,4 @@
 interface:
   display_name: "Loopy"
   short_description: "Improve work through counterexamples"
-  default_prompt: "Use $loopy to improve this until all important in-scope counterexamples are resolved, blocked, or out of scope."
+  default_prompt: "Use $loopy. Start with a Done Contract, improve one counterexample at a time, and do not mark done until the Done Gate recheck passes."

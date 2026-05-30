@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "loopy",
     "shortDescription": "Improve work through counterexamples",
-    "longDescription": "Use Loopy to define done, find the strongest useful counterexample, make the smallest improvement, check the result, and keep looping until all important in-scope counterexamples are resolved, blocked, or out of scope. Use loopy-compose to apply the loop to code-structure recomposition. Use loopy-theory to infer an evidence-based ideal theory from a project's current traces and open improvement candidates.",
+    "longDescription": "Use Loopy to start with a Done Contract, find the strongest useful counterexample, make the smallest improvement, check the result, and keep looping until all important in-scope counterexamples are resolved, blocked, or out of scope. Do not mark done until the relevant Done Gate recheck passes. Use loopy-compose to apply the loop to code-structure recomposition. Use loopy-theory to infer an evidence-based ideal theory from a project's current traces and open improvement candidates.",
     "developerName": "phykn",
     "category": "Productivity",
     "capabilities": [
@@ -28,10 +28,10 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Use loopy to improve this through counterexamples.",
+      "Use loopy. Start with a Done Contract, improve one counterexample at a time, and do not mark done until the Done Gate recheck passes.",
       "Use loopy to keep iterating until all important in-scope counterexamples are resolved, blocked, or out of scope.",
-      "Use loopy-compose to recompose code structure through the loopy improvement loop.",
-      "Use loopy-theory to infer the ideal theory suggested by this project's current evidence and identify next improvement candidates."
+      "Use loopy-compose. Start with a Done Contract, preserve behavior, recompose one conceptual boundary at a time, and do not mark done until the boundary recheck passes.",
+      "Use loopy-theory. Start with a Done Contract, infer from project evidence only, and do not open final candidates until the theory recheck passes."
     ],
     "websiteURL": "https://github.com/phykn/loopy",
     "brandColor": "#2563EB",

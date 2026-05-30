@@ -2,4 +2,4 @@
 interface:
   display_name: "Loopy Compose"
   short_description: "Recompose code structure around concepts"
-  default_prompt: "Use $loopy-compose to recompose this code structure around clearer concept boundaries while preserving behavior."
+  default_prompt: "Use $loopy-compose. Start with a Done Contract, preserve behavior, recompose one conceptual boundary at a time, and do not mark done until the boundary recheck passes."
