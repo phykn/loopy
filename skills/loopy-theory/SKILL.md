@@ -29,7 +29,7 @@ Before analyzing project evidence, establish a Done Contract.
 
 The contract must name:
 
-- `Target`: what the theory should explain or decide;
+- `Target`: what the theory should explain or decide, and what evidence must not be lost;
 - `Non-goals`: implementation changes or claims outside the current evidence;
 - `Checks`: evidence criteria, gap checks, and final review criteria;
 - `Counterexamples`: gaps that would force another loop;
@@ -56,6 +56,7 @@ Ask only when using a critic would add substantial cost or the user asked for a 
 - Do not invent prior motives.
 - Do not treat the current implementation as the ideal.
 - Prefer the smallest theory that explains the strongest evidence and guides the next change.
+- Treat the theory as a working hypothesis; if refining it makes repeated evidence disappear without explanation, treat that refinement as a failure path.
 - Inherit Loopy's one-strongest-counterexample discipline: address one gap per cycle, then search again.
 - Do not directly edit code or docs unless the user separately asks for implementation.
 
@@ -93,6 +94,7 @@ Do not use loopy-theory for ordinary bug fixes, feature work, or behavior-preser
    - If the competing theory explains the evidence better, replace the theory.
    - If both theories explain different parts of the evidence, try to compress them into a smaller shared principle.
    - If compression makes the theory vague or loses evidence, keep the stronger theory and explain the rejected alternative.
+   - If a theory sounds coherent but loses evidence that made the project matter, treat it as a failure path.
 
 4. Challenge.
    - Find the strongest gap between the theory and the current project.
@@ -131,6 +133,7 @@ Before `done`, verify:
 - the theory does not claim hidden intent;
 - the strongest gap has been considered;
 - improvement candidates follow from the theory;
+- repeated evidence that made the project matter was preserved or its disappearance was explained;
 - no implementation change was made unless separately requested;
 - `Decision` and `Next Route` are separated.
 

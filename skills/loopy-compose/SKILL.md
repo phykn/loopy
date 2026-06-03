@@ -31,7 +31,7 @@ Before analyzing the target structure, establish a Done Contract.
 
 The contract must name:
 
-- `Target`: what the structure should make clearer;
+- `Target`: what the structure should make clearer and what concept or behavior must not be lost;
 - `Non-goals`: behavior, topology, or unrelated cleanup that should not change;
 - `Checks`: behavior checks and structure checks;
 - `Counterexamples`: structure failures that would force another loop;
@@ -55,6 +55,7 @@ Ask only when using a critic would add substantial cost or the user asked for a 
 
 - Preserve behavior, not topology, except where topology is the public API.
 - Preserve concepts, not historical names.
+- Treat the chosen boundary as a working hypothesis until the Done Gate survives a real competing boundary.
 - Change one conceptual boundary per loop.
 - Inherit Loopy's one-strongest-counterexample discipline: address one structural counterexample per cycle, then search again.
 - Do not create abstractions for imagined future needs.
@@ -77,6 +78,8 @@ Do not use loopy-compose merely because code could be reorganized; use it only w
 - `Decision`: `repeat`, `done`, `blocked`, or `out_of_scope`.
 
 ## Structural Counterexamples
+
+A structural direction is a failure path when it preserves old topology by losing the concept, preserves a name by lying about ownership, or preserves behavior while making future changes harder to judge.
 
 Prefer the strongest issue in this order:
 
@@ -116,6 +119,7 @@ Merge when separate boundaries always change together or represent the same conc
 Before `done`, verify:
 
 - existing behavior is preserved;
+- the concept or behavior that mattered is still visible;
 - scattered responsibility is reduced;
 - names match current responsibilities;
 - files and folders represent real concepts;

@@ -6,6 +6,8 @@ Loopy is a Claude Code and Codex plugin for counterexample-driven improvement.
 Define done -> Find a counterexample -> Improve -> Check -> Repeat
 ```
 
+Loopy treats done as a working hypothesis. The loop protects what made the request matter, turns ambiguity into something concrete enough to judge, and revises the target when a counterexample shows that it protects the wrong thing.
+
 Use Loopy when a request benefits from repeated self-correction: coding, prompts, documents, workflows, or review. Loopy works on one useful counterexample at a time and, by default, keeps looping until all important in-scope counterexamples are resolved, blocked, or out of scope.
 
 ## Install
@@ -87,7 +89,7 @@ Use a simpler workflow for:
 
 - trivial edits where the done condition is already obvious;
 - pure fact checking where source verification matters more than iterative improvement;
-- open brainstorming before there is any target to test;
+- open brainstorming before there is even a working target to test;
 - tasks where the user wants only one direct answer and no visible loop.
 
 ## Host Compatibility
