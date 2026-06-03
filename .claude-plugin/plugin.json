@@ -1,5 +1,5 @@
 {
   "name": "loopy",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A small skill system for counterexample-driven improvement, code-structure recomposition, and evidence-based project theory."
 }
