@@ -1,5 +1,12 @@
 {
   "name": "loopy",
-  "version": "0.1.2",
-  "description": "A small skill system for counterexample-driven improvement, code-structure recomposition, and evidence-based project theory."
+  "version": "0.2.0",
+  "description": "Evidence-driven autonomous completion for work whose outcome must be demonstrated, not merely asserted.",
+  "author": {
+    "name": "phykn",
+    "url": "https://github.com/phykn"
+  },
+  "homepage": "https://github.com/phykn/loopy",
+  "repository": "https://github.com/phykn/loopy",
+  "license": "MIT"
 }

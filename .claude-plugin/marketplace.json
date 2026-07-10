@@ -3,18 +3,17 @@
   "owner": {
     "name": "phykn"
   },
-  "metadata": {
-    "description": "The loopy plugin marketplace: single-plugin marketplace hosting loopy, loopy-compose, and loopy-theory."
-  },
+  "description": "Marketplace for the Loopy evidence-driven completion skill.",
   "plugins": [
     {
       "name": "loopy",
-      "description": "A small skill system for counterexample-driven improvement, code-structure recomposition, and evidence-based project theory.",
       "source": {
-        "source": "url",
-        "url": "https://github.com/phykn/loopy.git",
+        "source": "github",
+        "repo": "phykn/loopy",
         "ref": "main"
-      }
+      },
+      "description": "Evidence-driven autonomous completion for work whose outcome must be demonstrated, not merely asserted.",
+      "category": "productivity"
     }
   ]
 }

@@ -1,137 +1,222 @@
 ---
 name: loopy
-description: Use when a request benefits from repeated self-correction, counterexample-driven improvement, preserving what made the work matter, or continuing until all important in-scope counterexamples are resolved, blocked, or out of scope.
+description: >
+  Use for autonomous work where completion must be established by evidence,
+  important constraints must be preserved, or premature completion and
+  unnecessary revision are material risks. Do not use for trivial edits,
+  direct factual answers, open brainstorming, or low-risk tasks whose
+  completion and preservation are obvious from a single simple action.
 ---
 
 # Loopy
 
-Use this skill to keep work moving through a small counterexample loop while preserving what made the work matter.
+## Purpose
 
-```text
-Define done -> Find a counterexample -> Improve -> Check -> Repeat
-```
+Complete autonomous work only when the requested outcome is demonstrated by
+evidence, not merely asserted.
 
-## Invocation Contract
+Loopy does not require repetition. Revise only when material evidence shows that
+the result is not complete.
 
-When invoked, start by establishing a compact Done Contract before making or recommending changes.
+Be strict about completion and flexible about execution.
 
-Do not mark `done` until the Done Gate has run:
+## Completion Contract
 
-1. name the strongest remaining in-scope counterexample;
-2. either repeat, or explain why that counterexample no longer changes the next action;
-3. run one competing-answer or competing-counterexample recheck.
+Before execution, establish internally:
 
-## Done Contract
+- `Outcome`: the observable end state that must be achieved.
+- `Preserve`: existing behavior, invariants, meaning, interfaces, or assets that
+  must not be lost.
+- `Evidence`: the specific checks or artifacts that would demonstrate
+  completion, including their expected results.
+- `Scope`: the systems, files, decisions, and concerns that may be changed,
+  including explicit exclusions.
 
-Before the first loop, establish a Done Contract.
+Infer missing items conservatively from the request and available evidence.
 
-Treat the Done Contract as a working hypothesis, not a fixed declaration. It should name what must become true and what must not be lost. If a counterexample shows that the contract protects the wrong thing, revise the contract before improving the output.
+Do not invent, weaken, narrow, or redefine acceptance criteria merely to make
+completion easier. Do not redefine the contract after execution to match the
+result.
 
-The contract must name:
+The contract may be refined during execution when new evidence reveals a
+previously unknown requirement, dependency, constraint, or risk. Such refinement
+must follow the evidence and must not weaken an explicit acceptance criterion.
 
-- `Target`: what must become true and what important thing must not be lost;
-- `Non-goals`: what should not be solved or protected in this run;
-- `Checks`: tests, examples, review criteria, or comparisons that can prove progress;
-- `Counterexamples`: what would make the important thing disappear, make the result harder to judge, or force another loop;
-- `Stop condition`: what proves no important in-scope counterexample remains.
+Ask only the single highest-leverage question when a wrong inference would
+materially change the work or create substantial cost. Otherwise, proceed using
+the least-assumptive reasonable interpretation that fully satisfies the explicit
+request without expanding Scope.
 
-Keep it compact, but do not start improving until the contract is clear enough to test. If the request is ambiguous, form the best testable hypothesis available and continue. Ask only when a wrong guess would be costly.
+Keep the contract compact. Expose it only when it materially clarifies
+ambiguity, scope, or risk.
 
-## Verification Policy
+## Execution
 
-Before analyzing the target, choose the verification path needed to satisfy the Done Contract and Done Gate. Do not ask by default.
+Choose the shortest credible approach capable of satisfying the full Completion
+Contract.
 
-Use:
+Make the smallest coherent change set that resolves the active problem. Include
+all directly required edits, tests, references, call sites, documentation, and
+compatibility work.
 
-- `self-check only`: use when tests, typechecks, builds, snapshots, concrete examples, or direct comparisons can decide the Done Gate without a critic.
-- `final clean critic`: use when the Done Gate depends on qualitative judgment, final confidence, review, design, prompt, or document quality.
-- `per-major-revision clean critic`: use only when broad or high-stakes judgment could change after each major claim or direction change.
+Do not split one causal change into artificial iterations. Do not mix unrelated
+improvements into the same change set or expand Scope without authorization.
 
-Ask only when using a critic would add substantial cost or the user asked for a quick or lightweight pass.
+The agent controls its planning, exploration, implementation, delegation, and
+verification strategy.
 
-## Workflow
+## Verification
 
-1. Define done.
-   - State the smallest observable success condition for the user's request.
-   - For code, include the behavior and verification that would prove it.
-   - For documents, prompts, workflows, or review, name the quality bar, what must not be lost, and the failure it must avoid.
-   - If "done" is genuinely ambiguous and a wrong guess would be costly, ask one question.
+Run the evidence checks defined by the Completion Contract.
 
-2. Find the strongest counterexample.
-   - Look for the most useful way the target or current output could fail.
-   - Use the available context: existing code, tests, examples, tone, rules, user constraints, or concrete edge cases.
-   - Prefer counterexamples in this order: the original important thing disappeared, the result became harder to judge, the work drifted into a different task, user-visible failure, failed verification, violated constraint, then maintainability or style risk.
-   - Do not collect every possible issue. Pick the counterexample that most changes the next action.
+For each material check, establish:
 
-3. Improve one thing.
-   - Make the smallest change that addresses that counterexample.
-   - If the counterexample proves the Done Contract protects the wrong thing, revise the contract before changing the output.
-   - If the counterexample proves the output is wrong, revise the output.
+- `Check`: what was inspected or executed.
+- `Expected`: the result required for completion.
+- `Observed`: the actual result.
 
-4. Check done.
-   - Apply the relevant check: test, typecheck, sample run, review criterion, example output, or direct comparison to the target.
-   - If the result fails, use the failure as the next counterexample.
+Prefer direct, independently inspectable evidence such as execution results,
+tests, reproducible examples, rendered artifacts, concrete comparisons, and
+authoritative sources over unsupported assertions.
 
-5. Decide.
-   - `repeat`: another important in-scope counterexample remains.
-   - `done`: the target is satisfied and no important in-scope counterexample remains. Before `done`, name the last important counterexample considered and why it no longer changes the next action.
-   - `blocked`: the next check or change needs missing information, access, or a user decision.
-   - `out_of_scope`: the next counterexample belongs outside the current request.
+For judgment-based work, use explicit acceptance criteria and concrete examples.
+Use independent qualitative review only when it could realistically overturn the
+result and direct evidence cannot decide the quality bar.
 
-## Failure Paths
+Absence of evidence is not evidence of success.
 
-A failure path is a direction that can be taken but should not be continued.
+When a baseline is available, distinguish pre-existing failures from regressions.
+Completion does not require fixing unrelated baseline failures, but the current
+work must not introduce new failures or materially worsen relevant existing ones.
 
-A direction is a failure path when it makes the original important thing disappear, makes the result harder to judge, or turns the work into a different task.
+If a preferred check cannot be run, use the strongest adequate substitute and
+state the resulting uncertainty.
 
-When a failure path appears, do not soften it as a minor concern. Name it, discard or repair it, and continue through a better path.
+A substitute is adequate only when it tests the same material property as the
+preferred check rather than providing merely indirect or correlated evidence. It
+must not weaken an explicit acceptance criterion.
 
-## Done Gate
+Treat an adequate substitute as a material check: execute it and establish its
+`Check`, `Expected`, and `Observed` results.
 
-Do not stop just because one loop improved something.
+Declare `blocked` when a required completion condition cannot be established and
+no adequate substitute exists.
 
-By default, continue looping until all important in-scope counterexamples are resolved, blocked, or out of scope. The user does not need to specify a loop count.
+## Challenge
 
-Before `done`, actively look for the next strongest in-scope counterexample. If one exists, repeat. If none exists, state the last counterexample considered and why it no longer changes the next action.
+Before completion, test the highest-impact reasonably testable counterexample,
+regression, or competing explanation that is relevant to the current Scope and
+proportional to the task's risk.
 
-Before `done`, force one recheck: name one competing answer or counterexample that could change the result, then test whether it actually does.
+The challenge must be specific enough to genuinely invalidate the result, weaken
+required evidence, expose a regression, or materially change the next action. Do
+not select a harmless, speculative, or merely stylistic challenge to satisfy the
+procedure.
 
-Before `done`, verify that what mattered at the start is still present in the result, or explain why it was allowed to disappear.
+If the challenge invalidates completion, choose `revise`, `blocked`, or
+`out_of_scope` according to the Decision criteria. Choose `revise` only when the
+issue is in Scope and correctable.
 
-Resolve counterexamples one at a time. Do not collect an exhaustive checklist up front, but keep searching for the next strongest counterexample after each check.
+Do not continue merely because another hypothetical improvement can be imagined.
 
-If the user gives a loop count, treat it as a maximum budget, not a required number of changes. If no count is given, keep looping while important in-scope counterexamples remain.
+## Decision
 
-## Loop Discipline
+Choose exactly one decision:
 
-- Keep one active target.
-- Work one counterexample per cycle.
-- Prefer concrete evidence over abstract concern.
-- Do not turn the loop into an exhaustive checklist.
-- Continue autonomously while the next useful cycle is clear and in scope.
-- Stop only when the Done Gate passes, or when further improvement is lower value than the risk or cost of changing more.
+- `done`: the Completion Gate passes.
+- `revise`: an in-Scope, correctable issue causes the Completion Gate to fail.
+- `blocked`: a required input, permission, capability, tool, access path, or
+  evidence source is unavailable, and no adequate substitute can establish
+  completion.
+- `out_of_scope`: completion requires changing an unauthorized or explicitly
+  excluded area.
 
-## Application Skills
+On `revise`, make the smallest coherent corrective change, then repeat
+Verification and Challenge.
 
-Other skills may use Loopy as their core loop by specializing what counts as the target, counterexample, change, and check. Application skills should add domain-specific evidence and stop rules, not replace the loop with a separate process.
+If revision repeatedly encounters the same unresolved condition because a
+required capability or evidence source is unavailable, classify it as `blocked`
+rather than continuing to revise.
 
-## Optional State
+Do not impose a minimum number of revisions.
 
-Use this compact state when it helps the user or a later turn resume:
+## Completion Gate
 
-```text
-Target:
-Counterexample:
-Change:
-Check:
-Decision:
-Next:
-```
+Declare `done` only when:
 
-Write `.loopy/loop.md` only when the user asks for durable loop state or the work clearly spans turns. Keep it short and update it instead of creating many process artifacts.
+- the Outcome has been achieved;
+- every required evidence check has produced the expected result, or an adequate
+  substitute has been executed, has produced its expected result, and its
+  adequacy has been explicitly justified;
+- Preserve constraints have been verified and no material regression was
+  introduced;
+- Scope has not been exceeded;
+- the tested material challenge does not invalidate the result; and
+- remaining uncertainty would not materially change the result or next action.
+
+Do not declare completion because the result merely appears improved.
+
+Once the Completion Gate passes, do not continue with changes that would be
+merely stylistic, speculative, unrelated, or lower-value than the risk and cost
+of further modification.
+
+## Optional Gates
+
+Apply an Optional Gate only when its conditions are material to the task.
+
+A single challenge may satisfy both the general Challenge and an Optional Gate
+when it meets all applicable requirements.
+
+## Optional Structure Gate
+
+Apply when the task reorganizes conceptual, modular, or architectural boundaries.
+
+In addition to the normal Completion Gate:
+
+- preserve externally observable behavior unless a behavior change is explicitly
+  requested;
+- identify the concept whose ownership or boundary is unclear;
+- clarify responsibility, lifecycle, naming, and dependency direction;
+- preserve public compatibility or make migration explicit;
+- avoid abstractions created only for hypothetical future needs;
+- compare the chosen boundary with one plausible competing boundary; and
+- reject the change if the competing boundary better matches the concept's
+  responsibility, lifecycle, dependency direction, and public interface.
+
+Treat file movement, import updates, caller changes, tests, documentation, and
+compatibility handling required by one boundary change as one coherent change
+set.
+
+## Optional Interpretation Gate
+
+Apply when the result depends materially on research, inference, interpretation,
+or explanatory claims.
+
+In addition to the normal Completion Gate:
+
+- separate observations from interpretations;
+- ground material claims in concrete evidence;
+- consider evidence quality, relevance, and recency when applicable;
+- test one credible competing explanation;
+- do not infer hidden intent without explicit evidence; and
+- state unresolved uncertainty where the available evidence cannot decide.
+
+Use project evidence as the primary basis for claims about the project itself.
+Use external authoritative evidence for claims about the outside world. Use both
+when the conclusion materially depends on both.
 
 ## Output
 
-Keep normal responses concise. For multi-step work, show the current Target, Check, and Decision when it helps the user track progress. Include the compact state only when it clarifies progress, blockers, or why another cycle is needed.
+Follow the user's requested output format first.
 
-Always include a one-line Done Gate/recheck summary before a final `done`. Expand it only when it changes confidence, scope, or next action.
+Otherwise report:
+
+- `Decision`
+- `Result`
+- `Verification`
+- `Remaining material risk`, if any
+
+Include Preserve, Scope, and Challenge details only when they materially affect
+confidence or the next action.
+
+Do not narrate private reasoning or internal iteration cycles.

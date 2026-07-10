@@ -1,0 +1,21 @@
+{
+  "name": "loopy",
+  "interface": {
+    "displayName": "Loopy"
+  },
+  "plugins": [
+    {
+      "name": "loopy",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/phykn/loopy.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

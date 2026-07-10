@@ -1,4 +1,0 @@
-interface:
-  display_name: "Loopy Theory"
-  short_description: "Infer project theory from evidence"
-  default_prompt: "Use $loopy-theory. Start with a Done Contract, infer from project evidence only, and do not open final candidates until the theory recheck passes."

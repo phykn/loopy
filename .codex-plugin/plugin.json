@@ -1,25 +1,26 @@
 {
   "name": "loopy",
-  "version": "0.1.2",
-  "description": "A small skill system for counterexample-driven improvement, code-structure recomposition, and evidence-based project theory.",
+  "version": "0.2.0",
+  "description": "Evidence-driven autonomous completion for work whose outcome must be demonstrated, not merely asserted.",
   "author": {
     "name": "phykn",
     "url": "https://github.com/phykn"
   },
   "homepage": "https://github.com/phykn/loopy",
   "repository": "https://github.com/phykn/loopy",
+  "license": "MIT",
   "keywords": [
     "skills",
-    "counterexamples",
-    "testing",
-    "refinement",
-    "workflow"
+    "autonomous-work",
+    "completion",
+    "evidence",
+    "verification"
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "loopy",
-    "shortDescription": "Improve work through counterexamples",
-    "longDescription": "Use Loopy to start with a Done Contract for what must become true and what must not be lost, find the strongest useful counterexample, make the smallest improvement, check the result, and keep looping until all important in-scope counterexamples are resolved, blocked, or out of scope. Treat the Done Contract as a working hypothesis, and do not mark done until the relevant Done Gate recheck passes. Use loopy-compose to apply the loop to code-structure recomposition. Use loopy-theory to infer an evidence-based ideal theory from a project's current traces and open improvement candidates.",
+    "displayName": "Loopy",
+    "shortDescription": "Complete autonomous work with evidence",
+    "longDescription": "Use Loopy when autonomous work must preserve important constraints and establish completion through explicit evidence, a material challenge, and exactly one final decision.",
     "developerName": "phykn",
     "category": "Productivity",
     "capabilities": [
@@ -28,10 +29,8 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Use loopy. Start with a Done Contract for what must become true and what must not be lost, improve one counterexample at a time, and do not mark done until the Done Gate recheck passes.",
-      "Use loopy to keep iterating until all important in-scope counterexamples are resolved, blocked, or out of scope.",
-      "Use loopy-compose. Start with a Done Contract, preserve behavior, recompose one conceptual boundary at a time, and do not mark done until the boundary recheck passes.",
-      "Use loopy-theory. Start with a Done Contract, infer from project evidence only, and do not open final candidates until the theory recheck passes."
+      "Use Loopy to complete this task and establish completion with evidence.",
+      "Use Loopy to preserve important constraints and challenge the result before declaring done."
     ],
     "websiteURL": "https://github.com/phykn/loopy",
     "brandColor": "#2563EB",
