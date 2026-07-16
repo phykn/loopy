@@ -9,6 +9,12 @@ Loopy establishes a compact Completion Contract, chooses the shortest credible
 execution path, verifies the result, tests one material challenge, and returns
 exactly one decision: `done`, `revise`, `blocked`, or `out_of_scope`.
 
+When the task definition, an existing artifact, or a proposed revision requires
+material judgment, Loopy also recovers the current Claim when one exists and uses
+Amount, Boundary, and Priority to select only evidence-backed changes. This
+judgment is internal: clear requested outcomes remain authoritative, and advisory
+or unsupported possibilities do not trigger revision.
+
 ## Install
 
 ### Codex and the ChatGPT desktop app

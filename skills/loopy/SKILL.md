@@ -15,6 +15,9 @@ description: >
 Complete autonomous work only when the requested outcome is demonstrated by
 evidence, not merely asserted.
 
+Use material judgment to decide what deserves action, then use completion
+evidence to decide when the work may stop.
+
 Loopy does not require repetition. Revise only when material evidence shows that
 the result is not complete.
 
@@ -25,6 +28,8 @@ Be strict about completion and flexible about execution.
 Before execution, establish internally:
 
 - `Outcome`: the observable end state that must be achieved.
+- `Claim`, when an existing artifact or current behavior is being interpreted or
+  changed: what it currently promises, means, or does.
 - `Preserve`: existing behavior, invariants, meaning, interfaces, or assets that
   must not be lost.
 - `Evidence`: the specific checks or artifacts that would demonstrate
@@ -33,6 +38,10 @@ Before execution, establish internally:
   including explicit exclusions.
 
 Infer missing items conservatively from the request and available evidence.
+
+Outcome describes the requested end state. Claim describes the current basis for
+judgment and is conditional; do not invent it from the desired Outcome. Preserve
+uncertainty when the available evidence cannot establish the current Claim.
 
 Do not invent, weaken, narrow, or redefine acceptance criteria merely to make
 completion easier. Do not redefine the contract after execution to match the
@@ -50,14 +59,61 @@ request without expanding Scope.
 Keep the contract compact. Expose it only when it materially clarifies
 ambiguity, scope, or risk.
 
+## Judgment
+
+Apply this section only when the task definition, an existing artifact, a
+supplied finding, or a proposed revision requires material judgment. Do not
+impose it on a clear requested outcome or an explicit mechanical action.
+
+Use these controls as internal lenses, not output headings:
+
+- `Amount`: add missing load-bearing context, constraints, guards, or evidence;
+  remove repetition, speculative options, and unrelated detail that obscure the
+  Outcome or Claim.
+- `Boundary`: join elements that change for the same reason; split distinct
+  responsibilities, claims, user purposes, or future work.
+- `Priority`: select what most changes completion or the next action; de-emphasize
+  style preferences, unchecked guesses, and work outside the current purpose.
+
+An explicit requested outcome establishes authority for the work and is not
+merely a defect candidate. It still cannot supply missing factual support or
+silently discard a Preserve constraint.
+
+Treat supplied findings and material issues identified by analysis,
+Verification, or Challenge as candidates rather than verdicts. Check the current
+artifact or behavior, prioritize supplied findings, and otherwise select the
+single strongest material candidate. Classify it internally:
+
+- `Accept`: concrete evidence shows that it materially blocks the Outcome,
+  supported Claim, or Completion Gate, and correction is within Scope.
+- `Advisory`: it may improve the result but does not block the current Outcome.
+- `Reject`: it is stale, already satisfied, unsupported, misreads the current
+  state, or conflicts with the contract.
+- `Out of scope`: concrete evidence supports the issue, but its correction
+  requires an unauthorized or explicitly excluded change.
+- `Insufficient evidence`: the available evidence cannot support a safe decision.
+
+Only Accept may cause an in-Scope revision. Advisory and Reject do not block
+completion. Out of scope causes `out_of_scope` only when its correction is
+required for the Outcome; otherwise report it without expanding Scope.
+Insufficient evidence causes `blocked` only when a required completion condition
+cannot be established; otherwise preserve and report the uncertainty. Do not
+change the artifact on behalf of a candidate that was not accepted.
+
+When the Outcome is read-only diagnosis or evaluation, state-changing actions
+are outside Scope unless the user explicitly changes that boundary.
+
 ## Execution
 
 Choose the shortest credible approach capable of satisfying the full Completion
 Contract.
 
-Make the smallest coherent change set that resolves the active problem. Include
-all directly required edits, tests, references, call sites, documentation, and
-compatibility work.
+For an existing artifact, inspect its current state before changing it. Do not
+edit from a quoted finding or stale description alone.
+
+Make the smallest coherent change set that resolves the active problem or an
+accepted candidate. Include all directly required edits, tests, references, call
+sites, documentation, and compatibility work.
 
 Do not split one causal change into artificial iterations. Do not mix unrelated
 improvements into the same change set or expand Scope without authorization.
@@ -78,6 +134,9 @@ For each material check, establish:
 Prefer direct, independently inspectable evidence such as execution results,
 tests, reproducible examples, rendered artifacts, concrete comparisons, and
 authoritative sources over unsupported assertions.
+
+For documents, skills, prompts, and explanations, re-read the supported Claim
+and the changed boundary, not only the edited passage.
 
 For judgment-based work, use explicit acceptance criteria and concrete examples.
 Use independent qualitative review only when it could realistically overturn the
@@ -108,10 +167,18 @@ Before completion, test the highest-impact reasonably testable counterexample,
 regression, or competing explanation that is relevant to the current Scope and
 proportional to the task's risk.
 
+When judgment is material, use Amount, Boundary, and Priority to select the one
+challenge that most changes completion or the next action.
+
 The challenge must be specific enough to genuinely invalidate the result, weaken
 required evidence, expose a regression, or materially change the next action. Do
 not select a harmless, speculative, or merely stylistic challenge to satisfy the
 procedure.
+
+When a challenge identifies a possible issue, treat that issue as a candidate
+under Judgment. It invalidates completion only when the candidate is accepted,
+its correction is required but out of scope, or the challenge otherwise
+disproves a required completion condition.
 
 If the challenge invalidates completion, choose `revise`, `blocked`, or
 `out_of_scope` according to the Decision criteria. Choose `revise` only when the
@@ -124,7 +191,8 @@ Do not continue merely because another hypothetical improvement can be imagined.
 Choose exactly one decision:
 
 - `done`: the Completion Gate passes.
-- `revise`: an in-Scope, correctable issue causes the Completion Gate to fail.
+- `revise`: an accepted, in-Scope, correctable issue causes the Completion Gate
+  to fail.
 - `blocked`: a required input, permission, capability, tool, access path, or
   evidence source is unavailable, and no adequate substitute can establish
   completion.
@@ -145,6 +213,8 @@ Do not impose a minimum number of revisions.
 Declare `done` only when:
 
 - the Outcome has been achieved;
+- when a Claim was material, it was preserved or changed only as authorized by
+  the Outcome;
 - every required evidence check has produced the expected result, or an adequate
   substitute has been executed, has produced its expected result, and its
   adequacy has been explicitly justified;
