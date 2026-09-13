@@ -7,13 +7,23 @@ risk.
 
 Loopy establishes a compact Completion Contract, chooses the shortest credible
 execution path, verifies the result, tests one material challenge, and returns
-exactly one decision: `done`, `revise`, `blocked`, or `out_of_scope`.
+exactly one decision at each assessment: `done`, `revise`, `blocked`, or
+`out_of_scope`. `revise` continues the work internally while an authorized
+correction remains possible.
 
 When the task definition, an existing artifact, or a proposed revision requires
 material judgment, Loopy also recovers the current Claim when one exists and uses
-Amount, Boundary, and Priority to select only evidence-backed changes. This
-judgment is internal: clear requested outcomes remain authoritative, and advisory
-or unsupported possibilities do not trigger revision.
+three internal questions: what is missing or excessive, what belongs together,
+and what matters next. Clear requested outcomes remain authoritative, and advisory
+or unsupported findings do not trigger revision. A read-only assessment can finish
+with supported findings; it does not require fixing the assessed artifact.
+
+Loopy uses the request, prior authorization, and current evidence to resolve
+routine gaps and continues authorized work through verification. Checks scale
+with the changed surface and risk; passing evidence is reused while its inputs
+and assumptions remain valid. A verification check can also supply the material
+challenge. The final report stays concise, with the result, evidence, and any
+material limitation.
 
 ## Install
 

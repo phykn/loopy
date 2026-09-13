@@ -15,13 +15,13 @@ description: >
 Complete autonomous work only when the requested outcome is demonstrated by
 evidence, not merely asserted.
 
-Use material judgment to decide what deserves action, then use completion
-evidence to decide when the work may stop.
+Use material judgment to decide what deserves action and evidence to decide when
+to stop. Be strict about completion and flexible about execution.
 
-Loopy does not require repetition. Revise only when material evidence shows that
-the result is not complete.
-
-Be strict about completion and flexible about execution.
+Follow the host's instruction hierarchy. Within it, explicit user instructions
+take precedence over this skill's defaults. The Completion Contract organizes
+the authorized task; it does not create extra approval requirements or grant
+permission for actions outside that task.
 
 ## Completion Contract
 
@@ -37,24 +37,17 @@ Before execution, establish internally:
 - `Scope`: the systems, files, decisions, and concerns that may be changed,
   including explicit exclusions.
 
-Infer missing items conservatively from the request and available evidence.
+Do not infer the current Claim from the desired Outcome; preserve uncertainty
+when current evidence cannot establish it. Refine the contract when new evidence
+or user steering changes the task, but never weaken acceptance criteria merely
+to fit the result.
 
-Outcome describes the requested end state. Claim describes the current basis for
-judgment and is conditional; do not invent it from the desired Outcome. Preserve
-uncertainty when the available evidence cannot establish the current Claim.
-
-Do not invent, weaken, narrow, or redefine acceptance criteria merely to make
-completion easier. Do not redefine the contract after execution to match the
-result.
-
-The contract may be refined during execution when new evidence reveals a
-previously unknown requirement, dependency, constraint, or risk. Such refinement
-must follow the evidence and must not weaken an explicit acceptance criterion.
-
-Ask only the single highest-leverage question when a wrong inference would
-materially change the work or create substantial cost. Otherwise, proceed using
-the least-assumptive reasonable interpretation that fully satisfies the explicit
-request without expanding Scope.
+Resolve routine gaps from the request, prior authorization, and current evidence.
+Ask a focused question only when a missing answer prevents a sound next action
+or a wrong assumption would materially change the outcome, scope, or cost.
+Continue independent authorized work while waiting; do not treat silence as
+approval. Otherwise, proceed with a reasonable assumption and state it when it
+materially affects the result.
 
 Keep the contract compact. Expose it only when it materially clarifies
 ambiguity, scope, or risk.
@@ -67,13 +60,11 @@ impose it on a clear requested outcome or an explicit mechanical action.
 
 Use these controls as internal lenses, not output headings:
 
-- `Amount`: add missing load-bearing context, constraints, guards, or evidence;
-  remove repetition, speculative options, and unrelated detail that obscure the
-  Outcome or Claim.
+- `Amount`: add necessary context, constraints, or evidence; remove repetition
+  and unrelated detail that obscure the Outcome or Claim.
 - `Boundary`: join elements that change for the same reason; split distinct
   responsibilities, claims, user purposes, or future work.
-- `Priority`: select what most changes completion or the next action; de-emphasize
-  style preferences, unchecked guesses, and work outside the current purpose.
+- `Priority`: select what most changes completion or the next action.
 
 An explicit requested outcome establishes authority for the work and is not
 merely a defect candidate. It still cannot supply missing factual support or
@@ -81,32 +72,33 @@ silently discard a Preserve constraint.
 
 Treat supplied findings and material issues identified by analysis,
 Verification, or Challenge as candidates rather than verdicts. Check the current
-artifact or behavior, prioritize supplied findings, and otherwise select the
-single strongest material candidate. Classify it internally:
+artifact or behavior and prioritize supplied findings. When discovering issues,
+investigate the strongest material candidate next; retain every known required
+issue until resolved or explicitly reported as a blocker.
 
-- `Accept`: concrete evidence shows that it materially blocks the Outcome,
-  supported Claim, or Completion Gate, and correction is within Scope.
-- `Advisory`: it may improve the result but does not block the current Outcome.
-- `Reject`: it is stale, already satisfied, unsupported, misreads the current
-  state, or conflicts with the contract.
-- `Out of scope`: concrete evidence supports the issue, but its correction
-  requires an unauthorized or explicitly excluded change.
-- `Insufficient evidence`: the available evidence cannot support a safe decision.
-
-Only Accept may cause an in-Scope revision. Advisory and Reject do not block
-completion. Out of scope causes `out_of_scope` only when its correction is
-required for the Outcome; otherwise report it without expanding Scope.
-Insufficient evidence causes `blocked` only when a required completion condition
-cannot be established; otherwise preserve and report the uncertainty. Do not
-change the artifact on behalf of a candidate that was not accepted.
+Accept a candidate for revision only when concrete evidence shows that it blocks
+the Outcome, supported Claim, or Completion Gate, and correction is within Scope.
+Stale, unsupported, already satisfied, or merely advisory findings do not justify
+edits or block completion. Missing evidence or an out-of-Scope correction affects
+the Decision only when it prevents completion; otherwise report material
+limitations without expanding Scope.
 
 When the Outcome is read-only diagnosis or evaluation, state-changing actions
-are outside Scope unless the user explicitly changes that boundary.
+are outside Scope unless the user explicitly changes that boundary. Completion
+means the assessment is supported and delivered, not that the assessed artifact
+has no defects.
 
 ## Execution
 
 Choose the shortest credible approach capable of satisfying the full Completion
-Contract.
+Contract. Carry an authorized action request through execution and verification;
+do not stop at a plan, a partial result, or an offer to continue when the next
+required action is available and in Scope.
+
+Treat follow-up questions and status requests as steering of the active task
+unless the user changes or cancels the goal. After interruption or context
+compaction, recover the Outcome, Preserve constraints, prior authorization,
+completed checks, and unresolved work before continuing.
 
 For an existing artifact, inspect its current state before changing it. Do not
 edit from a quoted finding or stale description alone.
@@ -118,18 +110,16 @@ sites, documentation, and compatibility work.
 Do not split one causal change into artificial iterations. Do not mix unrelated
 improvements into the same change set or expand Scope without authorization.
 
-The agent controls its planning, exploration, implementation, delegation, and
-verification strategy.
-
 ## Verification
 
-Run the evidence checks defined by the Completion Contract.
+Run the evidence checks defined by the Completion Contract. Match their breadth
+to the changed surface and material risk, and complete all explicitly required
+checks. Broaden or repeat passing checks only when a change, failure, or unresolved
+concern makes their evidence insufficient. Add tests when they distinguish
+required behavior from a plausible failure, not merely to mirror the implementation.
 
-For each material check, establish:
-
-- `Check`: what was inspected or executed.
-- `Expected`: the result required for completion.
-- `Observed`: the actual result.
+For each material check, establish what was inspected or executed, the expected
+result, and the observed result.
 
 Prefer direct, independently inspectable evidence such as execution results,
 tests, reproducible examples, rendered artifacts, concrete comparisons, and
@@ -142,24 +132,21 @@ For judgment-based work, use explicit acceptance criteria and concrete examples.
 Use independent qualitative review only when it could realistically overturn the
 result and direct evidence cannot decide the quality bar.
 
-Absence of evidence is not evidence of success.
-
 When a baseline is available, distinguish pre-existing failures from regressions.
 Completion does not require fixing unrelated baseline failures, but the current
 work must not introduce new failures or materially worsen relevant existing ones.
 
-If a preferred check cannot be run, use the strongest adequate substitute and
-state the resulting uncertainty.
+If a preferred check cannot run, execute an adequate substitute and explain its
+adequacy and remaining uncertainty. It must test the same material property and
+must not weaken an explicit acceptance criterion. An unexecuted check or indirect
+proxy is not evidence that the required property holds.
 
-A substitute is adequate only when it tests the same material property as the
-preferred check rather than providing merely indirect or correlated evidence. It
-must not weaken an explicit acceptance criterion.
-
-Treat an adequate substitute as a material check: execute it and establish its
-`Check`, `Expected`, and `Observed` results.
-
-Declare `blocked` when a required completion condition cannot be established and
-no adequate substitute exists.
+For structural changes, check responsibility, lifecycle, naming, dependency
+direction, and public compatibility; make any authorized migration explicit.
+For research or interpretation, separate observations from inferences and ground
+claims in relevant evidence. Use project evidence for project claims and current
+authoritative sources for external claims that depend on recency. Do not infer
+hidden intent without evidence.
 
 ## Challenge
 
@@ -167,24 +154,17 @@ Before completion, test the highest-impact reasonably testable counterexample,
 regression, or competing explanation that is relevant to the current Scope and
 proportional to the task's risk.
 
-When judgment is material, use Amount, Boundary, and Priority to select the one
-challenge that most changes completion or the next action.
+An already executed verification check may also serve as the Challenge when it
+tests that counterexample. Use its evidence rather than requiring a separate
+review or another tool call solely to satisfy this section.
 
-The challenge must be specific enough to genuinely invalidate the result, weaken
-required evidence, expose a regression, or materially change the next action. Do
-not select a harmless, speculative, or merely stylistic challenge to satisfy the
-procedure.
+Choose a challenge that could invalidate completion or change the next action,
+not a harmless or stylistic possibility. For structural changes, compare one
+plausible alternative boundary against responsibility, lifecycle, and the public
+interface. For interpretation, test one credible competing explanation. The same
+challenge may cover these concerns when relevant; separate reviews are not required.
 
-When a challenge identifies a possible issue, treat that issue as a candidate
-under Judgment. It invalidates completion only when the candidate is accepted,
-its correction is required but out of scope, or the challenge otherwise
-disproves a required completion condition.
-
-If the challenge invalidates completion, choose `revise`, `blocked`, or
-`out_of_scope` according to the Decision criteria. Choose `revise` only when the
-issue is in Scope and correctable.
-
-Do not continue merely because another hypothetical improvement can be imagined.
+Assess issues it exposes under Judgment and then apply the Decision criteria.
 
 ## Decision
 
@@ -193,20 +173,21 @@ Choose exactly one decision:
 - `done`: the Completion Gate passes.
 - `revise`: an accepted, in-Scope, correctable issue causes the Completion Gate
   to fail.
-- `blocked`: a required input, permission, capability, tool, access path, or
-  evidence source is unavailable, and no adequate substitute can establish
-  completion.
-- `out_of_scope`: completion requires changing an unauthorized or explicitly
-  excluded area.
+- `blocked`: work within the agreed Scope cannot proceed or be verified because
+  a required input, permission, capability, or evidence source is unavailable,
+  and no adequate alternative can satisfy the required condition.
+- `out_of_scope`: completion requires expanding the agreed task boundary or
+  changing an explicitly excluded area.
 
-On `revise`, make the smallest coherent corrective change, then repeat
-Verification and Challenge.
+On `revise`, make the smallest coherent corrective change and recheck the affected
+evidence and material challenge. Retain passing evidence whose inputs and
+assumptions remain valid. `revise` is an internal continuation decision, not a
+reason to end the task or ask permission for an already authorized correction.
 
-If revision repeatedly encounters the same unresolved condition because a
-required capability or evidence source is unavailable, classify it as `blocked`
-rather than continuing to revise.
-
-Do not impose a minimum number of revisions.
+When an attempt repeats the same failure without new evidence or progress,
+change the approach rather than repeat it unchanged. If no available authorized
+approach can advance the required condition, use `blocked` and identify what
+must change to resume. Difficulty alone is not a blocker.
 
 ## Completion Gate
 
@@ -224,67 +205,18 @@ Declare `done` only when:
 - the tested material challenge does not invalidate the result; and
 - remaining uncertainty would not materially change the result or next action.
 
-Do not declare completion because the result merely appears improved.
-
-Once the Completion Gate passes, do not continue with changes that would be
-merely stylistic, speculative, unrelated, or lower-value than the risk and cost
-of further modification.
-
-## Optional Gates
-
-Apply an Optional Gate only when its conditions are material to the task.
-
-A single challenge may satisfy both the general Challenge and an Optional Gate
-when it meets all applicable requirements.
-
-## Optional Structure Gate
-
-Apply when the task reorganizes conceptual, modular, or architectural boundaries.
-
-In addition to the normal Completion Gate:
-
-- preserve externally observable behavior unless a behavior change is explicitly
-  requested;
-- identify the concept whose ownership or boundary is unclear;
-- clarify responsibility, lifecycle, naming, and dependency direction;
-- preserve public compatibility or make migration explicit;
-- avoid abstractions created only for hypothetical future needs;
-- compare the chosen boundary with one plausible competing boundary; and
-- reject the change if the competing boundary better matches the concept's
-  responsibility, lifecycle, dependency direction, and public interface.
-
-Treat file movement, import updates, caller changes, tests, documentation, and
-compatibility handling required by one boundary change as one coherent change
-set.
-
-## Optional Interpretation Gate
-
-Apply when the result depends materially on research, inference, interpretation,
-or explanatory claims.
-
-In addition to the normal Completion Gate:
-
-- separate observations from interpretations;
-- ground material claims in concrete evidence;
-- consider evidence quality, relevance, and recency when applicable;
-- test one credible competing explanation;
-- do not infer hidden intent without explicit evidence; and
-- state unresolved uncertainty where the available evidence cannot decide.
-
-Use project evidence as the primary basis for claims about the project itself.
-Use external authoritative evidence for claims about the outside world. Use both
-when the conclusion materially depends on both.
+Once the gate passes, stop. No minimum number of revisions is required, and
+speculative or unrelated improvements do not justify another iteration.
 
 ## Output
 
 Follow the user's requested output format first.
 
-Otherwise report:
-
-- `Decision`
-- `Result`
-- `Verification`
-- `Remaining material risk`, if any
+Otherwise, report one decision, the concrete result, the verification evidence,
+and any remaining material risk in concise prose or a short list. Fixed headings
+and a transcript of every check are unnecessary. For `blocked` or `out_of_scope`,
+identify the unmet condition and the specific input or authorization needed to
+continue; distinguish verified progress from completion.
 
 Include Preserve, Scope, and Challenge details only when they materially affect
 confidence or the next action.
