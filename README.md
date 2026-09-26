@@ -11,6 +11,12 @@ exactly one decision at each assessment: `done`, `revise`, `blocked`, or
 `out_of_scope`. `revise` continues the work internally while an authorized
 correction remains possible.
 
+Loopy also supports project-wide refactoring: reassessing folder and file
+structure, responsibilities, dependencies, and names down to functions and
+variables. It preserves required behavior and external contracts while fixing
+supported bugs encountered in the requested scope, including defects that
+predate the refactor. Existing organization is not a preservation requirement.
+
 When the task definition, an existing artifact, or a proposed revision requires
 material judgment, Loopy also recovers the current Claim when one exists and uses
 three internal questions: what is missing or excessive, what belongs together,
@@ -55,6 +61,9 @@ Invoke the skill explicitly when the work needs evidence-backed completion:
 Use loopy to complete this migration without losing existing behavior.
 Use loopy to finish this document and verify every acceptance criterion.
 Use loopy to resolve this bug, preserve the current interface, and prove the fix.
+Use loopy to refactor this entire project: improve folder and file structure,
+names, and responsibilities; fix bugs found along the way; preserve external
+contracts and verify the result.
 ```
 
 The skill may also be selected automatically when a request matches its
@@ -63,6 +72,14 @@ description.
 Do not use Loopy for trivial edits, direct factual answers, open brainstorming,
 or low-risk work whose completion is obvious from one simple action.
 
+For a whole-project refactor, Loopy assesses all major areas before declaring
+completion. It chooses responsibility boundaries before paths and names, moves
+internal consumers together, preserves supported external contracts, and verifies
+each coherent change before building on it. Callers, configuration, tests, and
+documentation move with the implementation. Sound structures can stay as they
+are. Narrower refactoring requests retain their requested scope; review-only
+requests do not authorize edits.
+
 ## Runtime structure
 
 Both hosts load the same canonical file:
@@ -70,6 +87,9 @@ Both hosts load the same canonical file:
 ```text
 skills/loopy/SKILL.md
 ```
+
+Refactoring requests also load the shared guidance at
+[`skills/loopy/references/refactoring.md`](skills/loopy/references/refactoring.md).
 
 Codex distribution metadata lives in `.codex-plugin/` and `.agents/plugins/`.
 Claude Code distribution metadata lives in `.claude-plugin/`. There is no build

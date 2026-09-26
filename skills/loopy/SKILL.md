@@ -3,8 +3,9 @@ name: loopy
 description: >
   Use for autonomous work where completion must be established by evidence,
   important constraints must be preserved, or premature completion and
-  unnecessary revision are material risks. Do not use for trivial edits,
-  direct factual answers, open brainstorming, or low-risk tasks whose
+  unnecessary revision are material risks, including project-wide refactoring
+  of structure and names with evidence-backed bug fixes. Do not use for trivial
+  edits, direct factual answers, open brainstorming, or low-risk tasks whose
   completion and preservation are obvious from a single simple action.
 ---
 
@@ -87,6 +88,22 @@ When the Outcome is read-only diagnosis or evaluation, state-changing actions
 are outside Scope unless the user explicitly changes that boundary. Completion
 means the assessment is supported and delivered, not that the assessed artifact
 has no defects.
+
+## Refactoring
+
+When refactoring is requested, read [Refactoring](references/refactoring.md)
+before establishing the Completion Contract. Apply it to the requested scope;
+a project-wide request includes reassessing folder and file structure, names,
+responsibilities, and dependencies, and fixing supported bugs encountered in
+that scope. Existing organization is evidence to inspect, not a constraint to
+preserve by default.
+
+Structural improvement and supported bug fixes are part of the requested
+Outcome in this mode. Judge them against its explicit criteria rather than
+requiring a runtime failure to justify each improvement. A small coherent
+change minimizes unrelated work, not the number of files changed. Keep the same
+Verification, Challenge, Decision, and Completion Gate; do not start an
+independent cleanup loop or activate this mode for unrelated work.
 
 ## Execution
 
