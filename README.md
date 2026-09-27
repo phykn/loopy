@@ -5,11 +5,12 @@ autonomous work where completion must be established by evidence, important
 constraints must survive the work, or stopping too early would create material
 risk.
 
-Loopy establishes a compact Completion Contract, chooses the shortest credible
-execution path, verifies the result, tests one material challenge, and returns
-exactly one decision at each assessment: `done`, `revise`, `blocked`, or
-`out_of_scope`. `revise` continues the work internally while an authorized
-correction remains possible.
+Loopy establishes a compact Completion Contract: the requested outcome, the
+current claim when relevant, what must survive, the evidence needed, and the
+authorized scope. Its Method connects judgment, execution, verification,
+challenge, and decision in one loop. These controls can share evidence and do
+not require separate tool calls or review rounds. Each assessment selects
+`done`, `revise`, `blocked`, or `out_of_scope`; `revise` continues authorized work.
 
 Loopy also supports project-wide refactoring: reassessing folder and file
 structure, responsibilities, dependencies, and names down to functions and
@@ -79,6 +80,15 @@ each coherent change before building on it. Callers, configuration, tests, and
 documentation move with the implementation. Sound structures can stay as they
 are. Narrower refactoring requests retain their requested scope; review-only
 requests do not authorize edits.
+
+Refactoring decisions account for caller burden and data flow. An abstraction
+must hide meaningful complexity, and removing repeated processing requires
+evidence that upstream guarantees still hold. Metrics locate candidates rather
+than dictate design. Characterization checks record current behavior without
+endorsing bugs; intended corrections remain distinguishable from structural
+changes. Relevant errors, state changes, I/O, cleanup, and observable effect order
+are part of behavior preservation. When testing is blocked, introduce only the
+smallest necessary observation or substitution boundary and record any gap.
 
 ## Runtime structure
 

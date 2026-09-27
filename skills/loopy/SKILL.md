@@ -11,18 +11,19 @@ description: >
 
 # Loopy
 
-## Purpose
-
 Complete autonomous work only when the requested outcome is demonstrated by
-evidence, not merely asserted.
-
-Use material judgment to decide what deserves action and evidence to decide when
+evidence. Use judgment to choose what needs action and evidence to decide when
 to stop. Be strict about completion and flexible about execution.
 
 Follow the host's instruction hierarchy. Within it, explicit user instructions
 take precedence over this skill's defaults. The Completion Contract organizes
 the authorized task; it does not create extra approval requirements or grant
 permission for actions outside that task.
+
+For refactoring, read [Refactoring](references/refactoring.md) before establishing
+the contract. It supplies structural criteria, behavior-preservation rules, and
+the treatment of encountered bugs within the same method and completion gate.
+Load it only when refactoring or its assessment is part of the requested work.
 
 ## Completion Contract
 
@@ -53,7 +54,15 @@ materially affects the result.
 Keep the contract compact. Expose it only when it materially clarifies
 ambiguity, scope, or risk.
 
-## Judgment
+## Method
+
+Establish the contract, choose the next necessary action, execute a coherent unit
+of work, and assess its evidence. Use Judgment when a choice needs evaluation;
+use Verification and Challenge to inform Decision. These are controls within one
+method, not mandatory separate phases, tool calls, or review rounds. Reuse valid
+evidence and repeat only for unresolved requirements or accepted findings.
+
+### Judgment
 
 Apply this section only when the task definition, an existing artifact, a
 supplied finding, or a proposed revision requires material judgment. Do not
@@ -67,9 +76,9 @@ Use these controls as internal lenses, not output headings:
   responsibilities, claims, user purposes, or future work.
 - `Priority`: select what most changes completion or the next action.
 
-An explicit requested outcome establishes authority for the work and is not
-merely a defect candidate. It still cannot supply missing factual support or
-silently discard a Preserve constraint.
+An explicit requested outcome establishes authority for the work; it does not
+need an existing defect to justify it. It still cannot supply missing factual
+support or silently discard a Preserve constraint.
 
 Treat supplied findings and material issues identified by analysis,
 Verification, or Challenge as candidates rather than verdicts. Check the current
@@ -89,23 +98,7 @@ are outside Scope unless the user explicitly changes that boundary. Completion
 means the assessment is supported and delivered, not that the assessed artifact
 has no defects.
 
-## Refactoring
-
-When refactoring is requested, read [Refactoring](references/refactoring.md)
-before establishing the Completion Contract. Apply it to the requested scope;
-a project-wide request includes reassessing folder and file structure, names,
-responsibilities, and dependencies, and fixing supported bugs encountered in
-that scope. Existing organization is evidence to inspect, not a constraint to
-preserve by default.
-
-Structural improvement and supported bug fixes are part of the requested
-Outcome in this mode. Judge them against its explicit criteria rather than
-requiring a runtime failure to justify each improvement. A small coherent
-change minimizes unrelated work, not the number of files changed. Keep the same
-Verification, Challenge, Decision, and Completion Gate; do not start an
-independent cleanup loop or activate this mode for unrelated work.
-
-## Execution
+### Execution
 
 Choose the shortest credible approach capable of satisfying the full Completion
 Contract. Carry an authorized action request through execution and verification;
@@ -122,12 +115,13 @@ edit from a quoted finding or stale description alone.
 
 Make the smallest coherent change set that resolves the active problem or an
 accepted candidate. Include all directly required edits, tests, references, call
-sites, documentation, and compatibility work.
+sites, documentation, and compatibility work. Small means little unrelated work,
+not necessarily few files.
 
 Do not split one causal change into artificial iterations. Do not mix unrelated
 improvements into the same change set or expand Scope without authorization.
 
-## Verification
+### Verification
 
 Run the evidence checks defined by the Completion Contract. Match their breadth
 to the changed surface and material risk, and complete all explicitly required
@@ -158,14 +152,14 @@ adequacy and remaining uncertainty. It must test the same material property and
 must not weaken an explicit acceptance criterion. An unexecuted check or indirect
 proxy is not evidence that the required property holds.
 
-For structural changes, check responsibility, lifecycle, naming, dependency
-direction, and public compatibility; make any authorized migration explicit.
+For structural changes, verify responsibility, lifecycle, naming, dependency
+direction, and supported interfaces; make authorized migrations explicit.
 For research or interpretation, separate observations from inferences and ground
 claims in relevant evidence. Use project evidence for project claims and current
 authoritative sources for external claims that depend on recency. Do not infer
 hidden intent without evidence.
 
-## Challenge
+### Challenge
 
 Before completion, test the highest-impact reasonably testable counterexample,
 regression, or competing explanation that is relevant to the current Scope and
@@ -176,20 +170,20 @@ tests that counterexample. Use its evidence rather than requiring a separate
 review or another tool call solely to satisfy this section.
 
 Choose a challenge that could invalidate completion or change the next action,
-not a harmless or stylistic possibility. For structural changes, compare one
-plausible alternative boundary against responsibility, lifecycle, and the public
-interface. For interpretation, test one credible competing explanation. The same
-challenge may cover these concerns when relevant; separate reviews are not required.
+not a harmless or stylistic possibility. For a material boundary decision,
+compare a plausible alternative against the contract; for interpretation, test
+a credible competing explanation. The same challenge may cover these concerns;
+separate reviews are not required.
 
 Assess issues it exposes under Judgment and then apply the Decision criteria.
 
-## Decision
+### Decision
 
 Choose exactly one decision:
 
 - `done`: the Completion Gate passes.
-- `revise`: an accepted, in-Scope, correctable issue causes the Completion Gate
-  to fail.
+- `revise`: required work remains executable within Scope, including an accepted
+  correction or a missing evidence check.
 - `blocked`: work within the agreed Scope cannot proceed or be verified because
   a required input, permission, capability, or evidence source is unavailable,
   and no adequate alternative can satisfy the required condition.
@@ -198,8 +192,10 @@ Choose exactly one decision:
 
 On `revise`, make the smallest coherent corrective change and recheck the affected
 evidence and material challenge. Retain passing evidence whose inputs and
-assumptions remain valid. `revise` is an internal continuation decision, not a
-reason to end the task or ask permission for an already authorized correction.
+assumptions remain valid. If a required check is still available but unexecuted,
+continue the work rather than declaring `done` or `blocked`. `revise` is an
+internal continuation decision, not a reason to end the task or ask permission
+for an already authorized correction.
 
 When an attempt repeats the same failure without new evidence or progress,
 change the approach rather than repeat it unchanged. If no available authorized
