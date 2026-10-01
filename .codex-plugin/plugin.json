@@ -1,7 +1,7 @@
 {
   "name": "loopy",
-  "version": "0.5.0",
-  "description": "Evidence-driven autonomous completion for work whose outcome must be demonstrated, not merely asserted.",
+  "version": "0.6.0",
+  "description": "Complete autonomous work with evidence of correctness, preservation, and independent use.",
   "author": {
     "name": "phykn",
     "url": "https://github.com/phykn"
@@ -14,13 +14,14 @@
     "autonomous-work",
     "completion",
     "evidence",
-    "verification"
+    "verification",
+    "independent-use"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Loopy",
-    "shortDescription": "Complete autonomous work with evidence",
-    "longDescription": "Use Loopy when autonomous work must preserve important constraints and establish completion through explicit evidence, a material challenge, and exactly one final decision.",
+    "shortDescription": "Finish work others can understand and use",
+    "longDescription": "Use Loopy to finish substantial work with evidence that it is correct, preserves important constraints, and lets its intended user act without the production conversation. Fresh evaluators try real tasks where independent use matters; supported findings drive corrections and sufficient evidence ends the loop.",
     "developerName": "phykn",
     "category": "Productivity",
     "capabilities": [
@@ -29,8 +30,8 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Use Loopy to complete this task and establish completion with evidence.",
-      "Use Loopy to preserve important constraints and challenge the result before declaring done."
+      "Use Loopy to complete this task and verify its intended user can use the result without this chat.",
+      "Use Loopy to preserve important constraints, verify correctness, and test the result through a fresh user's task."
     ],
     "websiteURL": "https://github.com/phykn/loopy",
     "brandColor": "#2563EB",

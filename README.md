@@ -1,36 +1,63 @@
 # Loopy
 
-Loopy is an instruction-only skill for Codex and Claude Code. Use it for
-autonomous work where completion must be established by evidence, important
-constraints must survive the work, or stopping too early would create material
-risk.
+Loopy is an instruction-only skill for Codex and Claude Code. It carries
+substantial work through to a result that is correct, preserves what matters,
+and can be understood and used without the conversation that produced it.
 
-Loopy establishes a compact Completion Contract: the requested outcome, the
-current claim when relevant, what must survive, the evidence needed, and the
-authorized scope. Its Method connects judgment, execution, verification,
-challenge, and decision in one loop. These controls can share evidence and do
-not require separate tool calls or review rounds. Each assessment selects
-`done`, `revise`, `blocked`, or `out_of_scope`; `revise` continues authorized work.
+Use it when you need a working handoff: a maintainer finding the right change
+location, a teammate following a guide, a reader making a supported decision,
+or an agent carrying out a skill. The intended user can know the domain while
+being new to the project.
 
-Loopy also supports project-wide refactoring: reassessing folder and file
-structure, responsibilities, dependencies, and names down to functions and
-variables. It preserves required behavior and external contracts while fixing
-supported bugs encountered in the requested scope, including defects that
-predate the refactor. Existing organization is not a preservation requirement.
+## How it works
 
-When the task definition, an existing artifact, or a proposed revision requires
-material judgment, Loopy also recovers the current Claim when one exists and uses
-three internal questions: what is missing or excessive, what belongs together,
-and what matters next. Clear requested outcomes remain authoritative, and advisory
-or unsupported findings do not trigger revision. A read-only assessment can finish
-with supported findings; it does not require fixing the assessed artifact.
+1. Define the requested outcome, intended user, next action, preservation
+   requirements, evidence, and authorized scope.
+2. Build a coherent result with clear entrypoints, names, responsibilities,
+   necessary context, and usable interfaces.
+3. Verify correctness and preservation. For substantial deliverables whose
+   understanding or use matters, also have a fresh evaluator attempt a real
+   task from the normal entrypoint, using only the materials a user receives.
+4. Check observed obstacles against the artifact, fix supported causes, and
+   repeat the affected checks. Finish when the required outcome and use are
+   demonstrated.
 
-Loopy uses the request, prior authorization, and current evidence to resolve
-routine gaps and continues authorized work through verification. Checks scale
-with the changed surface and risk; passing evidence is reused while its inputs
-and assumptions remain valid. A verification check can also supply the material
-challenge. The final report stays concise, with the result, evidence, and any
-material limitation.
+A fresh evaluator does not receive the production conversation, intended answer,
+or previous review conclusions. Loopy inspects what the evaluator actually did
+and produced. Feedback is evidence to investigate; a mistaken answer or stylistic
+preference does not automatically justify a revision.
+
+Independent trials require available, authorized delegation and stay within the
+user's scope. When unavailable, Loopy reports the strongest permitted check and
+its limitations. Self-review is not reported as independent use. Small changes
+with adequate direct evidence do not require another evaluator, and passing
+checks are reused while their inputs and assumptions remain valid.
+
+The loop selects `done`, `revise`, `blocked`, or `out_of_scope`. It continues
+executable authorized work, preserves read-only review boundaries, and stops
+when there is sufficient evidence. It requires no perfect score or fixed number
+of review rounds. Existing behavior and external contracts remain protected;
+a usability improvement does not excuse a regression.
+
+## Use
+
+```text
+Use loopy to finish this guide so a new teammate can follow it without this chat.
+Use loopy to make this plan executable by its intended owners.
+Use loopy to complete this migration, preserve its interface, and verify the result.
+Use loopy to assess this proposal and its evidence without editing it.
+Use loopy to refactor this project: improve structure and names, fix supported
+in-scope bugs, preserve external contracts, and verify a new maintainer can use it.
+```
+
+For a concrete example, a setup guide is ready when its commands work and a new
+teammate can start from the README, produce the expected output, and recognize
+success. If they get stuck, Loopy checks the cause and repairs the right place:
+the command, interface, order, terminology, or missing premise.
+
+The skill can also be selected automatically when a request matches its
+description. It is not intended for trivial edits, direct factual answers,
+open brainstorming, or tasks whose completion is obvious from one simple action.
 
 ## Install
 
@@ -54,53 +81,24 @@ Restart the ChatGPT desktop app if the plugin does not appear immediately.
 
 Run `/reload-plugins` after updating an existing installation.
 
-## Use
+## Source and evaluation
 
-Invoke the skill explicitly when the work needs evidence-backed completion:
+Both hosts load [skills/loopy/SKILL.md](skills/loopy/SKILL.md).
+It routes to shared guidance only when relevant:
 
-```text
-Use loopy to complete this migration without losing existing behavior.
-Use loopy to finish this document and verify every acceptance criterion.
-Use loopy to resolve this bug, preserve the current interface, and prove the fix.
-Use loopy to refactor this entire project: improve folder and file structure,
-names, and responsibilities; fix bugs found along the way; preserve external
-contracts and verify the result.
-```
+- [Independent use](skills/loopy/references/independent-use.md) defines task
+  selection, fresh context, evidence, corrections, and limits.
+- [Refactoring](skills/loopy/references/refactoring.md) covers project structure,
+  behavior baselines, compatibility, coherent migrations, supported bug fixes,
+  and reader tasks. A project-wide request covers all major areas; a narrow
+  request retains its boundary.
 
-The skill may also be selected automatically when a request matches its
-description.
+When changing the skill, follow [the evaluation procedure](evals/README.md).
+It supplies reusable task fixtures and acceptance criteria, including a
+read-only review and an already-correct artifact. Runtime evaluation outputs
+belong in temporary workspaces; the fixtures and recorded findings are separate
+from the skill's instructions.
 
-Do not use Loopy for trivial edits, direct factual answers, open brainstorming,
-or low-risk work whose completion is obvious from one simple action.
-
-For a whole-project refactor, Loopy assesses all major areas before declaring
-completion. It chooses responsibility boundaries before paths and names, moves
-internal consumers together, preserves supported external contracts, and verifies
-each coherent change before building on it. Callers, configuration, tests, and
-documentation move with the implementation. Sound structures can stay as they
-are. Narrower refactoring requests retain their requested scope; review-only
-requests do not authorize edits.
-
-Refactoring decisions account for caller burden and data flow. An abstraction
-must hide meaningful complexity, and removing repeated processing requires
-evidence that upstream guarantees still hold. Metrics locate candidates rather
-than dictate design. Characterization checks record current behavior without
-endorsing bugs; intended corrections remain distinguishable from structural
-changes. Relevant errors, state changes, I/O, cleanup, and observable effect order
-are part of behavior preservation. When testing is blocked, introduce only the
-smallest necessary observation or substitution boundary and record any gap.
-
-## Runtime structure
-
-Both hosts load the same canonical file:
-
-```text
-skills/loopy/SKILL.md
-```
-
-Refactoring requests also load the shared guidance at
-[`skills/loopy/references/refactoring.md`](skills/loopy/references/refactoring.md).
-
-Codex distribution metadata lives in `.codex-plugin/` and `.agents/plugins/`.
-Claude Code distribution metadata lives in `.claude-plugin/`. There is no build
-step and no duplicated host-specific skill body.
+Codex metadata lives in `.codex-plugin/` and `.agents/plugins/`; Claude Code
+metadata lives in `.claude-plugin/`. There is no build step or duplicated
+host-specific skill body.

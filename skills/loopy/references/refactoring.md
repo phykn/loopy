@@ -1,6 +1,6 @@
 # Refactoring
 
-Use this guidance within Loopy's Method when refactoring is requested. Structural
+Use this guidance within Loopy's workflow when refactoring is requested. Structural
 improvement and supported fixes for encountered bugs are part of the Outcome.
 A project-wide request includes folder and file structure, names,
 responsibilities, and dependencies across the project; a narrower request keeps
@@ -68,6 +68,21 @@ change without a reliable baseline, keep it minimal, record the verification
 gap, and establish checks before broader changes. A seam alone is not evidence
 of preserved behavior. Retire temporary probes or test scaffolding when stable
 boundaries cover the behavior; retain justified testability improvements.
+
+## Establish the reader baseline
+
+For substantial structural changes, identify a maintainer with the expected
+domain knowledge but no project history. Choose concrete tasks: find the first
+execution path, trace a core value from producer to consumer, identify units and
+configuration precedence, or locate a requested change and its affected callers.
+Use the project's normal entrypoints and available docs. Keep these tasks fixed
+for the before/after comparison.
+
+Apply [Independent use](independent-use.md) for a fresh reader's baseline and
+post-change attempt. Ask for answers, source locations, and actual obstacles;
+do not supply the author's architecture explanation or expected weak spots.
+Check confusion against call paths and data flow before accepting a correction.
+Do not infer a structural defect from a wrong answer alone.
 
 ## Reshape structure and names
 
@@ -154,7 +169,7 @@ tests simply to make the new implementation pass.
 
 Do not invent requirements or new features under the name of bug fixing. When
 intended behavior is materially ambiguous or a correction needs an excluded
-change, use Loopy's existing question and Decision rules. Retain the unresolved
+change, use Loopy's existing question and decision rules. Retain the unresolved
 issue while continuing independent authorized work.
 
 ## Verify and finish
@@ -175,14 +190,22 @@ Inspect the resulting dependency direction, ownership, vocabulary, and remaining
 references against the structural criteria. For a material boundary decision,
 compare a plausible alternative by ownership, lifecycle, caller burden, and
 public compatibility. This comparison or a material regression check can supply
-Loopy's Challenge; reuse adequate evidence instead of starting another review
+Loopy's challenge; reuse adequate evidence instead of starting another review
 cycle.
+
+For substantial structural changes, repeat the reader tasks with a fresh
+evaluator. Verify that the maintainer can trace the critical flow and identify
+the required change locations without private coaching. Test relevant README
+commands and examples against the actual entrypoints and outputs. Fix confusing
+structure or names at their source; use concise docs for necessary domain
+assumptions and rationale. Neither a passing test suite nor a reader's confidence
+alone proves both preserved behavior and understandable structure.
 
 Finish only when the requested areas have been assessed, accepted structural
 changes and supported in-scope bugs have been resolved, dependent migrations are
-complete, and the Completion Gate passes. Assess new findings by the same
+complete, and Loopy's `done` conditions hold. Assess new findings by the same
 criteria; do not reopen satisfied decisions for speculative polish or declare
 project-wide completion from one repaired area. If evidence or authorization
-prevents completion, report the remaining areas and use the existing Decision
+prevents completion, report the remaining areas and use the existing decision
 rules. The final report should briefly identify the structural and naming
 changes, intentional bug fixes, verification evidence, and material limitations.

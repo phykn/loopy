@@ -3,7 +3,7 @@
   "owner": {
     "name": "phykn"
   },
-  "description": "Marketplace for the Loopy evidence-driven completion skill.",
+  "description": "Marketplace for Loopy: complete work others can understand and use.",
   "plugins": [
     {
       "name": "loopy",
@@ -12,7 +12,7 @@
         "repo": "phykn/loopy",
         "ref": "main"
       },
-      "description": "Evidence-driven autonomous completion for work whose outcome must be demonstrated, not merely asserted.",
+      "description": "Complete autonomous work with evidence of correctness, preservation, and independent use.",
       "category": "productivity"
     }
   ]

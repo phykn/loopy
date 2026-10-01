@@ -1,7 +1,7 @@
 {
   "name": "loopy",
-  "version": "0.5.0",
-  "description": "Evidence-driven autonomous completion for work whose outcome must be demonstrated, not merely asserted.",
+  "version": "0.6.0",
+  "description": "Complete autonomous work with evidence of correctness, preservation, and independent use.",
   "author": {
     "name": "phykn",
     "url": "https://github.com/phykn"
