@@ -4,3 +4,4 @@
 .loopy/
 docs/
 AGENTS.md
+__pycache__/

@@ -30,11 +30,22 @@ format checks alone cannot establish that the instructions work.
 python evals/prepare.py --skill skills/loopy
 ```
 
-The command prints a new temporary directory containing `skill/`, `tasks/`, and
-`requests.md`. Evaluators write `run.md` there. Inputs and scratch outputs never
-share a workspace between versions. The packet omits the acceptance criteria.
-If per-case independence matters, use a fresh prepared workspace and agent for
-each case as well. Record when one agent performs several separate cases.
+The command validates the case definitions and fixture directories, then prints
+a new temporary directory containing `skill/`, `tasks/`, and `requests.md`.
+Evaluators write `run.md` there. The packet omits the acceptance criteria, and
+each invocation makes a separate workspace. Invalid inputs exit with status 2
+before creating a workspace; failed copies remove partial outputs.
+
+To prepare only selected cases, repeat `--case` with IDs from `cases.json`:
+
+```console
+python evals/prepare.py --skill skills/loopy --case guide
+python evals/prepare.py --skill skills/loopy --case review --case ready
+```
+
+Only selected fixture directories and requests are copied, in catalogue order.
+If per-case independence matters, prepare a separate workspace and use a fresh
+agent for each case. Record when one agent performs several separate cases.
 
 Keep task fixtures and accepted observations in this directory. Do not copy
 temporary test harnesses, generated packages, or evaluation logs into the
@@ -59,18 +70,30 @@ project-wide coverage, supported external contracts, coherent migrations,
 baseline versus intended bug behavior, and effects beyond return values.
 Use an actual project fixture when claiming those paths were behaviorally tested.
 
-## Static checks
+## Package and helper checks
+
+From the repository root, run these commands with Python 3.9+:
+
+```console
+python evals/check.py
+python -m unittest discover -s evals -v
+```
+
+`check.py` parses both hosts' plugin and marketplace JSON, checks shared
+metadata and the skill path, validates case inputs, and follows local Markdown
+links from the README. It exits with status 1 and reports failed checks.
+The tests exercise packet isolation, protected input copies, withheld answers,
+invalid-input rejection, failed-copy cleanup, and detection of package drift.
+Neither command needs external packages.
 
 Run the installed `skill-creator` skill's `scripts/quick_validate.py` on
 `skills/loopy`. That validator requires PyYAML; use an available suitable Python
 environment or a temporary environment without adding a runtime dependency to
-Loopy. Also parse all plugin and marketplace JSON, check that both plugin versions
-and shared descriptions agree, and follow local Markdown links from the README
-through the runtime references and this evaluation entrypoint.
+Loopy. This separately validates skill frontmatter; `check.py` does not replace it.
 
-The runtime is instruction-only. Validate any changed evaluation helper by
-running it and inspecting its output. These checks establish package consistency,
-not agent behavior or successful installation in either host.
+The runtime is instruction-only. After changing an evaluation helper, also
+prepare a packet and inspect its output. These checks establish package and
+helper consistency, not agent behavior or successful installation in either host.
 
 ## Recorded run
 
