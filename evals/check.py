@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
-from prepare import load_cases
+from cases import load_cases
 
 
 def main():

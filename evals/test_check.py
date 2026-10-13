@@ -78,6 +78,16 @@ class CheckTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("missing fixture directory for 'guide'", result.stderr)
 
+    def test_empty_acceptance_is_rejected(self):
+        path = self.root / "evals" / "cases.json"
+        cases = json.loads(path.read_text(encoding="utf-8"))
+        cases[0]["acceptance"] = []
+        path.write_text(json.dumps(cases), encoding="utf-8")
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("acceptance", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

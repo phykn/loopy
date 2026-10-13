@@ -11,6 +11,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import prepare
+from cases import load_cases
 
 
 class PrepareTests(unittest.TestCase):
@@ -72,6 +73,18 @@ class PrepareTests(unittest.TestCase):
         self.assertEqual({path.name for path in (root / "tasks").iterdir()}, {"guide", "ready"})
         packet = (root / "requests.md").read_text(encoding="utf-8")
         self.assertEqual(packet.count("Task directory:"), 2)
+        self.assertLess(packet.index("tasks/guide"), packet.index("tasks/ready"))
+
+    def test_missing_acceptance_creates_no_workspace(self):
+        path = self.source / "cases.json"
+        cases = json.loads(path.read_text(encoding="utf-8"))
+        del cases[0]["acceptance"]
+        path.write_text(json.dumps(cases), encoding="utf-8")
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertIn("acceptance", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+        self.assertEqual(list(self.outputs.iterdir()), [])
 
     def test_invalid_skill_and_case_create_no_workspace(self):
         for args, message in (
@@ -106,7 +119,7 @@ class PrepareTests(unittest.TestCase):
         self.assertEqual(list(self.outputs.iterdir()), [])
 
     def test_failed_copy_removes_partial_workspace(self):
-        cases = prepare.load_cases(self.source)
+        cases = load_cases(self.source)
         with patch("prepare.tempfile.tempdir", str(self.outputs)):
             with self.assertRaises(FileNotFoundError):
                 prepare.prepare(self.skill, self.root / "missing-fixtures", cases)

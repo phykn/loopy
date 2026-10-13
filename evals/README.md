@@ -52,6 +52,20 @@ temporary test harnesses, generated packages, or evaluation logs into the
 runtime skill. A reviewer or evaluator must not read these expected answers
 while performing a blind trial.
 
+## Maintain the catalogue and helpers
+
+[cases.json](cases.json) is a nonempty list of cases. Each case needs a unique
+lowercase letter/digit ID (hyphens may separate groups), a nonblank `request`,
+a matching `fixtures/<id>/` directory, and a nonempty `acceptance` list of
+nonblank strings. Acceptance criteria stay with the coordinator; they are never
+included in the evaluator's packet.
+
+[cases.py](cases.py) owns catalogue and fixture validation for both commands.
+[prepare.py](prepare.py) selects cases and owns workspace copying, request
+rendering, and cleanup. [check.py](check.py) owns package and documentation
+checks and uses the same catalogue validation. Change case rules in `cases.py`
+so packet preparation and package checks remain consistent.
+
 ## Inspect the evidence
 
 For each case, record the version and conditions, input identity, changed files,

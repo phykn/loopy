@@ -1,11 +1,11 @@
 """Copy a Loopy skill and task fixtures into an isolated evaluation workspace."""
 
 import argparse
-import json
-import re
 import shutil
 import tempfile
 from pathlib import Path
+
+from cases import load_cases
 
 
 def main():
@@ -28,28 +28,6 @@ def main():
             parser.error(f"unknown case: {', '.join(sorted(unknown))}")
         cases = [case for case in cases if case["id"] in ids]
     print(prepare(skill, source / "fixtures", cases))
-
-
-def load_cases(source):
-    path = source / "cases.json"
-    cases = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(cases, list) or not cases:
-        raise ValueError(f"{path}: expected a nonempty case list")
-    ids = set()
-    for case in cases:
-        if not isinstance(case, dict):
-            raise ValueError(f"{path}: expected a case object")
-        id = case.get("id")
-        if not isinstance(id, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", id):
-            raise ValueError(f"{path}: invalid case ID {id!r}")
-        if id in ids:
-            raise ValueError(f"{path}: duplicate case ID {id!r}")
-        ids.add(id)
-        if not isinstance(case.get("request"), str) or not case["request"].strip():
-            raise ValueError(f"{path}: case {id!r} needs a request")
-        if not (source / "fixtures" / id).is_dir():
-            raise ValueError(f"{path}: missing fixture directory for {id!r}")
-    return cases
 
 
 def prepare(skill, fixtures, cases):
