@@ -28,12 +28,22 @@ evidence; they cannot replace the attempted task or its result.
 
 ## Give only normal user context
 
-When delegation is available and authorized, use a fresh agent or session that
-has not seen the implementation discussion, intended answers, suspected defects,
-earlier findings, or proposed fixes. A different agent with inherited production
-history is not a fresh reader. Use the same isolation for post-change evaluation.
+When delegation is permitted (see Loopy's scope rules), use a fresh agent or
+session that has not seen the implementation discussion, intended answers,
+suspected defects, earlier findings, or proposed fixes. A different agent with
+inherited production history is not a fresh reader. Use the same isolation for
+post-change evaluation.
 
-Provide the actual user task, normal entrypoint, delivered materials and their
+- Claude Code: start a subagent with the Agent tool using a type that starts
+  without the conversation, not a fork. For a trial that writes files, request
+  worktree isolation or give it a temporary copy.
+- Codex: spawn a subagent without forking the current conversation, or start a
+  new session. Give it a temporary copy when the trial writes files.
+- Other hosts: use any mechanism that starts without the production history.
+  If every available mechanism inherits it, the attempt is not independent.
+
+The evaluation prompt is the evaluator's whole context, so do not summarize the
+production work in it. Provide the actual user task, normal entrypoint, delivered materials and their
 ordinary linked dependencies, assumed knowledge, and permitted resources and
 side effects. Keep the acceptance oracle and production notes with the main
 agent. Do not conceal materials a real user would have, or supply private hints

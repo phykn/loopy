@@ -27,9 +27,11 @@ or previous review conclusions. Loopy inspects what the evaluator actually did
 and produced. Feedback is evidence to investigate; a mistaken answer or stylistic
 preference does not automatically justify a revision.
 
-Independent trials require available, authorized delegation and stay within the
-user's scope. When unavailable, Loopy reports the strongest permitted check and
-its limitations. Self-review is not reported as independent use. Small changes
+Independent trials use a subagent the session already offers, such as a
+non-forked Claude Code Agent or a fresh Codex subagent, unless the user, host,
+or project restricts delegation. They stay within the user's scope and write
+only in an isolated copy. When unavailable, Loopy reports the strongest
+permitted check and its limitations. Self-review is not reported as independent use. Small changes
 with adequate direct evidence do not require another evaluator, and passing
 checks are reused while their inputs and assumptions remain valid.
 

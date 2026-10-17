@@ -1,12 +1,15 @@
 ---
 name: loopy
 description: >
-  Complete substantial autonomous work with evidence that the result is correct
-  and its intended user can understand and use it without the production
-  conversation. Use for creating, revising, or assessing artifacts where
-  preservation, independent use, premature completion, or unnecessary revision
-  materially affects success, including project-wide refactoring. Do not impose
-  this workflow on trivial edits, direct factual answers, or open brainstorming.
+  Complete substantial work with evidence that the result is correct, keeps
+  what must not change, and can be understood and used without this
+  conversation. Use when the user asks to finish, hand off, or verify a guide,
+  README, plan, skill, prompt, codebase, or other deliverable so a teammate,
+  maintainer, or agent can use it on their own; to "make sure it works" or
+  "verify before calling it done"; to refactor a project while preserving
+  behavior; or to assess whether something is usable without editing it. Also
+  use when "Loopy" is named. Do not use for trivial edits, direct factual
+  answers, open brainstorming, or one-step tasks whose completion is obvious.
 ---
 
 # Loopy
@@ -21,10 +24,14 @@ supported findings, then finish or continue. Scale the work to its consequences;
 these controls do not require separate phases, tool calls, or review rounds.
 
 Follow the host's instruction hierarchy and the user's scope and authorization.
-This skill does not grant permission for external actions, extra writes, or
-delegation. For a read-only assessment, deliver supported findings; do not repair
-the assessed artifact. Explicit requests and previously granted authorization
-remain authoritative.
+This skill does not grant permission for external actions or extra writes.
+Choosing this skill, or a request it matches, permits a bounded evaluation by a
+subagent that the session already offers, provided it stays within the user's
+scope and writes only in an isolated copy. Do not delegate when the user, host,
+or project instructions restrict delegation or its cost, or when the only way to
+delegate needs new setup, credentials, or approval. For a read-only assessment,
+deliver supported findings; do not repair the assessed artifact. Explicit
+requests and previously granted authorization remain authoritative.
 
 For refactoring or its assessment, also read
 [Refactoring](references/refactoring.md) before defining success. It owns the
@@ -170,7 +177,17 @@ score, a fixed number of passes, or exhaustion of all possible improvements.
 An unexecuted available required check is remaining work, not completion or a
 blocker. Difficulty alone is not a blocker.
 
-Deliver the result at the intended entrypoint. Briefly report the decision,
-result, verification evidence, and material limits; give the next action when
-needed. Follow the user's format. Avoid process transcripts and additional
-ceremonial documents unless they are part of the requested outcome.
+`revise` is never a final report: keep working until one of the other three
+applies. The decision names are internal labels. Report in the user's language
+and format, and say the decision in plain words rather than as a code-styled
+token unless the user asked for that vocabulary. A final report covers, briefly:
+
+- the decision and the delivered result, at its entrypoint;
+- the verification evidence, labeling each use check as an independent attempt,
+  self-check, or walkthrough;
+- material limits and unverified properties;
+- for `blocked` or `out_of_scope`, what would unblock it or which boundary
+  applies; otherwise the user's next action when one is needed.
+
+Avoid process transcripts and additional ceremonial documents unless they are
+part of the requested outcome.
