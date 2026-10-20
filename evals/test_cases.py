@@ -1,5 +1,3 @@
-"""Check the acceptance criteria required for a usable evaluation case."""
-
 import json
 import tempfile
 import unittest

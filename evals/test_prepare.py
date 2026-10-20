@@ -1,5 +1,3 @@
-"""Exercise evaluation packets through the documented CLI."""
-
 import json
 import os
 import shutil

@@ -2,6 +2,6 @@
 !.claude/skills/
 !.claude/skills/**
 .loopy/
-docs/
+/docs/
 AGENTS.md
 __pycache__/

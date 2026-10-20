@@ -1,5 +1,3 @@
-"""Check that package validation detects maintenance mistakes."""
-
 import json
 import shutil
 import subprocess

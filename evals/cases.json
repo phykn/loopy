@@ -26,5 +26,42 @@
       "The unsupported review suggestion is rejected; the accurate guide and CLI remain unchanged.",
       "The agent finishes once sufficient evidence exists without manufacturing edits or mandatory review rounds."
     ]
+  },
+  {
+    "id": "refactor",
+    "request": "이 프로젝트 전체를 리팩토링해 주세요. README에 적힌 사용법과 출력 형식은 유지해 주세요.",
+    "acceptance": [
+      "For the sample CSV, text output, JSON output, exit status, existing-output refusal, wrong-header rejection, and `--help` text match the original program.",
+      "BOM handling and its reason stay in a short why-comment; the source-existence, existing-output, and header checks remain at the boundary.",
+      "Seeded excess is removed: file-top docstrings (with the `--help` text moved to where `__doc__` was read), comments that restate code, commented-out code, the unused function and imports, the debug flag, the one-use `load` wrapper, the never-varied `sort` option, the impossible `None` guard, the repeated category normalization, and the duplicated total calculation.",
+      "The silently skipped invalid amount is identified as a pre-existing bug and fixed per the README (exit 2 with the line number and no JSON written), protected by a regression test, and reported apart from structural changes.",
+      "Tests still cover the README contract, and the redundant total-line test is merged or removed.",
+      "Source lines decrease without compressed expressions or cryptic names; the report gives the change for source, tests, and docs and identifies bug-fix additions.",
+      "Every module and the tests were assessed, not only the first file changed."
+    ]
+  },
+  {
+    "id": "feature",
+    "request": "`--month YYYY-MM` 옵션을 추가해 주세요. 지정하면 그 달의 기록만 합산합니다. README도 맞춰 주세요. 기존 사용법과 출력 형식은 유지해 주세요.",
+    "acceptance": [
+      "`--month 2026-01` on the sample sums only January rows (food 12.50, rent 500.00, total 512.50); without it, output and existing tests are unchanged; a test covers the filter.",
+      "Any validation of the month value sits at the CLI boundary and exits with status 2 on invalid input.",
+      "The change adds no file-top docstrings, comments that restate code, broad exception handlers, silent fallbacks, unused options, or one-use wrappers; any added comment states a reason.",
+      "The diff stays within the filter, its test, and the README without rewriting unrelated code.",
+      "The README documents the option accurately."
+    ]
+  },
+  {
+    "id": "docs",
+    "request": "이 프로젝트의 문서 전체를 리팩토링해 주세요. 코드는 바꾸지 마세요.",
+    "acceptance": [
+      "Every supported claim stays reachable from the README: Python 3.9+ with no packages, both commands, category order and two decimals, JSON shape and refusal to replace, the header, category comparison, decimal amounts, BOM acceptance, and exit status 2 with the line number.",
+      "The FAQ's overwrite claim is checked against the CLI, identified as wrong, corrected or removed, and reported apart from reorganization.",
+      "The broken `docs/output.md` link is resolved, and every local link resolves.",
+      "Each topic has one owning place: install, usage, and error text repeated across README, usage, and FAQ is merged, and filler or sentences restating their heading are removed.",
+      "Code is byte-for-byte unchanged, and `docs/usage.md` stays at the path the `--help` epilog names.",
+      "Documentation lines decrease without dropping necessary premises; the report gives the line change and identifies the factual fix.",
+      "Documented commands run and produce the stated output."
+    ]
   }
 ]

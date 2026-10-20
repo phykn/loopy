@@ -1,5 +1,3 @@
-"""Load and validate the evaluation catalogue and its fixture directories."""
-
 import json
 import re
 

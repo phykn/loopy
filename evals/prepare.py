@@ -1,5 +1,3 @@
-"""Copy a Loopy skill and task fixtures into an isolated evaluation workspace."""
-
 import argparse
 import shutil
 import tempfile
@@ -9,7 +7,7 @@ from cases import load_cases
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description="Copy a Loopy skill and task fixtures into an isolated evaluation workspace.")
     parser.add_argument("--skill", type=Path, required=True)
     parser.add_argument("--case", action="append", dest="ids", help="case ID to include; repeat to select several (default: all)")
     args = parser.parse_args()
@@ -38,8 +36,7 @@ def prepare(skill, fixtures, cases):
             shutil.copytree(fixtures / case["id"], root / "tasks" / case["id"])
         (root / "requests.md").write_text(render_requests(root, cases), encoding="utf-8")
     except BaseException:
-        if root.parent == Path(tempfile.gettempdir()).resolve() and root.name.startswith("loopy-eval-"):
-            shutil.rmtree(root)
+        shutil.rmtree(root)
         raise
     return root
 

@@ -8,23 +8,36 @@ format checks alone cannot establish that the instructions work.
 
 1. Before editing, select relevant cases from [cases.json](cases.json), fix their
    acceptance criteria, and preserve the baseline skill and raw fixture inputs.
-   The initial cases cover a usable guide, a read-only assessment, and an
-   already-correct guide with an unsupported review finding. They are a focused
-   sample, not coverage of every supported artifact type.
+   The cases are `guide` (a usable guide), `review` (a read-only assessment),
+   `ready` (an already-correct guide with an unsupported review finding),
+   `refactor` (code seeded with common agent habits and a pre-existing bug),
+   `feature` (a feature added to clean code), and `docs` (documentation with
+   repetition and a wrong claim). They are a focused sample, not coverage of
+   every supported artifact type.
 2. From the repository root, run the command below with the baseline skill
-   directory. Run it again with the revised skill for a separate workspace.
+   directory, such as an export from
+   `git archive HEAD skills/loopy | tar -x -C <dir>`. Run it again with the
+   revised skill for a separate workspace.
    Python 3.9+ is sufficient; no external packages are required.
 3. Give each version's `requests.md` to a fresh agent without the production
    conversation, expected answers, acceptance criteria, or earlier conclusions.
    Specify the same resources, capabilities, and delegation authorization for
    both versions. This is actual task execution, not a critique of the skill.
 4. Inspect the recorded actions and actual outputs against the withheld
-   acceptance criteria. Compare protected files with the fixtures byte for byte.
-   Execute delivered commands from a clean copy, and use a separate fresh reader
-   for any user task the producing agent did not independently exercise.
-5. Correct only supported problems and rerun affected cases. Record changed
-   conditions and unresolved limits; do not repeat unchanged trials until one
-   happens to pass. Link retained observations from this file.
+   acceptance criteria; an agent's claim of success is not evidence by itself.
+   Compare protected files with the fixtures byte for byte. Execute delivered
+   commands from a clean copy, and use a separate fresh reader for any user task
+   the producing agent did not independently exercise. When a change touches
+   refactoring, also compare the instructions themselves: project-wide coverage,
+   supported external contracts, coherent migrations, baseline versus intended
+   bug behavior, and effects beyond return values. Claim that those paths were
+   behaviorally tested only from an actual project fixture.
+5. Correct only supported problems and rerun affected cases; do not repeat
+   unchanged trials until one happens to pass. For each case, record the version
+   and conditions, input identity, changed files, actual outcomes, acceptance
+   result, and material limits, distinguishing self-checks, fresh-agent
+   attempts, and human use. Add retained observations to
+   [results.md](results.md).
 
 ```console
 python evals/prepare.py --skill skills/loopy
@@ -47,42 +60,22 @@ Only selected fixture directories and requests are copied, in catalogue order.
 If per-case independence matters, prepare a separate workspace and use a fresh
 agent for each case. Record when one agent performs several separate cases.
 
-Keep task fixtures and accepted observations in this directory. Do not copy
-temporary test harnesses, generated packages, or evaluation logs into the
-runtime skill. A reviewer or evaluator must not read these expected answers
-while performing a blind trial.
-
 ## Maintain the catalogue and helpers
 
 [cases.json](cases.json) is a nonempty list of cases. Each case needs a unique
 lowercase letter/digit ID (hyphens may separate groups), a nonblank `request`,
 a matching `fixtures/<id>/` directory, and a nonempty `acceptance` list of
 nonblank strings. Acceptance criteria stay with the coordinator; they are never
-included in the evaluator's packet.
+included in the evaluator's packet. Add cases for material new paths instead of
+expanding the rubric to every stylistic preference. Keep fixtures and accepted
+observations in this directory; keep them, test harnesses, generated packages,
+and evaluation logs out of the runtime skill.
 
 [cases.py](cases.py) owns catalogue and fixture validation for both commands.
 [prepare.py](prepare.py) selects cases and owns workspace copying, request
 rendering, and cleanup. [check.py](check.py) owns package and documentation
 checks and uses the same catalogue validation. Change case rules in `cases.py`
 so packet preparation and package checks remain consistent.
-
-## Inspect the evidence
-
-For each case, record the version and conditions, input identity, changed files,
-actual command or action outcomes, acceptance result, and material limitations.
-Distinguish self-checks, fresh-agent attempts, and human use. An agent's final
-claim of success is not sufficient without inspecting its artifact or execution.
-
-Confirm that a guide works from its normal entrypoint; that a review only
-reports supported findings; and that an already-correct artifact stays intact
-after a false finding is checked. These cases also challenge unnecessary edits,
-recursive evaluation, and extra review rounds. Add cases for material new paths
-instead of expanding the rubric to every stylistic preference.
-
-Compare instructions as well as behavior when preserving refactoring semantics:
-project-wide coverage, supported external contracts, coherent migrations,
-baseline versus intended bug behavior, and effects beyond return values.
-Use an actual project fixture when claiming those paths were behaviorally tested.
 
 ## Package and helper checks
 
@@ -109,8 +102,9 @@ The runtime is instruction-only. After changing an evaluation helper, also
 prepare a packet and inspect its output. These checks establish package and
 helper consistency, not agent behavior or successful installation in either host.
 
-## Recorded run
+## Recorded runs
 
-[2026-10-01 redesign evaluation](results.md) records the baseline and revised
-skill, observed task outcomes, retained guide artifacts, and limits. Consult it
-when maintaining these acceptance cases or comparing a later workflow revision.
+[Evaluation records](results.md) holds the 2026-10-21 reduction run and the
+2026-10-01 redesign run: baseline and revised skills, observed task outcomes,
+retained guide artifacts, and limits. Consult it when maintaining these
+acceptance cases or comparing a later workflow revision.

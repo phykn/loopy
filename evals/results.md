@@ -1,11 +1,78 @@
-# 2026-10-01 redesign evaluation
+# Evaluation records
+
+## 2026-10-21 reduction evaluation
+
+The candidate added `references/code.md`, a reduction goal and document
+refactoring to `references/refactoring.md`, and a stated goal of not stopping
+after one pass to `SKILL.md`. Both versions kept behavior, fixed the seeded
+bugs, and preserved the protected paths. The candidate produced less code and
+text in all three new cases, and it alone removed file-top docstrings and
+avoided comments that restate code. This is one run per case, not a benchmark.
+
+### Conditions and inputs
+
+- Baseline: 0.6.1 at commit `18342472ecce83c0fd4fcbc698605a7b5fae7c42`,
+  exported with `git archive` before evaluation.
+- Candidate: the working tree skill, snapshotted before its trials and later
+  confirmed identical to the delivered files.
+- Environment: macOS, Python 3.13.16; some agents also ran Python 3.9.6. Each
+  case and version had its own workspace from `prepare.py --case` and its own
+  fresh Claude Code `general-purpose` subagent on the same model, with the same
+  prompt and permission to delegate one bounded fresh-context check.
+- The user's global agent instructions, including a personal guidance wiki that
+  favors short code and removing text, were available to both versions. At
+  least one docs evaluator read that wiki. Workspace paths contained the
+  repository name; agents were told not to read outside their workspace.
+- Cases and fixtures were written before any skill edit in this change, except
+  for the comment rule edited just before. The `docs` case was added while the
+  candidate was being edited; its baseline still used the exported 0.6.1 skill.
+
+| Input | SHA-256 |
+| --- | --- |
+| Case definitions | `39dae10e90af1313192728be805c410131ec1b3115471cf3bfe26989edc6e67f` |
+| Baseline SKILL.md | `ea68f8d00b3b4b46c937cf463e877bf535d233a66ef56f07ea15e0806647fdee` |
+| Baseline refactoring.md | `5dad49539816c7d54e608a139fd67fb162cfaa4e0014b5a2c050b15c9db7bb58` |
+| Candidate SKILL.md | `0e0d1755ef946a4c755eb57eb9796c004a18820d1ae84acc2dde11c54937c564` |
+| Candidate code.md | `bc439d2b88d0df12bcc6c06901492fe90ff282fd2535d49f2f4ec06e54fd5eaf` |
+| Candidate refactoring.md | `f51b93b74ad6bdfa1216277a68fad2eccc9f9baa08da9ecd21f646d582792014` |
+
+The baseline `refactor` and `feature` workspaces were prepared before the
+`docs` case existed, so their case-definition hash differs; their own case
+entries are unchanged.
+
+### Task outcomes
+
+The coordinator ran each result from a clean copy: sample text and JSON output,
+existing-output refusal, wrong header, an invalid amount with `--json`, `--help`,
+and the fixture tests. Signals for docstrings, comments, and seeded excess were
+read from the files, not from agent reports.
+
+| Case | Baseline | Candidate |
+| --- | --- | --- |
+| `refactor` | Behavior and `--help` kept; invalid-amount bug fixed with a regression test; seeded leftovers removed. Kept four file-top docstrings, added two function docstrings, a comment explaining `parser.error`, and an `Expense` dataclass. Source 125 → 112 lines, tests 61 → 81. | Behavior and `--help` kept; bug fixed with a regression test; all seeded excess removed, `--help` text moved into `description`. No docstrings; two why-comments. Three modules merged into one 68-line `cli.py`. Source 125 → 68, tests 61 → 68; the report split out the bug-fix lines. |
+| `feature` | `--month` works, invalid months exit 2, eight tests pass. Added a comment restating the filter. Source 81 → 102, tests 61 → 107. | Same behavior, seven tests pass. No added comments; the date-error test joined the existing rejection table. Source 81 → 98, tests 61 → 91. |
+| `docs` | Code unchanged, `docs/usage.md` kept, wrong overwrite claim and broken link fixed, claims retained. Documentation 94 → 128 lines. | Same correctness. The FAQ was removed because every answer repeated README or usage; its one useful example moved to usage. Documentation 94 → 79 lines. |
+
+Both `refactor` agents and both `docs` agents ran fresh-reader attempts before
+and after their changes. The candidate `feature` agent skipped one as a small
+change with direct evidence; the baseline `feature` agent ran one.
+
+### Limits
+
+Each case ran once per version, so differences may include run-to-run variance.
+Both versions also rejected `NaN` amounts and validated `--month` dates, which
+the README implies but does not state. Human use, Codex, and other models were
+not exercised. Agents could read the shared global instructions, which may
+narrow the difference between versions.
+
+## 2026-10-01 redesign evaluation
 
 The revised skill completed the three selected tasks, added an independent
 guide-use attempt during production, and preserved the read-only and no-change
 boundaries. Both versions produced working guides. This run supports the new
 verification behavior; it does not establish a general quality improvement.
 
-## Conditions and inputs
+### Conditions and inputs
 
 - Baseline: 0.5.0 at commit `3579c66bc2d0db6362d48b452759c40a0bdf6adf`, with a
   snapshot of the existing skill taken before edits.
@@ -33,7 +100,7 @@ SHA-256 identities of the evaluated bytes (line-ending changes affect these):
 | Candidate SKILL.md | `97b6e021df6b02c4ad54f4aeefbab8b23c50d432b70b30280761dd10b009289b` |
 | Candidate independent-use.md | `45ba4a5fba50a363ad4e406c67861a1849f7cf16117f968bcf74fcc9a6566a7e` |
 
-## Task outcomes
+### Task outcomes
 
 | Case | Baseline | Candidate | Accepted evidence |
 | --- | --- | --- | --- |
@@ -67,7 +134,7 @@ all seven protected files were unchanged: both CLIs, three input text files,
 the plan, and the already-correct README. Only the requested guide was edited
 among task inputs. Generated files stayed in temporary evaluation workspaces.
 
-## Independent use and preservation review
+### Independent use and preservation review
 
 The candidate's producing agent delegated a fresh-context attempt from the
 completed README. The reader ran packaging and JSON inspection in an isolated
@@ -91,7 +158,7 @@ and unavailable or prohibited delegation. It correctly located common trial
 rules in `references/independent-use.md` and code migration rules in
 `references/refactoring.md`. This was source review, not an executed refactor.
 
-## Package verification and limits
+### Package verification and limits
 
 The installed skill-creator validator passed. Plugin and marketplace JSON
 parsed; both host manifests specify 0.6.0 and agree on the shared description.

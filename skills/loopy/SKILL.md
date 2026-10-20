@@ -6,10 +6,11 @@ description: >
   conversation. Use when the user asks to finish, hand off, or verify a guide,
   README, plan, skill, prompt, codebase, or other deliverable so a teammate,
   maintainer, or agent can use it on their own; to "make sure it works" or
-  "verify before calling it done"; to refactor a project while preserving
-  behavior; or to assess whether something is usable without editing it. Also
-  use when "Loopy" is named. Do not use for trivial edits, direct factual
-  answers, open brainstorming, or one-step tasks whose completion is obvious.
+  "verify before calling it done"; to refactor code or documents into less,
+  clearer content while preserving behavior and meaning; or to assess whether
+  something is usable without editing it. Also use when "Loopy" is named. Do
+  not use for trivial edits, direct factual answers, open brainstorming, or
+  one-step tasks whose completion is obvious.
 ---
 
 # Loopy
@@ -20,8 +21,11 @@ entrypoint. The user may know the domain without knowing this project or the
 conversation that produced it. Make that distinction part of success.
 
 Use this loop: define success, build, verify correctness and use, resolve
-supported findings, then finish or continue. Scale the work to its consequences;
-these controls do not require separate phases, tool calls, or review rounds.
+supported findings, then finish or continue. It corrects the habit of stopping
+after one pass: a first draft, a first passing check, or a first tidied area is
+not completion. Continue until the `done` conditions hold, and stop once they
+do. Scale the work to its consequences; these controls do not require separate
+phases, tool calls, or review rounds.
 
 Follow the host's instruction hierarchy and the user's scope and authorization.
 This skill does not grant permission for external actions or extra writes.
@@ -33,9 +37,10 @@ delegate needs new setup, credentials, or approval. For a read-only assessment,
 deliver supported findings; do not repair the assessed artifact. Explicit
 requests and previously granted authorization remain authoritative.
 
-For refactoring or its assessment, also read
-[Refactoring](references/refactoring.md) before defining success. It owns the
-code-specific rules for structure, compatibility, migrations, and bug fixes.
+When writing, changing, or assessing code, also read [Code](references/code.md);
+it owns how code should read. For refactoring or its assessment, also read
+[Refactoring](references/refactoring.md) before defining success. It owns
+reduction, compatibility, migrations, and bug fixes.
 
 ## Define success
 
@@ -74,9 +79,10 @@ the next required action is available, or substitute an easier outcome.
 
 Make purpose, entrypoints, important concepts, and necessary decisions visible
 where the user needs them. Prefer clear names, coherent responsibilities, useful
-ordering, and workable interfaces. Supply domain assumptions, units, rationale,
-and examples where they are necessary. A long final chat explanation cannot
-repair a missing requirement in the artifact users will receive.
+ordering, and workable interfaces. In code, make these visible through names
+and structure; comments carry only why. Supply domain assumptions, units,
+rationale, and examples where they are necessary. A long final chat explanation
+cannot repair a missing requirement in the artifact users will receive.
 
 When design needs judgment, examine what is missing or excessive, what belongs
 together, and which change most improves the required next action. Explicit

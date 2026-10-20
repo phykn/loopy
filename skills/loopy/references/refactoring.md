@@ -1,12 +1,36 @@
 # Refactoring
 
-Use this guidance within Loopy's workflow when refactoring is requested. Structural
-improvement and supported fixes for encountered bugs are part of the Outcome.
+Use this guidance within Loopy's workflow when refactoring code or documents is
+requested. Refactoring aims at the same supported behavior or meaning with
+clearer structure and less code or text; less to read is easier for both people
+and agents to understand. Structural improvement, reduction, and supported fixes
+for encountered bugs are part of the Outcome.
 A project-wide request includes folder and file structure, names,
 responsibilities, and dependencies across the project; a narrower request keeps
 its stated boundary. A read-only assessment authorizes findings only, including
 when applying the bug and migration criteria below. Explicit user constraints
 override these defaults.
+
+## Documents
+
+Documents such as READMEs, guides, wikis, skills, and prompts follow the same
+steps with these counterparts:
+
+- Structure and names: group content by meaning into files and sections with
+  plain filenames and headings. Give each topic one owning place that others
+  link to instead of repeating it.
+- Preserved behavior: accepted claims, scope, procedures, commands, examples,
+  and the links, anchors, and paths that other files, code, or tools depend on.
+  Record them before editing, then confirm none was lost or changed in meaning.
+- Reduction: remove repeated statements, sentences that restate a heading or
+  nearby text, filler, and stale content; merge sections that answer the same
+  reader question. Do not cut necessary premises, precision, or caveats.
+- Bugs: wrong claims, broken commands or links, and contradictions supported by
+  evidence. Check claims against the code or source they describe.
+- Migrations: when content moves, update links, anchors, indexes, and any code
+  or configuration that reads or names the document.
+- Reader tasks: find where a topic is explained, follow a procedure, or make a
+  decision from the text.
 
 ## Establish the target
 
@@ -30,8 +54,9 @@ every file or stop after tidying the first convenient module.
 
 Translate the request into observable structural criteria, such as one owner
 for a lifecycle, removal of a dependency cycle, names that distinguish different
-concepts, or related operations using the same call shape. Ground each change
-in actual responsibilities, consumers, confusing usages, or repeated changes.
+concepts, related operations using the same call shape, or less code for the
+same behavior. Ground each change in actual responsibilities, consumers,
+confusing usages, or repeated changes.
 Working code can still need structural improvement; a runtime defect is not
 required. Existing organization is evidence to inspect, not a default constraint.
 Retain structures and names that already fit. Avoid imposing a stock
@@ -84,39 +109,27 @@ do not supply the author's architecture explanation or expected weak spots.
 Check confusion against call paths and data flow before accepting a correction.
 Do not infer a structural defect from a wrong answer alone.
 
-## Reshape structure and names
+## Reduce and reshape
 
-Group code that changes for the same reason. Keep behavior with the data or
-lifecycle that owns it; split unrelated responsibilities and make dependency
-direction explicit. Prefer straightforward folders with little unnecessary
-nesting. Consolidate duplication when it represents the same knowledge and
-reason to change, not coincidental textual similarity. Remove obsolete internal
-paths as their consumers migrate. Do not turn shared utilities or configuration
-into a home for unrelated behavior.
+Reshape code toward [Code](code.md) and documents toward the counterparts
+above. Reassess names together with their responsibilities; a rename should
+resolve misleading meaning, inconsistent vocabulary, or ambiguity.
 
-Reassess folder names, filenames, modules, classes, functions, parameters, and
-variables together with their responsibilities. Prefer domain terms for domain
-concepts, concise verb phrases for functions, and short conventional local names
-where their meaning is clear. Use singular and plural consistently and the same
-name and call shape for the same operation across related components. A rename
-should resolve misleading meaning, inconsistent vocabulary, or ambiguity;
-longer names and more layers are not inherently better.
+Remove what the supported behavior or meaning does not need: duplication of
+the same knowledge and reason to change (not coincidental textual similarity),
+obsolete internal paths as their consumers migrate, pass-through layers, and
+the wrappers, options, handling, guards, comments, docstrings, and leftovers
+that [Code](code.md) excludes. When code reads a removed docstring, such as `__doc__`
+for CLI help, move its text to that use. Removing handling that changes an
+observable result is a behavior change; treat it under the bug-fix rules, not
+as cleanup.
 
-Keep the main execution path visible. Extract helpers for real concepts or
-repeated operations, keep one-use behavior near its owner, and arrange functions
-in a useful reading order. Judge extraction, splitting, and merging by the total
-burden on readers and callers: concepts to learn, hidden dependencies, required
-call order, and places that must change together. A more involved implementation
-can be worthwhile when it hides details behind a simpler contract. Reject
-pass-through layers and split-outs that merely add names or navigation.
-
-Do not split a coherent function solely to meet a line-count or complexity
-threshold. Use metrics and tool findings to locate candidates, not as proof of
-improvement or permission to edit. Follow required project checks; do not impose
-new universal thresholds. A one-use helper or single-implementation interface
-can be justified by a real concept, information hiding, or a necessary test
-boundary. Speculative future reuse cannot justify it. Do not add wrappers,
-aliases, helper classes, or options solely to make a rearrangement possible.
+Reduce the amount, not legibility: do not merge statements, shorten names
+beyond convention, compress prose into fragments, or inline a real concept to
+save lines. Added code, such as a seam, helper, or interface, must remove more
+burden or code elsewhere than it adds.
+Apply the same rules to tests: merge duplicates and drop tests that freeze
+private structure while keeping coverage of supported contracts.
 
 Trace data through producers and consumers before removing repeated transforms,
 indexes, validation, or deduplication. Check whether upstream contracts already
@@ -134,9 +147,11 @@ then retire stale internal references. Inspect runtime discovery and string-base
 references as well as static imports. Account for path casing on supported
 platforms. Change generated artifacts through their maintained sources.
 
-Verify each coherent boundary change before building further changes on it.
-Keep coupled edits together across files and folders; checkpoints separate
-independent units rather than leaving their callers temporarily unmigrated.
+Verify each coherent boundary change before building further changes on it,
+then look for code it made unnecessary, such as aliases, adapters, and helpers
+left with one caller. Keep coupled edits together across files and folders;
+checkpoints separate independent units rather than leaving their callers
+temporarily unmigrated.
 Choose names with their final responsibilities instead of performing a cosmetic
 rename pass over a structure that still needs to change.
 
@@ -160,9 +175,11 @@ Check the intended contract before calling behavior a bug. Reproduce the failure
 when safe and practical; otherwise record the concrete static evidence and the
 remaining uncertainty. Fix the cause and add a focused regression check when it
 can distinguish the failure from the intended result. Keep bug fixes identifiable
-in the changes, evidence, and report. Where practical, verify structural moves
-and behavioral corrections separately without leaving coupled migrations
-incomplete or requiring separate approvals or commits. An observation of a known
+in the changes, evidence, and report. Bug fixes and regression checks may add
+code; report them apart from reductions rather than skipping them to lower the
+total. Where practical, verify structural moves and behavioral corrections
+separately without leaving coupled migrations incomplete or requiring separate
+approvals or commits. An observation of a known
 bug may establish the baseline, but final regression checks must protect the
 intended contract. Do not silently rewrite expected outputs or weaken valid
 tests simply to make the new implementation pass.
@@ -186,9 +203,10 @@ paths when changed; compilation and static import checks alone may miss broken
 runtime references. Run project-wide checks appropriate to a project-wide change,
 and state material coverage gaps when adequate checks are unavailable.
 
-Inspect the resulting dependency direction, ownership, vocabulary, and remaining
-references against the structural criteria. For a material boundary decision,
-compare a plausible alternative by ownership, lifecycle, caller burden, and
+Inspect the resulting dependency direction, ownership, vocabulary, remaining
+references, and code or text that could still be removed against the
+structural criteria. For a material boundary decision, compare a plausible
+alternative by ownership, lifecycle, caller burden, and
 public compatibility. This comparison or a material regression check can supply
 Loopy's challenge; reuse adequate evidence instead of starting another review
 cycle.
@@ -208,4 +226,6 @@ criteria; do not reopen satisfied decisions for speculative polish or declare
 project-wide completion from one repaired area. If evidence or authorization
 prevents completion, report the remaining areas and use the existing decision
 rules. The final report should briefly identify the structural and naming
-changes, intentional bug fixes, verification evidence, and material limitations.
+changes, the line change for source, tests, and docs with bug-fix additions
+identified, intentional bug fixes, verification evidence, and material
+limitations.

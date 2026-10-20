@@ -1,5 +1,3 @@
-"""Check plugin metadata, evaluation inputs, and local documentation links."""
-
 import json
 import re
 import sys
