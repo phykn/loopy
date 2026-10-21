@@ -78,12 +78,9 @@ the code or callers, not only examples already covered by tests. Record known
 failures and unverified areas to distinguish regressions, pre-existing defects,
 and intentional fixes. Preserve required behavior and external contracts.
 
-Characterization records what the current code does; it does not establish that
-the behavior is correct. Run these checks before the relevant refactor and
-compare afterward. When behavior is suspicious but the intended contract is
-unclear, preserve the observation and investigate before changing semantics.
-For confirmed bugs, distinguish the observed failure from the intended result
-using the bug-fix guidance below.
+Characterization records what the current code does, not whether it is
+correct. Run these checks before the relevant refactor and compare afterward;
+record suspicious behavior and resolve it under the bug-fix guidance below.
 
 If existing boundaries cannot support useful observation, isolate the dependency
 that actually blocks verification with the smallest useful seam: a place to
@@ -155,11 +152,10 @@ temporarily unmigrated.
 Choose names with their final responsibilities instead of performing a cosmetic
 rename pass over a structure that still needs to change.
 
-Migrate internal names together with their in-Scope consumers and remove stale
-aliases. Preserve supported external contracts unless their migration is
-authorized; retain compatibility where a consumer or supported interface needs
-it. When exposure remains materially uncertain, investigate before changing the
-boundary and use Loopy's existing question rules if evidence cannot resolve it.
+Preserve supported external contracts unless their migration is authorized;
+retain compatibility where a consumer or supported interface needs it. When
+exposure remains materially uncertain, investigate before changing the boundary
+and use Loopy's existing question rules if evidence cannot resolve it.
 
 ## Fix encountered bugs
 
@@ -212,12 +208,11 @@ Loopy's challenge; reuse adequate evidence instead of starting another review
 cycle.
 
 For substantial structural changes, repeat the reader tasks with a fresh
-evaluator. Verify that the maintainer can trace the critical flow and identify
-the required change locations without private coaching. Test relevant README
-commands and examples against the actual entrypoints and outputs. Fix confusing
-structure or names at their source; use concise docs for necessary domain
-assumptions and rationale. Neither a passing test suite nor a reader's confidence
-alone proves both preserved behavior and understandable structure.
+evaluator, and test relevant README commands and examples against the actual
+entrypoints and outputs. Fix confusing structure or names at their source; use
+concise docs for necessary domain assumptions and rationale. Neither a passing
+test suite nor a reader's confidence alone proves both preserved behavior and
+understandable structure.
 
 Finish only when the requested areas have been assessed, accepted structural
 changes and supported in-scope bugs have been resolved, dependent migrations are

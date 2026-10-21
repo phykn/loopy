@@ -1,5 +1,19 @@
 # Evaluation records
 
+## 2026-10-21 refactoring reference cleanup
+
+Three repeated passages were removed from `references/refactoring.md`, which
+was otherwise unchanged from 0.7.0 (SHA-256 `c253104e…`). The `refactor` and
+`docs` cases ran once each with fresh agents under the 0.7.0 conditions below,
+whose candidate results served as the comparison.
+
+| Case | 0.7.0 | Revised |
+| --- | --- | --- |
+| `refactor` | Source 125 → 68, tests 61 → 68; no docstrings | Source 125 → 75, tests 61 → 67; no docstrings, two why-comments; `--help`, outputs, refusal, header check, and the invalid-amount fix verified by the coordinator |
+| `docs` | Documentation 94 → 79 | Documentation 94 → 58; FAQ removed, wrong claim and broken link gone, code unchanged, all claims kept |
+
+Differences between the two runs are within what one run per case can show.
+
 ## 2026-10-21 reduction evaluation
 
 The candidate added `references/code.md`, a reduction goal and document
