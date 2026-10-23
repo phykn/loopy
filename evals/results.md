@@ -1,5 +1,118 @@
 # Evaluation records
 
+## 2026-10-23 improve mode, request routing, and activation (0.8.0)
+
+0.8.0 adds an improve mode (`references/improvement.md`), routes requests by
+five kinds told apart by what sets the target (review, refactor, fix, build,
+improve), rewrites the activation description around those kinds with Korean
+examples, and adds the `improve` case. Loopy's improve mode was then applied to
+Loopy itself, with the goal from earlier feedback that the content is longer
+than needed. Runtime text went from 4,216 words in 0.7.2, and 4,514 with the
+new mode and routing, to 3,529: `SKILL.md` 1,276, `code.md` 352,
+`improvement.md` 313, `independent-use.md` 529, and `refactoring.md` 1,059.
+Every case passed on the texts it ran against; this is one run per case and
+text.
+
+### Conditions and inputs
+
+- Baseline: 0.7.2 at commit `a6abafd`, exported with `git archive`.
+- Environment as in the 0.7.2 record below: macOS, Python 3.13.16, one fresh
+  Claude Code `general-purpose` subagent on Opus 5.5 per case and text, with
+  the same prompt and permission to delegate fresh-context checks inside the
+  workspace. Global instructions were present.
+- The `improve` case and fixture were written before any skill edit in this
+  change.
+- Texts, in order:
+  - 0.7.2 baseline.
+  - Candidate: 0.7.2 plus improve mode, routing, and the new description
+    (4,514 words).
+  - Improved: the improve pass at 3,400 words, which met its own target of at
+    most 3,400.
+  - Restored: two fresh reviewers compared the improved text with the
+    candidate. They found material losses, including:
+    - the refactor finish no longer requiring the project's checks or Loopy's
+      `done`;
+    - project claims no longer checked against the project;
+    - accepted findings no longer kept open;
+    - trial-validity checks for knowledge the user lacks and when to state the
+      purpose;
+    - the evaluator no longer told not to modify the source;
+    - safe reproduction and path casing.
+
+    They also found that the new Build test misrouted "improve, but keep these
+    rules" to Build. These were restored or fixed. The final text is 3,529
+    words, so the 3,400 target is not met; the 129 words over it are the
+    restored protections.
+
+| Input | SHA-256 |
+| --- | --- |
+| Case definitions | `547162a3fef86eacab71054fc5ed4d4cfc2e3a5e1e5977903c1bee95fc9feb36` |
+| Final SKILL.md | `55fd476fefd07848a5ce5875c8eb6c68817cfe382863db68e95331763abbf73f` |
+| Final code.md | `0ba8f520fba4adbeba6161370a5414d04de69e54740e8a4ecab0ad0c5d54660c` |
+| Final improvement.md | `b6af3753df774fb36cba7af58af03d6ad8aa29a23cfdf4014551fad469028807` |
+| Final independent-use.md | `f24c7287aa8e4db235e1a234e93a05b124ef2591b62894738ae85545021d9b8f` |
+| Final refactoring.md | `a8a5835bce3dca62f90441e8700edb0b6685da293152034a2588f865ef0aeed5` |
+
+### Task outcomes
+
+The coordinator checked each result from a clean copy and compared protected
+files byte for byte.
+
+| Case | Candidate | Improved | Restored or final |
+| --- | --- | --- | --- |
+| `guide` | Passed; README 87 lines, commands, refusal, and `--replace` verified; fresh-user trial | Passed; README 68 lines; same checks | Final passed; README 79 lines; JSON block matches the real file, refusal exits 2, `--replace` works; fresh-user trial |
+| `review` | Passed; publication owner and post-publication checks found, no owners invented; plan unchanged | Passed; same findings | Not rerun |
+| `ready` | Passed without edits; retry suggestion rejected | Passed without edits | Not rerun |
+| `feature` | Not rerun | Passed; January totals 512.50, invalid month exits 2 at the CLI; source 81 → 98, tests 61 → 92; no added comments | Not rerun |
+| `refactor` | Passed; only the intended invalid-amount fix differs; source 125 → 91, tests 61 → 77 | Passed; source 125 → 80, tests 61 → 67 | Restored passed; source 125 → 73, tests 61 → 66. Final passed; three modules merged into one 57-line `cli.py`, tests 61 → 68; outputs, `--help`, refusal, and header check unchanged, invalid-amount fix with a regression test |
+| `docs` | Passed; documentation 94 → 59; code unchanged | Passed; 94 → 63; `NaN` acceptance reported without changing code | Not rerun |
+| `improve` | First run failed only the size criterion (405 → 260 words, 36%); after `improvement.md` said additions must cost less than they remove, a fresh run passed at 405 → 199 | Passed; 405 → 240 | Restored passed; 405 → 229 |
+
+On 0.7.2 the `improve` case also passed (405 → 221 words), so the case does not
+separate the versions; it guards the improve path rather than proving a gain.
+
+### Routing
+
+Fresh agents classified 18 requests, and later 19, using only the routing
+section. The first table left gaps for named changes to existing work and
+overlaps between build, fix, and improve. An ordered test, where the first
+matching row decides, resolved most of them. On the final rules, 16 of 19
+classify cleanly, including "improve, but keep these rules". "Complete this
+plan", "raise coverage", and a bare "tidy up" remain ambiguous in the user's
+words, and the rules say to ask.
+
+### Activation
+
+`evals/README.md` warns that skill-creator `run_eval.py` is distorted by an
+installed Loopy and early file reads. A scratch runner adapted from it ran each
+query in a fresh copy of a small project:
+- `claude -p` on Opus 5.5 with at most six turns;
+- the installed plugin disabled;
+- a run counted as triggered when the skill was called before any edit.
+
+The set had 10 should-trigger requests (review, build, fix, refactor, and
+improve, in Korean and English) and 10 near misses, run 3 times each.
+
+| Description | Form | Should trigger | Near misses |
+| --- | --- | --- | --- |
+| 0.7.2 | Project skill | 30/30 | 0/30 |
+| 0.8.0 | Project skill | 30/30 | 0/30 |
+| 0.7.2 | Plugin (`--plugin-dir`) | 28/30; one miss each on the improve and fix requests | 0/30 |
+| 0.8.0 | Plugin (`--plugin-dir`) | 30/30 | 0/30 |
+| Installed 0.7.1 | Marketplace plugin, 2 runs each | 16/20; the fix request 0/2 | 0/20 |
+
+Headless runs in a small project are not interactive desktop sessions with long
+context and many skills, which may explain why users see Loopy chosen less
+often than this. The difference between 0.7.2 and 0.8.0 is small for the sample
+size.
+
+### Limits
+
+Each case ran once per text, so differences may be run-to-run variance.
+`review`, `ready`, `feature`, and `docs` did not run on the final text, whose
+later edits restore candidate wording. Python 3.9, Codex, other models, human
+use, and host installation were not exercised.
+
 ## 2026-10-23 verbosity reduction
 
 After feedback that the content was longer than needed, the runtime skill and

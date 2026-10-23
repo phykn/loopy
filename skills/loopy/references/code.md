@@ -15,14 +15,12 @@ unrelated behavior.
 Keep the main execution path visible and functions in reading order. Extract
 helpers for real concepts or repeated operations, and keep one-use behavior near
 its owner. Judge extracting, splitting, or merging by the total burden on
-readers and callers: concepts to learn, hidden dependencies, required call
-order, and places that must change together. A more involved implementation can
-be worth it when it hides details behind a simpler contract; a pass-through
-layer or split-out that only adds names or navigation is not.
+readers and callers, such as concepts to learn and places that must change
+together; a pass-through layer or split-out that only adds names or navigation
+does not lower it.
 
-Metrics and tool findings locate candidates; they neither prove improvement nor
-grant permission to edit. Follow the project's required checks without imposing
-new universal thresholds, and do not split a coherent function only to meet a
+Metrics and tool findings locate candidates but neither prove improvement nor
+grant permission to edit; do not split a coherent function only to meet a
 line-count or complexity limit. A one-use helper or single-implementation
 interface can be justified by a real concept, information hiding, or a necessary
 test boundary, but not by speculative reuse. Add no wrappers, aliases, helper
@@ -34,8 +32,7 @@ Name folders, files, modules, classes, functions, parameters, and variables by
 responsibility: domain terms for domain concepts, concise verb phrases for
 functions, and short conventional local names where the meaning is clear. Use
 singular and plural consistently, and one name and call shape for the same
-operation across related components. Longer names and more layers are not better
-in themselves.
+operation across related components.
 
 ## Comments
 

@@ -33,15 +33,25 @@ protected.
 
 ## Use
 
+Loopy handles five kinds of request. The first row whose test holds decides:
+
+| Request | Test | What may change |
+| --- | --- | --- |
+| Review (검토해줘) | Nothing may change | Nothing; it reports supported findings |
+| Refactor (리팩토링해줘) | Behavior and meaning must stay | Structure and amount; supported bugs found are fixed |
+| Fix (고쳐줘) | The result breaks what it was meant to do | What breaks that |
+| Build (만들어줘, 바꿔줘, 완성해줘) | The request names the change to make | That change, new or existing |
+| Improve (개선해줘) | The request gives a goal, such as shorter | Whatever the goal needs, including behavior |
+
+So "make it shorter" is a refactor when everything must still work as before
+and an improvement when content may be dropped.
+
 ```text
 Use loopy to finish this guide so a new teammate can follow it without this chat.
-Use loopy to make this plan executable by its intended owners.
-Use loopy to complete this migration, preserve its interface, and verify the result.
 Use loopy to assess this proposal and its evidence without editing it.
-Use loopy to refactor this project into less, clearer code: fix supported
-in-scope bugs, preserve external contracts, and verify a new maintainer can use it.
-Use loopy to refactor these docs: group them by meaning and cut repetition
-without losing claims.
+Use loopy to refactor this project into less, clearer code and preserve its
+external contracts.
+Use loopy to improve this prompt: it is too long, but keep the rules it must follow.
 ```
 
 For example, a setup guide is done when its commands work and a new teammate
@@ -49,9 +59,9 @@ can start from the README, produce the expected output, and recognize success.
 If they get stuck, Loopy repairs the cause: the command, interface, order,
 terminology, or a missing premise.
 
-The skill is also selected automatically when a request matches its
-description. It is not meant for trivial edits, direct factual answers, open
-brainstorming, or tasks finished in one obvious step.
+The skill is also selected automatically when a request like those above
+matches its description, in English or Korean. It is not meant for one-line
+edits, renames, explanations, factual questions, translation, or brainstorming.
 
 ## Install
 
@@ -88,6 +98,9 @@ these references only when relevant:
 - [Refactoring](skills/loopy/references/refactoring.md): less, clearer code or
   documents with preserved behavior and contracts, coherent migrations, and
   fixes for supported bugs, across the whole project when asked.
+- [Improvement](skills/loopy/references/improvement.md): making an artifact
+  better for a stated goal, with behavior changes and what they lose reported
+  apart from reductions.
 
 To change the skill, follow [the evaluation procedure](evals/README.md); its
 fixtures, acceptance criteria, and records stay outside the runtime skill.

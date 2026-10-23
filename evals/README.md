@@ -12,7 +12,9 @@ artifacts; format checks alone cannot show that the instructions work.
    `review` (a read-only assessment), `ready` (an already-correct guide with an
    unsupported review finding), `refactor` (code seeded with common agent
    habits and a pre-existing bug), `feature` (a feature added to clean code),
-   and `docs` (documentation with repetition and a wrong claim).
+   `docs` (documentation with repetition and a wrong claim), and `improve` (a
+   verbose prompt with stale and conflicting rules). Each case's inputs live
+   in `fixtures/<id>/`.
 2. From the repository root, prepare one workspace with the baseline skill,
    such as an export from `git archive HEAD skills/loopy | tar -x -C <dir>`,
    and a separate one with the revised skill, using the commands below. Python
@@ -37,9 +39,9 @@ artifacts; format checks alone cannot show that the instructions work.
    attempts, and human use.
 
 ```console
-python evals/prepare.py --skill skills/loopy
-python evals/prepare.py --skill skills/loopy --case guide
-python evals/prepare.py --skill skills/loopy --case review --case ready
+python3 evals/prepare.py --skill skills/loopy
+python3 evals/prepare.py --skill skills/loopy --case guide
+python3 evals/prepare.py --skill skills/loopy --case review --case ready
 ```
 
 Each run validates the cases and fixtures, then prints a new temporary
@@ -49,6 +51,15 @@ those cases, in catalogue order; without them, every case is included. Invalid
 input exits with status 2 before any workspace exists, and a failed copy
 removes its partial output. When per-case independence matters, use a separate
 workspace and fresh agent for each case, and record when one agent ran several.
+
+## Measure activation
+
+When changing the `description`, measure whether it selects Loopy for requests
+it should handle and not for near misses. The skill-creator `run_eval.py` can
+do this, but in a session with Loopy installed or a global instruction file the
+installed plugin and early file reads distort its result, so record the setup
+used. Run each query several times with the model users will run, and keep the
+query set fixed between the old and new description.
 
 ## Maintain the catalogue
 
@@ -70,8 +81,8 @@ documentation. Change case rules only in `cases.py` so both stay consistent.
 From the repository root, with Python 3.9+ and no external packages:
 
 ```console
-python evals/check.py
-python -m unittest discover -s evals -v
+python3 evals/check.py
+python3 -m unittest discover -s evals -v
 ```
 
 `check.py` parses both hosts' plugin and marketplace JSON, checks shared
@@ -80,8 +91,11 @@ links from the README; it reports failed checks and exits with status 1. The
 tests cover packet isolation, protected input copies, withheld answers,
 invalid-input rejection, failed-copy cleanup, and package drift.
 
-Also run the installed `skill-creator` skill's `scripts/quick_validate.py` on
-`skills/loopy` to validate the frontmatter, which `check.py` does not. It needs
+Also run the `skill-creator` skill's `scripts/quick_validate.py` on
+`skills/loopy` to validate the frontmatter, which `check.py` does not. In Claude
+Code the skill is under
+`~/.claude/plugins/marketplaces/claude-plugins-official/plugins/skill-creator/skills/skill-creator/`.
+It needs
 PyYAML, so use a suitable or temporary Python environment instead of adding a
 dependency to Loopy. After changing a helper, also prepare a packet and inspect
 it. These checks show package and helper consistency, not agent behavior or

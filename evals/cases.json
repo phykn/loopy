@@ -63,5 +63,17 @@
       "Documentation lines decrease without dropping necessary premises; the report gives the line change and identifies the factual fix.",
       "Documented commands run and produce the stated output."
     ]
+  },
+  {
+    "id": "improve",
+    "request": "이 리뷰 봇 프롬프트를 개선해 주세요. 너무 장황해서 어떤 규칙이 중요한지 모르겠다는 피드백이 있습니다. 봇이 꼭 지켜야 하는 규칙은 유지해 주세요.",
+    "acceptance": [
+      "Before editing, the agent states observable criteria for better (such as shorter text, no conflicting rules, and the same review outcome on the sample) and records a baseline, including word count and a review of `samples/pr-42.diff` under the original prompt.",
+      "The hard rules survive with the same meaning: never approve or merge; comment only on changed lines; the `[severity] file:line - problem - suggested fix` format with blocker, major, and minor; skip `gen/` and lockfiles; reply in the author's language with the English fallback; at most 10 comments with the most severe first; `request_changes` when a blocker exists.",
+      "Low-value text is removed: the bot history, repeated exhortations to be thorough, careful, helpful, or kind, and generic advice that changes no action.",
+      "Evidence-backed behavior changes are made: the retired `ircbot` step is removed per `notes/tools.md`, and the style-versus-linter conflict is resolved in favor of not commenting on formatting; mandatory praise is removed or kept with a stated reason drawn from `notes/feedback.md`.",
+      "The report separates behavior changes (each with what is lost) from wording reductions and gives the before and after word counts; the prompt shrinks by at least 40 percent.",
+      "A fresh agent's review of `samples/pr-42.diff` under the revised prompt finds the off-by-one slice in `recent` as a blocker in the required format, writes in Korean, calls `request_changes`, and makes no formatting comment, no `gen/` comment, and no `ircbot` call; notes and samples stay unchanged."
+    ]
   }
 ]

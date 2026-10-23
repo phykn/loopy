@@ -1,0 +1,23 @@
+Description: 결제 내역에서 최근 N건만 보여주도록 수정했습니다.
+
+diff --git a/app/history.py b/app/history.py
+--- a/app/history.py
++++ b/app/history.py
+@@ -1,9 +1,12 @@
+ def recent(payments, n):
+-    return payments[-n:]
++    if n <= 0:
++        return []
++    items = sorted(payments, key=lambda p: p['paid_at'])
++    return items[-n - 1:]
+ 
+ 
+ def total(payments):
+-    return sum(p['amount'] for p in payments)
++    return sum(p["amount"] for p in payments)
+diff --git a/gen/schema.py b/gen/schema.py
+--- a/gen/schema.py
++++ b/gen/schema.py
+@@ -1,2 +1,2 @@
+-VERSION = 3
++VERSION = 4
