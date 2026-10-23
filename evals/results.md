@@ -1,5 +1,69 @@
 # Evaluation records
 
+## 2026-10-23 fix case (0.9.0)
+
+The catalogue gains `fix`, a plain bug report on the Fix route. Since 0.9.0
+selects Loopy for bug fixes much more often, this case checks what it then
+does. The fixture is a work-log CLI. Its README says an entry whose end is
+earlier than its start ran past midnight, but `entries.py` subtracts the times,
+so the sample's `23:30-00:30` entry counts as minus 23 hours. The request
+reports only the symptom: a total of 9:00 for about 33 hours of work. The trap
+sits next to the bug: `to_minutes` returns `None` for an out-of-range time and
+its caller checks for it. That is awkward but correct, and it is already
+covered by the tests. The skill was unchanged, and the case ran once and
+passed.
+
+### Conditions and inputs
+
+- Skill: 0.9.0 at commit `5b9f3cf`, prepared with
+  `prepare.py --skill skills/loopy --case fix`.
+- Environment: macOS, Claude Code 2.1.302, Opus 5.5, Python 3.13.16. The
+  coordinator also ran the delivered tests on Python 3.9.6.
+- One fresh Claude Code `general-purpose` subagent ran in its own workspace. Its
+  prompt matched the 0.9.0 cases: apply the supplied skill rather than the
+  installed one, work only in the workspace, delegate at most one bounded
+  fresh-context check, and record any question instead of asking. The user's
+  global instructions were active, and the agent read the guidance wiki they
+  point to.
+- The case and fixture were written before the run, and the run did not change
+  them.
+
+| Input | SHA-256 |
+| --- | --- |
+| Case definitions | `64aac80704ae53ead01f617b735a0ad82fe7ff876af7abcba064686b80d795fe` |
+| Fixture `fixtures/fix` (the sorted `shasum -a 256` listing of its files) | `59f99dc73f332c2ba3c7db717a795942da5e1e19097333d9e7c630a7e8d88514` |
+| SKILL.md | `a8e413b0139485a5a3d7b1478aac5a2d21b0fd750343444ca3f6c6308ac38ec3` |
+| code.md | `9baaad839d77c8a33c8520a5efec39eff97a3936ed76d74390661cc962d64b92` |
+
+### Task outcome
+
+The coordinator checked the agent's tool-call order in its transcript, compared
+the result with the fixture byte for byte, and reran it from a clean copy.
+
+| Criterion | Result |
+| --- | --- |
+| Reproduced first | Passed. The agent's first command, before any edit, printed `deploy -21:00` and `total 9:00`. Its contract traced these to `23:30-00:30` and the README's midnight rule. It then wrote the regression test and saw it fail before editing the code. |
+| Cause fixed with a regression test | Passed. `entries.py` now computes `(end - start) % (24 * 60)`, with a one-line why-comment. The sample prints `build 22:30`, `review 7:30`, `deploy 3:00`, and `total 33:00`. The added `test_counts_entries_past_midnight` fails on the fixture's `entries.py` (`deploy -22:45`) and passes after the fix. |
+| Unrelated code unchanged | Passed. Only `entries.py` (one line plus the comment) and the added test differ. `to_minutes`, the `None` check, `worklog.py`, `report.py`, the README, and the sample log are byte-for-byte unchanged, and the three existing tests are untouched. |
+| README contract holds | Passed. All four tests pass on Python 3.13 and 3.9. A malformed line or an out-of-range time exits 2 and names line 2, a missing file exits 2, and comment and blank lines are still ignored. |
+| Fix reported apart | Passed. The report gives the cause, the fix, the test, and the before and after output. Its only other note, that `python` is missing so `python3` was used, is set apart. |
+
+The agent decided the narrow change did not need an independent use trial and
+delegated nothing, as `SKILL.md` allows when direct evidence is adequate. Its
+scratch file stayed in the workspace. The fixture's tests write temporary logs
+to the system temp directory.
+
+### Limits
+
+- One run, so the result may be variance.
+- The report did not mention the `None` return. The case therefore shows the
+  trap left alone, but not how Loopy reports a smell it notices.
+- The bug shows on the first run of the sample, and the README states the rule.
+  The case checks the fix workflow, not hard diagnosis.
+- The agent was told to apply Loopy, so this case does not measure selection;
+  `activation.py` does.
+- Codex, other models, and human use were not exercised.
+
 ## 2026-10-23 activation, goalless improve routing, and maintainer map (0.9.0)
 
 0.9.0 changes four things:

@@ -19,6 +19,7 @@ artifacts; format checks alone cannot show that the instructions work.
    | `review` | A deployment plan to assess read-only | Review routing, read-only and authorization limits |
    | `ready` | An already-correct guide and an unsupported review finding | Findings and stopping rules |
    | `refactor` | Code seeded with common agent habits and a pre-existing bug | `refactoring.md`, `code.md` |
+   | `fix` | A bug report naming a symptom, next to a code smell that is not a bug | Fix routing, `code.md` |
    | `feature` | A feature to add to clean code | `code.md`, Build routing |
    | `docs` | Documentation with repetition and a wrong claim | Document rules in `refactoring.md` |
    | `improve` | A verbose prompt with stale and conflicting rules | `improvement.md`, Improve routing |

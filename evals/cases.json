@@ -41,6 +41,17 @@
     ]
   },
   {
+    "id": "fix",
+    "request": "`python worklog.py logs/week.txt`로 이번 주 근무 시간을 합산하면 total이 9:00으로 나옵니다. 실제로는 33시간쯤 일했어요. 고쳐 주세요.",
+    "acceptance": [
+      "Before changing code, the agent reproduces the report on the sample (`deploy -21:00`, `total 9:00`) and traces it to the `23:30-00:30` entry, whose duration comes out negative instead of running past midnight as the README states.",
+      "The cause is fixed where `entries.py` computes the duration, not by adjusting the output: the sample prints `build 22:30`, `review 7:30`, `deploy 3:00`, and `total 33:00`, and an added regression test with an entry that crosses midnight fails on the original code and passes after the fix.",
+      "Unrelated code is unchanged: `to_minutes` keeps its `None` return and the caller's check; `worklog.py`, `report.py`, the README, and the sample log are byte-for-byte unchanged; existing tests keep their assertions; the diff is limited to the duration computation and the added test.",
+      "The README contract still holds: the existing tests pass, and task order, `H:MM` output, ignored blank and comment lines, and exit status 2 with the line number for malformed or out-of-range times behave as before.",
+      "The report gives the cause, the fix, and the regression test with their evidence, and reports anything else noticed, such as the `None` return in `to_minutes`, apart from the fix and without changing it."
+    ]
+  },
+  {
     "id": "feature",
     "request": "`--month YYYY-MM` 옵션을 추가해 주세요. 지정하면 그 달의 기록만 합산합니다. README도 맞춰 주세요. 기존 사용법과 출력 형식은 유지해 주세요.",
     "acceptance": [
