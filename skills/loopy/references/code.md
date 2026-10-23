@@ -19,12 +19,12 @@ readers and callers, such as concepts to learn and places that must change
 together; a pass-through layer or split-out that only adds names or navigation
 does not lower it.
 
-Metrics and tool findings locate candidates but neither prove improvement nor
-grant permission to edit; do not split a coherent function only to meet a
-line-count or complexity limit. A one-use helper or single-implementation
-interface can be justified by a real concept, information hiding, or a necessary
-test boundary, but not by speculative reuse. Add no wrappers, aliases, helper
-classes, keyword-only separators, or options that no caller needs.
+Metrics and tool findings only locate candidates; do not split a coherent
+function just to meet a line-count or complexity limit. A one-use helper or
+single-implementation interface can be justified by a real concept, information
+hiding, or a necessary test boundary, but not by speculative reuse. Add no
+wrappers, aliases, helper classes, keyword-only separators, or options that no
+caller needs.
 
 ## Names
 

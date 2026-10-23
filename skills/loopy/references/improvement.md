@@ -1,9 +1,9 @@
 # Improvement
 
-Improvement makes an existing artifact better for a stated goal, such as
-shorter, faster, or easier to follow, and may change behavior or meaning to get
-there. The agent chooses what to change, drop, or add, so the goal, not the
-current content, decides what stays.
+Improvement makes an existing artifact better toward a goal, such as shorter,
+faster, or easier to follow, and may change behavior or meaning to get there.
+The agent chooses what to change, drop, or add, so the goal, not the current
+content, decides what stays.
 
 ## Define better
 

@@ -1,9 +1,9 @@
 # Loopy
 
 Loopy is an instruction-only skill for Codex and Claude Code. It keeps an agent
-working until a substantial result is correct, preserves what must not change,
-and can be used without the conversation that produced it, instead of stopping
-after a first draft or a first passing check.
+working until the result is correct, preserves what must not change, and can be
+used without the conversation that produced it, instead of stopping after a
+first draft or a first passing check. Effort scales with what is at stake.
 
 Use it when someone else must act on the result: a maintainer finding where to
 make a change, a teammate following a guide, a reader making a decision, or an
@@ -41,7 +41,7 @@ Loopy handles five kinds of request. The first row whose test holds decides:
 | Refactor (리팩토링해줘) | Behavior and meaning must stay | Structure and amount; supported bugs found are fixed |
 | Fix (고쳐줘) | The result breaks what it was meant to do | What breaks that |
 | Build (만들어줘, 바꿔줘, 완성해줘) | The request names the change to make | That change, new or existing |
-| Improve (개선해줘) | The request gives a goal, such as shorter | Whatever the goal needs, including behavior |
+| Improve (개선해줘) | The request wants it better, with or without a goal such as shorter | Whatever the goal needs, including behavior |
 
 So "make it shorter" is a refactor when everything must still work as before
 and an improvement when content may be dropped.
@@ -60,8 +60,10 @@ If they get stuck, Loopy repairs the cause: the command, interface, order,
 terminology, or a missing premise.
 
 The skill is also selected automatically when a request like those above
-matches its description, in English or Korean. It is not meant for one-line
-edits, renames, explanations, factual questions, translation, or brainstorming.
+matches its description, in English or Korean, including bug fixes and feature
+additions that look small. It is not meant for an edit the user dictates
+exactly, such as a rename, or for explanations, factual questions,
+translation, or brainstorming.
 
 ## Install
 
@@ -99,8 +101,9 @@ these references only when relevant:
   documents with preserved behavior and contracts, coherent migrations, and
   fixes for supported bugs, across the whole project when asked.
 - [Improvement](skills/loopy/references/improvement.md): making an artifact
-  better for a stated goal, with behavior changes and what they lose reported
-  apart from reductions.
+  better toward a goal, asking for one when neither the request nor the
+  evidence settles it, with behavior changes and what they lose reported apart
+  from reductions.
 
 To change the skill, follow [the evaluation procedure](evals/README.md); its
 fixtures, acceptance criteria, and records stay outside the runtime skill.

@@ -1,5 +1,168 @@
 # Evaluation records
 
+## 2026-10-23 activation, goalless improve routing, and maintainer map (0.9.0)
+
+0.9.0 changes four things:
+
+- **Description.** It now names bug fixes and feature additions, says to use
+  Loopy even when the fix looks small, and narrows the exclusion to edits the
+  user dictates exactly. Under realistic settings it was selected for 60 of 60
+  should-trigger runs, where 0.8.0 managed 34 of 60. Neither version was
+  selected for any near miss.
+- **Routing.** The Improve row now admits a request with or without a stated
+  goal. Under 0.8.0's routing, a bare 개선해줘 matched no row.
+- **Activation runner.** `evals/activation.py` keeps the realistic runner, and
+  `evals/README.md` maps each changed file to its cases.
+- **Shortening.** A pass on the runtime text kept only the cuts a fresh reviewer
+  found lossless.
+
+Runtime text excluding the frontmatter went from 3,450 to 3,401 words:
+`SKILL.md` body 1,202, `code.md` 344, `improvement.md` 312,
+`independent-use.md` 501, and `refactoring.md` 1,042. The description grew from
+73 to 104 words. All seven cases ran on the final text. Six passed, and
+`improve` missed only its size threshold.
+
+### Conditions and inputs
+
+- Baseline: 0.8.0 at commit `5b0d34f`, exported with `git archive`.
+- Environment: macOS, Claude Code 2.1.302, Opus 5.5, Python 3.13.16. The helper
+  tests and `check.py` also ran on Python 3.9.6.
+- The user's global instructions and other plugins were active in every
+  activation run and case. The global instructions point to a guidance wiki
+  that agents read at the start of every task.
+- Each case ran in its own `prepare.py --case` workspace with its own fresh
+  Claude Code `general-purpose` subagent. Each subagent was told to apply the
+  supplied skill rather than the installed one, to work only in its workspace,
+  and to delegate at most one bounded fresh-context check. They were also told
+  to record any question instead of asking, because no user was available.
+
+| Input | SHA-256 |
+| --- | --- |
+| Case definitions | `547162a3fef86eacab71054fc5ed4d4cfc2e3a5e1e5977903c1bee95fc9feb36` |
+| Activation queries | `bb147f5d532afe2650d3a4ea598752cec37127f262022ca916247b950f833fa7` |
+| Final SKILL.md | `a8e413b0139485a5a3d7b1478aac5a2d21b0fd750343444ca3f6c6308ac38ec3` |
+| Final code.md | `9baaad839d77c8a33c8520a5efec39eff97a3936ed76d74390661cc962d64b92` |
+| Final improvement.md | `6b04c3d0aabf9d4664610c9546b2d7ee3942552ae223f2c7f0106c82ac4f24c8` |
+| Final independent-use.md | `60b320eb7a9a4b34d2eed0834737e8f4b3979a620b005cb3a341cf43c9da493e` |
+| Final refactoring.md | `dfea2aef3e5639849ceacde4d1d35542d0968bf8ecac57122240982d95455f1e` |
+
+### Routing
+
+Two fresh agents had only the routing section, one from 0.8.0 and one revised.
+Each classified the same 14 requests. Under 0.8.0, four found no matching row
+and would have asked:
+
+- a bare 이 프로젝트 개선해줘;
+- the improve half of 개선후 리팩토링 진행;
+- 이 가이드 좀 더 낫게 만들어줘;
+- 프롬프트 개선해줘. 규칙은 유지해, which has the same shape as the `improve`
+  case.
+
+Under the revised rules all four route to Improve, and the other ten classify
+the same as before. Both agents noted that "remove unused options" could
+arguably meet the Refactor test first, but both routed it to Build, so it was
+left unchanged.
+
+### Activation
+
+The runner was a scratch copy of what is now `evals/activation.py`. Its project
+copy also held a git repository. The two plugin copies differed only in the
+description.
+
+The query sets were fixed before the candidate was written: `tune` has 12
+should-trigger queries and 8 near misses, and `holdout` has 8 and 6. After the
+description was shaped, three near misses were added to `holdout`. These are
+fixes the user dictates exactly, and they probe whether "even when the fix
+looks small" over-triggers.
+
+| Set | 0.8.0 should-trigger | 0.9.0 should-trigger | 0.8.0 near misses | 0.9.0 near misses |
+| --- | --- | --- | --- | --- |
+| `tune` | 26/36 | 36/36 | 0/24 | 0/24 |
+| `holdout` | 8/24 | 24/24 | 0/18 | 0/18 |
+| Dictated fixes | | | 0/9 | 0/9 |
+
+0.8.0 missed most bug-fix and feature requests:
+
+- `tune`: `fix-amount` 0/3, `add-month` 0/3, `json-average` 1/3, `en-fix` 2/3,
+  `tidy` 2/3;
+- `holdout`: `h-count`, `h-sort`, `h-en-since`, and `h-en-crash` 0/3 each,
+  `h-fix-total` 1/3, `h-fix-blank` 2/3, `h-docs` 2/3.
+
+In each missed run the agent read files and then edited without calling a
+skill.
+
+The first `add-month` runs passed the query as an argument, and `claude` parsed
+its leading `--month` as an option. Those runs were discarded and rerun with the
+query on stdin, which `activation.py` now does.
+
+The 0.8.0 record's 30/30 came from a different runner and query set, with at
+most six turns and 10 + 10 queries, so the two results are not comparable.
+
+### Shortening
+
+The first pass cut 3,450 words to 3,373. A fresh reviewer compared it with
+0.8.0 and found one material loss: evaluation no longer explicitly barred
+deployment, messages, and destructive operations. It also found six minor
+narrowings:
+
+- a fresh re-trial after a revision;
+- the strongest authorized fallback check;
+- when a helper or interface may be extracted;
+- how supported interfaces are identified;
+- existing organization as evidence;
+- applying the question rules to ambiguous bugs.
+
+All seven were restored. Five cuts it judged covered by `SKILL.md` remain. The
+runtime text is close to its floor under the no-loss constraint, as in the 0.8.0
+record.
+
+### Task outcomes
+
+The coordinator checked each result from a clean copy and compared protected
+files byte for byte.
+
+| Case | Result |
+| --- | --- |
+| `guide` | Passed. README 7 → 76 lines. The documented command printed the shown line and produced the shown JSON byte for byte. The refusal exits 2 and leaves the file unchanged, and `--replace` rebuilds. A fresh-user trial ran, and source and notes are unchanged. |
+| `review` | Passed. Found that no one owns publication and that commands are checked only after the release counts as complete. The suggested revision uses placeholders instead of invented owners. The plan is unchanged. |
+| `ready` | Passed without edits. The empty folder printed `0` with exit 0, and the retry suggestion was rejected. An unreadable folder also prints `0`; this was reported as an open question, not edited. |
+| `refactor` | Passed. Text, JSON, refusal, wrong header, BOM input, and `--help` match the original. An invalid amount now exits 2 with its line number, writes no JSON, and has a regression test. The seeded excess was removed and the BOM why-comment kept. Source 125 → 78 lines, tests 61 → 66. |
+| `feature` | Passed. January totals 512.50. Output without `--month` is unchanged. An invalid month exits 2 at the argparse boundary, and no comments were added. Source 81 → 91, tests 61 → 100. |
+| `docs` | Passed. Documentation 94 → 60 lines. The FAQ and its wrong overwrite claim were removed and reported, and the broken link is gone. Every claim is reachable from the README, the commands produce the stated output, and the code is unchanged. |
+| `improve` | Failed only the size criterion: 405 → 247 words is 39%, against 40%. Every other criterion was met. The hard rules kept their meaning, including the English fallback. `ircbot`, forced praise, and the formatting conflict were resolved from the notes, and each loss was reported. Under the revised prompt, a fresh agent produced one Korean `blocker` and `request_changes` on `pr-42.diff`, writing the tool calls out rather than running them. The baseline review under the original prompt was a walkthrough. |
+
+`improvement.md` changed only "for a stated goal" to "toward a goal". The same
+path passed at 229 and 240 words in 0.8.0 and failed at 36% once, so this miss
+was recorded rather than rerun.
+
+### Maintainer use
+
+A fresh maintainer used a copy of the repository and followed it from the
+README:
+
+- found the cases and commands for a `code.md` change;
+- described the activation measurement and what counts as a selection;
+- ran `check.py`, the 17 tests, and `quick_validate.py`, all of which passed;
+- confirmed that a `refactor` packet withholds every acceptance criterion.
+
+Its friction was fixed in `evals/README.md`:
+
+- where a `git archive` export puts the skill;
+- that a change to the description alone runs activation instead of cases;
+- naming `refactoring.md` in step 4;
+- activation examples that skipped `--set` and wrote into the repository;
+- no version-bump rule.
+
+### Limits
+
+- The cases ran once each on the final text, and activation ran three times per
+  query, so small differences may be variance.
+- Headless runs in a small project are not interactive sessions with long
+  context.
+- The catalogue has no case for a plain bug fix, so what Loopy does once
+  selected for one is covered only inside `refactor`.
+- Codex, other models, human use, and host installation were not exercised.
+
 ## 2026-10-23 improve mode, request routing, and activation (0.8.0)
 
 0.8.0 adds an improve mode (`references/improvement.md`), routes requests by

@@ -41,21 +41,19 @@ deployment, sending messages, or destructive operations.
 
 Ask the evaluator to attempt the task, not to rate it, and to report the result,
 actions taken, supporting locations, and material confusion concisely. It does
-not commission another review, and its approval is not a gate; the main agent
-owns corrections and the decision.
+not commission another review; the main agent owns corrections and the
+decision.
 
 Do not coach a stalled evaluator; record the obstacle and investigate it.
 Compare the actual outputs with the acceptance evidence yourself, check whether
 a success relied on guessing or on knowledge the intended user would lack, and
-check confusion against source behavior to separate artifact problems from
-evaluator mistakes, unsupported preferences, and environment failures. Never
-change tasks to hide failures or try evaluators until one passes. After a
-relevant revision, repeat the affected task with a fresh evaluator and reuse
-unaffected evidence.
+tell artifact problems from environment failures. Never change tasks to hide
+failures or try evaluators until one passes. After a relevant revision, repeat
+the affected task with a fresh evaluator.
 
 Completion needs the critical tasks to succeed and confirmed material obstacles
 to be resolved, not universal praise. An agent trial shows agent use under its
 conditions, not human usability. When independent evaluation is unavailable or
-disallowed, run the strongest authorized check, label it a self-check or
-walkthrough, and state the limit; if independence is explicitly required or the
-remaining uncertainty could change completion, report that condition as unmet.
+disallowed, run the strongest authorized check and state its limit; if
+independence is explicitly required or the remaining uncertainty could change
+completion, report that condition as unmet.

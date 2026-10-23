@@ -1,8 +1,8 @@
 # Refactoring
 
 Refactoring keeps supported behavior and meaning while making the structure
-clearer and the code or text shorter. Fixes for supported bugs found along the
-way belong to the outcome. A project-wide request covers folder and file
+clearer and the code or text shorter, and fixes supported bugs found along the
+way. A project-wide request covers folder and file
 structure, names, responsibilities, and dependencies across the project; a
 narrower request keeps its stated boundary.
 
@@ -88,8 +88,7 @@ configuration, entrypoints, packaging, and docs, checking runtime discovery and
 string references as well as static imports, and path casing on supported
 platforms. Change generated artifacts through their sources. Verify each
 boundary change before building on it, then remove the aliases, adapters, and
-helpers it made unnecessary. Keep coupled edits together, and never leave
-callers unmigrated.
+helpers it made unnecessary.
 
 Keep supported external contracts unless their migration is authorized, and
 retain compatibility where a consumer or supported interface needs it. When
@@ -110,7 +109,7 @@ weaken valid tests to make the new code pass.
 Report bug fixes apart from reductions, since they may add code, and do not
 invent requirements in their name. When the intended behavior is materially
 ambiguous or a fix needs an excluded change, apply Loopy's question and decision
-rules, keep the issue open, and continue other authorized work.
+rules and keep the issue open.
 
 ## Verify and finish
 

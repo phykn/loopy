@@ -1,13 +1,15 @@
 ---
 name: loopy
 description: >
-  Carry substantial work to a verified finish that someone without this
-  conversation can use. Use when the user asks to review, build, fix,
-  refactor, or improve a codebase, feature, README, guide, plan, prompt, or
-  skill (for example 검토해줘, 만들어줘, 고쳐줘, 리팩토링해줘, 개선해줘), to
-  make it shorter or clearer, to make sure it works before calling it done, or
-  names Loopy. Do not use for one-line edits, renames, explanations, factual
-  questions, translation, or brainstorming.
+  Carry a requested change or review to a verified finish that someone without
+  this conversation can use. Use whenever the user asks to fix a bug, add or
+  change a feature, or build, review, refactor, or improve code, a README,
+  guide, plan, prompt, or skill (for example 고쳐줘, 추가해줘, 만들어줘,
+  검토해줘, 리팩토링해줘, 개선해줘, 정리해줘), even when the fix looks small; to
+  make it shorter or clearer; to make sure it works before calling it done; or
+  names Loopy. Do not use when the user dictates the exact edit, such as a
+  rename or a new title, or for explanations, factual questions, translation,
+  or brainstorming.
 ---
 
 # Loopy
@@ -36,7 +38,7 @@ mixed request its own:
 | Refactor, tidy, port | Behavior and meaning must stay | Structure and amount; supported bugs found are fixed | [Refactoring](references/refactoring.md) |
 | Fix | The result breaks its intended contract | What breaks it | |
 | Build, add, change, remove, complete, finish | The request names the change to make | That change, in new or existing work | |
-| Improve, make better | The request gives a goal, such as shorter, faster, or friendlier | Whatever the goal needs, including behavior | [Improvement](references/improvement.md) |
+| Improve, make better | The request wants it better, with or without a goal such as shorter, faster, or friendlier | Whatever the goal needs, including behavior | [Improvement](references/improvement.md) |
 
 A port that must keep behavior is a refactor, "fix the slowness" with no broken
 contract is an improvement, and "check and fix" fixes contract-breaking findings
