@@ -1,9 +1,78 @@
 # Evaluation records
 
+## 2026-10-23 verbosity reduction
+
+After feedback that the content was longer than needed, the runtime skill and
+the maintainer docs were rewritten to state each rule once. Runtime text went
+from 4,854 to 4,216 words: `SKILL.md` 1,668 → 1,444 with the frontmatter
+unchanged, `code.md` 430 → 390, `independent-use.md` 885 → 780, and
+`refactoring.md` 1,871 → 1,602. `README.md` went 724 → 630 words and
+`evals/README.md` 805 → 722. All six cases passed with fresh agents, compared
+with the recorded 0.7.x results below; this is one run per case.
+
+### Conditions and inputs
+
+- Baseline: 0.7.1 at commit `b484854`, exported with `git archive` before
+  editing.
+- Environment: macOS, Python 3.13.16. Each workspace came from
+  `prepare.py --case` and had its own fresh Claude Code `general-purpose`
+  subagent on Opus 5.5 with the same prompt: apply the supplied skill rather
+  than the installed one, read only the workspace, and delegate at most one
+  bounded fresh-context check per task. `guide`, `review`, and `ready` shared
+  one agent and workspace. Global instructions and the repository name in
+  workspace paths were present as in the earlier runs.
+- All six cases first ran on an intermediate text. A fresh reviewer comparing
+  it with 0.7.1 found one material loss, compatibility that consumers need no
+  longer kept under an authorized migration, and about twenty dropped
+  qualifiers; these were restored. A second fresh reviewer found no lost
+  protection and one over-strengthened compatibility clause, which was reverted
+  to the 0.7.1 wording. `refactor` and `docs`, which load the most-changed
+  reference, then ran again on the final words; the delivered files differ from
+  that snapshot only in line wrapping.
+
+| Input | SHA-256 |
+| --- | --- |
+| Case definitions | `39dae10e90af1313192728be805c410131ec1b3115471cf3bfe26989edc6e67f` |
+| Intermediate SKILL.md | `51bd0dba6ff5500b563a458b6e5d50f38e5c6aa8806d1998c2ed65e4e8e77210` |
+| Delivered SKILL.md | `aacb6ba39d035ee4fb62f3ca9d9f594c956637cd04028638780a4e5bf124b283` |
+| Delivered code.md | `dc5b0e3d3f0761a6b794bebe50c29b312eef741614cd180b37af31e09a10f8e1` |
+| Delivered independent-use.md | `74311a90fe22ea9f4cb0ae9cbba420d98a885f6495b27c6c7a73e5c8219fc5ff` |
+| Delivered refactoring.md | `e743d4a8cc2e8caf52c2781999736bddccdbc06829851fb0b1bf918418111680` |
+
+### Task outcomes
+
+The coordinator reran each result from a clean copy and compared protected
+files byte for byte.
+
+| Case | Recorded comparison | This run |
+| --- | --- | --- |
+| `guide` | 0.6.0 passed; guides of 58 and 61 lines | Passed; README 7 → 76 lines including the expected JSON; command, refusal, `--replace`, and empty folder verified; a fresh-user trial ran |
+| `review` | 0.6.0 passed | Passed; publication ownership and post-publication command checks identified, no owners invented; plan unchanged |
+| `ready` | 0.6.0 passed without edits | Passed without edits; empty folder printed `0` with exit 0; retry suggestion rejected |
+| `feature` | 0.7.0: source 81 → 98, tests 61 → 91 | Passed; source 81 → 98, tests 61 → 102; no added comments; fresh check skipped as a narrow change |
+| `refactor` | 0.7.1: source 125 → 75, tests 61 → 67 | Passed on both texts: outputs, `--help`, refusal, and header check unchanged; invalid-amount fix with a regression test; seeded excess removed. Intermediate source 125 → 82, final 125 → 69 |
+| `docs` | 0.7.1: documentation 94 → 58 | Passed on both texts: code unchanged, FAQ and its wrong claim removed, broken link gone, claims kept. Intermediate 94 → 72, final 94 → 64 |
+
+Two fresh maintainer readers, one on the 0.7.1 project and one on the revised
+one, did the same tasks from the README: judge fit, install, find the trial
+skip rule, and follow the change procedure, including the checks and a `docs`
+packet. Both succeeded and reported the same friction: no `python` command on
+macOS, no path for the skill-creator validator, and no mapping from a changed
+file to its cases.
+
+### Limits
+
+Each case ran once per text, so differences may be run-to-run variance. Four
+cases ran only on the intermediate text, whose later edits restore 0.7.1
+wording. Python 3.9, Codex, other models, human use, and host installation were
+not exercised. Some agents briefly wrote to the system temp directory through
+the fixtures' tests, and two ran a read-only `git status`.
+
 ## 2026-10-21 refactoring reference cleanup
 
 Three repeated passages were removed from `references/refactoring.md`, which
-was otherwise unchanged from 0.7.0 (SHA-256 `c253104e…`). The `refactor` and
+was otherwise unchanged from 0.7.0 (`f51b93b7…`); the revised file is
+`c253104e…` (SHA-256). The `refactor` and
 `docs` cases ran once each with fresh agents under the 0.7.0 conditions below,
 whose candidate results served as the comparison.
 

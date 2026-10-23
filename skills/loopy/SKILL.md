@@ -15,185 +15,167 @@ description: >
 
 # Loopy
 
-Finish work when the requested outcome is demonstrated and the intended user
-can take the necessary next action from the delivered result and its normal
-entrypoint. The user may know the domain without knowing this project or the
-conversation that produced it. Make that distinction part of success.
+Work is finished when the requested outcome is demonstrated and its intended
+user, who may know the domain but not this project or conversation, can take
+their next action from the delivered result at its normal entrypoint.
 
-Use this loop: define success, build, verify correctness and use, resolve
-supported findings, then finish or continue. It corrects the habit of stopping
-after one pass: a first draft, a first passing check, or a first tidied area is
-not completion. Continue until the `done` conditions hold, and stop once they
-do. Scale the work to its consequences; these controls do not require separate
-phases, tool calls, or review rounds.
+Loop through defining success, building, verifying correctness and use, and
+resolving supported findings until the `done` conditions hold, then stop. A
+first draft, first passing check, or first tidied area is not completion. Scale
+effort to the consequences; the loop needs no separate phases, tool calls, or
+review rounds.
 
-Follow the host's instruction hierarchy and the user's scope and authorization.
-This skill does not grant permission for external actions or extra writes.
-Choosing this skill, or a request it matches, permits a bounded evaluation by a
-subagent that the session already offers, provided it stays within the user's
-scope and writes only in an isolated copy. Do not delegate when the user, host,
-or project instructions restrict delegation or its cost, or when the only way to
-delegate needs new setup, credentials, or approval. For a read-only assessment,
-deliver supported findings; do not repair the assessed artifact. Explicit
-requests and previously granted authorization remain authoritative.
+Follow the host's instruction hierarchy and the user's scope; explicit requests
+and earlier authorization govern. This skill grants no permission for external
+actions or extra writes, except that choosing it, or a request it matches,
+permits a bounded evaluation by a subagent the session already offers, within
+the user's scope and writing only in an isolated copy. Do not delegate when the
+user, host, or project restricts delegation or its cost, or when the only way to
+delegate needs new setup, credentials, or approval. A read-only assessment
+delivers supported findings without repairing the artifact.
 
-When writing, changing, or assessing code, also read [Code](references/code.md);
-it owns how code should read. For refactoring or its assessment, also read
-[Refactoring](references/refactoring.md) before defining success. It owns
-reduction, compatibility, migrations, and bug fixes.
+Read [Code](references/code.md) for any code work, and
+[Refactoring](references/refactoring.md) before defining success for a refactor
+or its assessment.
 
 ## Define success
 
-Inspect the current artifact, relevant instructions, entrypoints, and consumers.
-Keep a compact internal completion contract:
+Inspect the artifact, relevant instructions, entrypoints, and consumers, then
+keep a compact internal contract:
 
-- `Outcome`: the requested result, its intended user, and the next action or
-  decision that user must be able to make. Identify their starting point and
-  assumed knowledge when these affect the work.
+- `Outcome`: the result, its intended user, and the next action or decision
+  they must be able to make, with their starting point and assumed knowledge
+  when these matter.
 - `Claim`, when relevant: what the existing artifact actually says, promises,
-  or does. Establish it from evidence, not from the desired Outcome.
-- `Preserve`: behavior, meaning, interfaces, assets, and other constraints that
-  must survive. Existing organization is not automatically a constraint.
+  or does, from evidence rather than from the desired Outcome.
+- `Preserve`: behavior, meaning, interfaces, assets, and constraints that must
+  survive; existing organization is not automatically one of them.
 - `Evidence`: observable acceptance tasks and checks, with expected results,
-  that establish correctness, preservation, and usable delivery.
-- `Scope`: authorized changes and explicit exclusions, including evaluation
-  resources and side effects.
+  for correctness, preservation, and use.
+- `Scope`: authorized changes, exclusions, evaluation resources, and side
+  effects.
 
-Choose acceptance tasks before optimizing the artifact. Use representative
-decisions and actions rather than an abstract quality score. For an existing
-artifact undergoing a substantial change, capture relevant behavior and use
-baselines before editing. A new artifact can first be tried at a usable draft.
-Keep comparable tasks fixed across revisions; add coverage when new evidence
-reveals a missing requirement, never to excuse a failed one.
+Before optimizing, choose acceptance tasks that are representative decisions and
+actions, not a quality score. Capture behavior and use baselines before a
+substantial change to an existing artifact; a new artifact can first be tried as
+a usable draft. Keep comparable tasks fixed across revisions, and add coverage
+for a newly revealed requirement, never to excuse a failure.
 
-Resolve routine gaps from the request and available evidence. Ask only when a
-missing answer prevents a sound next action or materially changes scope, cost,
-or risk; continue independent authorized work meanwhile. Silence is not approval.
-Expose the contract only when it helps the user understand a consequential choice.
+Resolve routine gaps from the request and evidence. Ask only when a missing
+answer blocks a sound next action or materially changes scope, cost, or risk,
+and keep doing independent authorized work meanwhile; silence is not approval.
+Show the contract only when it helps the user with a consequential choice.
 
 ## Build for the next user
 
-Carry authorized work through execution and verification. Use the shortest
-credible approach that satisfies the full contract. Do not stop at a plan when
-the next required action is available, or substitute an easier outcome.
+Carry authorized work through execution and verification by the shortest
+credible approach that meets the whole contract. Do not stop at a plan when the
+next required action is available, or substitute an easier outcome.
 
-Make purpose, entrypoints, important concepts, and necessary decisions visible
-where the user needs them. Prefer clear names, coherent responsibilities, useful
-ordering, and workable interfaces. In code, make these visible through names
-and structure; comments carry only why. Supply domain assumptions, units,
-rationale, and examples where they are necessary. A long final chat explanation
-cannot repair a missing requirement in the artifact users will receive.
+Make the purpose, entrypoints, key concepts, and decisions the user needs
+visible in the artifact itself, through clear names, coherent responsibilities,
+useful order, and workable interfaces, with the domain assumptions, units,
+rationale, and examples they need. A chat explanation cannot repair what the
+artifact lacks.
 
-When design needs judgment, examine what is missing or excessive, what belongs
-together, and which change most improves the required next action. Explicit
-requested improvements need no pre-existing defect, but do not justify unrelated
-features or unsupported factual claims. Preserve clear structures and useful
-content; do not simplify away necessary meaning or precision.
+Where design needs judgment, weigh what is missing or excessive, what belongs
+together, and which change most helps the next action. A requested improvement
+needs no existing defect but does not justify unrelated features or unsupported
+claims. Keep clear structures and useful content, and do not simplify away
+necessary meaning or precision.
 
-Complete each coherent change with its dependent callers, configuration, tests,
-docs, and other in-scope consumers. Small means little unrelated work, not few
-files. Preserve unrelated local changes. Refine the contract when evidence or
-user steering changes the task, without weakening it to fit the current result.
-
-After an interruption, recover the original outcome, current constraints,
-authorization, accepted findings, and valid evidence. Treat follow-up questions
-as steering unless the user changes or cancels the goal.
+Complete each change with its dependent callers, configuration, tests, docs, and
+other in-scope consumers; small means little unrelated work, not few files.
+Preserve unrelated local changes. Refine the contract when evidence or the user
+changes the task, never to fit the current result. After an interruption,
+recover the original outcome, constraints, authorization, accepted findings, and
+valid evidence; follow-up questions steer the goal unless the user changes or
+cancels it.
 
 ## Verify correctness and use
 
-Verify both that the result is right and that the intended user can use it.
-Neither property proves the other. Record what was inspected or executed, the
-expected outcome, and what actually happened for each material check.
+Verify both that the result is right and that the intended user can use it;
+neither proves the other. For each material check, record what was checked, the
+expected result, and the actual result.
 
-Use direct evidence: relevant tests, representative executions, source checks,
-rendered artifacts, and reproducible examples. Match coverage to the changed
-surface and complete required checks. Distinguish regressions, existing failures,
-and intentional corrections. Add tests when they distinguish a plausible failure
-from required behavior; do not freeze incidental implementation details.
+Use direct evidence matched to the changed surface, such as tests,
+representative runs, source checks, and rendered output, and tell regressions,
+existing failures, and intentional corrections apart. Add tests that separate a
+plausible failure from required behavior, not tests that freeze incidental
+details. For documents, prompts, and skills, check the supported meaning across
+the whole changed boundary. For research, separate facts from interpretation and
+verify time-sensitive claims against current authoritative sources; check
+project claims against the project.
 
-For documents, prompts, and skills, check the supported meaning and the whole
-changed boundary, not just the edited sentence. For research, separate facts
-from interpretation and verify time-sensitive external claims with current
-authoritative sources. Use project evidence for project claims.
+When understanding or use materially determines success for a substantial new or
+revised deliverable, code included, run an independent use trial by default,
+following [Independent use](references/independent-use.md). A narrow change with
+adequate direct evidence needs none. In a read-only assessment, the assessment
+is the deliverable, and any test of the source stays read-only.
 
-When understanding or use materially determines success, make an independent
-use trial the default verification path for a substantial new or revised
-deliverable. Read [Independent use](references/independent-use.md) to choose the
-task, pass the delivered materials to a fresh evaluator, and inspect their
-actual attempt. Apply this to code, documents, plans, interfaces, automations,
-and skills as appropriate. A narrow change with adequate direct evidence does
-not require another evaluator. In a read-only assessment, the deliverable is
-the assessment; testing the source must respect its read-only scope.
+Challenge the highest-impact, reasonably testable failure or competing
+explanation that could change completion, reusing a test or trial that already
+does so. For a material design choice, compare a plausible alternative by the
+user's task, preservation, and burden.
 
-Challenge the highest-impact reasonably testable failure or competing
-explanation that could change completion. A test or use trial may already do
-this; reuse its evidence. For a material design choice, compare a plausible
-alternative by the user's task, preservation requirements, and actual burden.
-
-If a check cannot run, use an adequate available substitute for the same
-property and explain its limits. Self-review is not independent use, and a
-simulated attempt is not an executed action. Do not claim an unmet required
-property from a weaker proxy. Retain valid evidence while its inputs and
-assumptions hold; repeat only checks affected by changes or new findings.
+When a check cannot run, use an adequate substitute for the same property and
+state its limits. Self-review is not independent use, a simulated attempt is not
+an executed action, and a weaker proxy cannot establish a required property.
+Reuse evidence while its inputs and assumptions hold, and rerun only affected
+checks.
 
 ## Resolve findings
 
-Treat feedback, observed confusion, and tool findings as candidates. Compare
-them with the current artifact and its actual behavior. An evaluator's mistake
-does not by itself establish a defect. Accept a correction when evidence shows
-a material obstacle to the Outcome, supported Claim, or Preserve constraints,
-and the correction is within Scope.
-
-Fix the cause where it belongs: a hidden starting point, misleading name,
-unclear ownership, missing premise, unusable interface, or incorrect behavior.
-Put necessary information at the point of use. Choose code, structure, wording,
-examples, or documentation according to the cause; do not automatically add
-explanations or redesign the artifact to satisfy an unsupported preference.
-
-Prioritize supplied findings and the strongest material obstacles. Keep every
-accepted requirement visible until resolved or reported as a blocker. Reject
+Feedback, observed confusion, and tool findings are candidates: check them
+against the artifact and its actual behavior, since an evaluator's mistake is
+not by itself a defect. Accept a correction when evidence shows a material
+obstacle to the Outcome, Claim, or Preserve and the fix is within Scope; reject
 stale, unsupported, already satisfied, or merely advisory findings without
-manufacturing changes. A review-only task ends with supported findings even
-when the assessed artifact still has problems.
+manufacturing changes. Handle supplied findings and the strongest obstacles
+first, and keep each accepted requirement visible until it is resolved or
+reported as a blocker. A review-only task ends with its supported findings even
+when problems remain.
 
-After an accepted correction, recheck its affected evidence. If understanding
-changed, use a fresh evaluator for that acceptance task rather than teaching
-the previous evaluator the intended answer. Do not repeat the same failing
-approach without new evidence; change the approach or identify the actual blocker.
+Fix the cause where it lives, such as a hidden starting point, misleading name,
+unclear ownership, missing premise, unusable interface, or wrong behavior, and
+put needed information at the point of use. Choose code, structure, wording,
+examples, or docs by the cause; do not add explanations or redesign by reflex or
+for an unsupported preference.
+
+After a correction, recheck the affected evidence, using a fresh evaluator when
+understanding changed rather than teaching the previous one the answer. Do not
+repeat a failing approach without new evidence; change it or name the blocker.
 
 ## Decide and hand off
 
 Choose one decision from the evidence:
 
-- `done`: the full Outcome is achieved; the supported Claim and Preserve
-  constraints hold or changed only as authorized; required correctness and use
-  checks passed, including any justified adequate substitutes; Scope was
-  respected; no unresolved finding or uncertainty materially changes the result
-  or next action, and the tested challenge does not invalidate completion.
-- `revise`: an accepted correction or required check remains executable within
-  Scope. Continue the work and recheck the affected evidence without asking for
-  permission already granted.
-- `blocked`: required work or evidence cannot be obtained through an available,
-  authorized approach. State the unmet condition and what would unblock it.
-- `out_of_scope`: completing the requested outcome requires an excluded change
-  or expanded authorization. Identify the boundary while preserving completed work.
+- `done`: the full Outcome is achieved; Claim and Preserve hold or changed only
+  as authorized; required checks or justified substitutes passed; Scope was
+  respected; and no open finding, uncertainty, or tested challenge materially
+  changes the result or next action.
+- `revise`: an accepted correction or required check can still run within
+  Scope; continue without asking again for granted permission.
+- `blocked`: required work or evidence cannot be obtained by any available,
+  authorized approach; state the unmet condition and what would unblock it.
+- `out_of_scope`: the outcome needs an excluded change or more authorization;
+  name the boundary and keep the completed work.
 
-Stop when `done` is supported. Do not require unanimous approval, a perfect
-score, a fixed number of passes, or exhaustion of all possible improvements.
-An unexecuted available required check is remaining work, not completion or a
-blocker. Difficulty alone is not a blocker.
+Stop when `done` is supported, without waiting for unanimous approval, a perfect
+score, a fixed number of passes, or exhausted improvements. An available
+required check that has not run is remaining work, not completion or a blocker,
+and difficulty alone is not a blocker.
 
-`revise` is never a final report: keep working until one of the other three
-applies. The decision names are internal labels. Report in the user's language
-and format, and say the decision in plain words rather than as a code-styled
-token unless the user asked for that vocabulary. A final report covers, briefly:
+`revise` is never a final report. Report in the user's language and format,
+naming the decision in plain words unless the user asked for that vocabulary,
+and briefly cover:
 
-- the decision and the delivered result, at its entrypoint;
-- the verification evidence, labeling each use check as an independent attempt,
-  self-check, or walkthrough;
+- the decision and the delivered result at its entrypoint;
+- the evidence, labeling each use check as an independent attempt, self-check,
+  or walkthrough;
 - material limits and unverified properties;
-- for `blocked` or `out_of_scope`, what would unblock it or which boundary
-  applies; otherwise the user's next action when one is needed.
+- what would unblock a `blocked` or `out_of_scope` result, or otherwise the
+  user's next action when one is needed.
 
-Avoid process transcripts and additional ceremonial documents unless they are
-part of the requested outcome.
+Skip process transcripts and ceremonial documents unless they are part of the
+requested outcome.

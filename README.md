@@ -1,44 +1,35 @@
 # Loopy
 
-Loopy is an instruction-only skill for Codex and Claude Code. It carries
-substantial work through to a result that is correct, preserves what matters,
-and can be understood and used without the conversation that produced it.
-It targets a common agent habit: stopping after one pass. A first draft or a
-first passing check is not done until the result is verified.
+Loopy is an instruction-only skill for Codex and Claude Code. It keeps an agent
+working until a substantial result is correct, preserves what must not change,
+and can be used without the conversation that produced it, instead of stopping
+after a first draft or a first passing check.
 
-Use it when you need a working handoff: a maintainer finding the right change
-location, a teammate following a guide, a reader making a supported decision,
-or an agent carrying out a skill. The intended user can know the domain while
-being new to the project.
+Use it when someone else must act on the result: a maintainer finding where to
+make a change, a teammate following a guide, a reader making a decision, or an
+agent carrying out a skill. That user may know the domain but not the project.
 
 ## How it works
 
-1. Define the requested outcome, intended user, next action, preservation
-   requirements, evidence, and authorized scope.
-2. Build a coherent result with clear entrypoints, names, responsibilities,
-   necessary context, and usable interfaces.
-3. Verify correctness and preservation. For substantial deliverables whose
-   understanding or use matters, also have a fresh evaluator attempt a real
-   task from the normal entrypoint, using only the materials a user receives.
-4. Check observed obstacles against the artifact, fix supported causes, and
-   repeat the affected checks. Finish when the required outcome and use are
-   demonstrated.
+1. Define the outcome, its intended user and their next action, what must be
+   preserved, the evidence of success, and the authorized scope.
+2. Build the result with clear entrypoints, names, responsibilities, and the
+   context its user needs.
+3. Verify correctness and preservation. When use matters, a fresh subagent
+   without the production conversation attempts a real task from the normal
+   entrypoint, using only what a user would receive.
+4. Fix the supported causes of observed obstacles and repeat the affected
+   checks. Stop once the evidence shows the outcome, with no perfect score or
+   fixed number of rounds.
 
-The fresh evaluator is a subagent the session already offers, such as a
-non-forked Claude Code Agent or a fresh Codex subagent. It gets no production
-conversation, intended answer, or earlier conclusions, stays within the user's
-scope, and writes only in an isolated copy. Loopy inspects what it actually did;
-a mistaken answer or stylistic preference does not by itself justify a revision.
-Loopy skips the trial when the user, host, or project restricts delegation, or
-when a small change already has adequate direct evidence, and then reports the
-strongest permitted check and its limits, never as independent use. Passing
-checks are reused while their inputs and assumptions hold.
-
-The loop selects `done`, `revise`, `blocked`, or `out_of_scope`. It continues
-executable authorized work, keeps read-only reviews read-only, and stops once
-the evidence is sufficient, with no perfect score or fixed number of rounds.
-Existing behavior and external contracts stay protected; a usability gain does
-not excuse a regression.
+The evaluator is a subagent the session already offers, such as a non-forked
+Claude Code Agent or a fresh Codex subagent; it stays within the user's scope
+and writes only in an isolated copy. Loopy checks what it actually did, and a
+mistaken answer or stylistic preference alone does not justify a revision.
+When delegation is restricted, or a small change already has direct evidence,
+Loopy reports the strongest check it ran and its limits instead. Read-only
+reviews stay read-only, and existing behavior and external contracts stay
+protected.
 
 ## Use
 
@@ -53,14 +44,14 @@ Use loopy to refactor these docs: group them by meaning and cut repetition
 without losing claims.
 ```
 
-For a concrete example, a setup guide is ready when its commands work and a new
-teammate can start from the README, produce the expected output, and recognize
-success. If they get stuck, Loopy checks the cause and repairs the right place:
-the command, interface, order, terminology, or missing premise.
+For example, a setup guide is done when its commands work and a new teammate
+can start from the README, produce the expected output, and recognize success.
+If they get stuck, Loopy repairs the cause: the command, interface, order,
+terminology, or a missing premise.
 
-The skill can also be selected automatically when a request matches its
-description. It is not intended for trivial edits, direct factual answers,
-open brainstorming, or tasks whose completion is obvious from one simple action.
+The skill is also selected automatically when a request matches its
+description. It is not meant for trivial edits, direct factual answers, open
+brainstorming, or tasks finished in one obvious step.
 
 ## Install
 
@@ -86,22 +77,20 @@ Run `/reload-plugins` after updating an existing installation.
 
 ## Source and evaluation
 
-Both hosts load [skills/loopy/SKILL.md](skills/loopy/SKILL.md).
-It routes to shared guidance only when relevant:
+Both hosts load [skills/loopy/SKILL.md](skills/loopy/SKILL.md), which reads
+these references only when relevant:
 
-- [Independent use](skills/loopy/references/independent-use.md) defines task
-  selection, fresh context, evidence, corrections, and limits.
-- [Code](skills/loopy/references/code.md) defines how written or changed code
-  should read: least code, why-only comments, and no defensive or leftover code.
-- [Refactoring](skills/loopy/references/refactoring.md) turns code or documents
-  into less, clearer content: structure, behavior baselines, compatibility,
-  coherent migrations, supported bug fixes, and reader tasks. A project-wide
-  request covers all major areas; a narrow request retains its boundary.
+- [Independent use](skills/loopy/references/independent-use.md): choosing the
+  trial task, fresh context, evidence, and limits.
+- [Code](skills/loopy/references/code.md): how written or changed code should
+  read, with the least code, why-only comments, and no defensive or leftover
+  code.
+- [Refactoring](skills/loopy/references/refactoring.md): less, clearer code or
+  documents with preserved behavior and contracts, coherent migrations, and
+  fixes for supported bugs, across the whole project when asked.
 
-When changing the skill, follow [the evaluation procedure](evals/README.md);
-its task fixtures, acceptance criteria, and records stay outside the runtime
-skill.
-
-Codex metadata lives in `.codex-plugin/` and `.agents/plugins/`; Claude Code
-metadata lives in `.claude-plugin/`. There is no build step or duplicated
-host-specific skill body.
+To change the skill, follow [the evaluation procedure](evals/README.md); its
+fixtures, acceptance criteria, and records stay outside the runtime skill.
+Codex metadata lives in `.codex-plugin/` and `.agents/plugins/`, and Claude
+Code metadata in `.claude-plugin/`; there is no build step or host-specific
+copy of the skill.
