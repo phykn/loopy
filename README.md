@@ -3,7 +3,8 @@
 Loopy is an instruction-only skill for Codex and Claude Code. It keeps an agent
 working until the result is correct, preserves what must not change, and can be
 used without the conversation that produced it, instead of stopping after a
-first draft or a first passing check. Effort scales with what is at stake.
+first draft or a first passing check. Effort and token use scale with what is
+at stake.
 
 Use it when someone else must act on the result: a maintainer finding where to
 make a change, a teammate following a guide, a reader making a decision, or an
@@ -27,24 +28,26 @@ Claude Code Agent or a fresh Codex subagent; it stays within the user's scope
 and writes only in an isolated copy. Loopy checks what it actually did, and a
 mistaken answer or stylistic preference alone does not justify a revision.
 When delegation is restricted, or a small change already has direct evidence,
-Loopy reports the strongest check it ran and its limits instead. Read-only
-reviews stay read-only, and existing behavior and external contracts stay
+Loopy reports the strongest check it ran and its limits instead.
+Assessments stay read-only, and existing behavior and external contracts stay
 protected.
 
 ## Use
 
-Loopy handles five kinds of request. The first row whose test holds decides:
+Loopy sorts each request by what happens to the result's behavior, whether the
+result is code, a document, a prompt, or a skill:
 
-| Request | Test | What may change |
+| Behavior | Kind | Done when |
 | --- | --- | --- |
-| Review (검토해줘) | Nothing may change | Nothing; it reports supported findings |
-| Refactor (리팩토링해줘) | Behavior and meaning must stay | Structure and amount; supported bugs found are fixed |
-| Fix (고쳐줘) | The result breaks what it was meant to do | What breaks that |
-| Build (만들어줘, 바꿔줘, 완성해줘) | The request names the change to make | That change, new or existing |
-| Improve (개선해줘) | The request wants it better, with or without a goal such as shorter | Whatever the goal needs, including behavior |
+| Not changed | Assess (검토해줘, 원인만 찾아줘) | Findings and causes are supported |
+| Kept while form changes | Refactor (리팩토링해줘) | Behavior is the same, apart from supported bugs it fixes |
+| Restored to the existing contract | Debug (고쳐줘) | The contract holds and the root cause is explained |
+| Changed to a stated new behavior | Build (만들어줘, 바꿔줘, 완성해줘) | It works as stated |
+| Changed toward a direction, stated or not | Improve (개선해줘) | It is measurably better than the baseline |
 
-So "make it shorter" is a refactor when everything must still work as before
-and an improvement when content may be dropped.
+A mixed request runs as steps, such as Assess then Debug for "check and fix".
+"Make it shorter" is a refactor when everything must still work as before and
+an improvement when content may be dropped.
 
 ```text
 Use loopy to finish this guide so a new teammate can follow it without this chat.
@@ -100,6 +103,9 @@ these references only when relevant:
 - [Refactoring](skills/loopy/references/refactoring.md): less, clearer code or
   documents with preserved behavior and contracts, coherent migrations, and
   fixes for supported bugs, across the whole project when asked.
+- [Debug](skills/loopy/references/debug.md): confirming a bug's root cause
+  with a testable claim before any change, which an assessment of a cause also
+  follows, then fixing it there with a regression test that fails first.
 - [Improvement](skills/loopy/references/improvement.md): making an artifact
   better toward a goal, asking for one when neither the request nor the
   evidence settles it, with behavior changes and what they lose reported apart

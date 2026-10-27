@@ -1,0 +1,14 @@
+# Deliveries
+2026-10-01 in 20 widget
+2026-10-01 in 3 gadget
+2026-10-02 in 8 bolt
+
+# Week 1
+2026-10-03 out 6 widget
+2026-10-04 out 3 gadget
+2026-10-06 out 2 bolt
+
+# Week 2
+2026-10-08 return 2 gadget
+2026-10-09 out 5 widget
+2026-10-10 out 2 gadget

@@ -1,5 +1,193 @@
 # Evaluation records
 
+## Baselines
+
+The latest run of each case and of activation, all in Claude Code 2.1.302 with
+Opus 5.5 and the maintainer's global instructions. Each row is one fresh agent
+run unless it says otherwise.
+
+| Run | Skill | Result | Key outcome | Entry |
+| --- | --- | --- | --- | --- |
+| `guide` | 0.10.0 | Passed | README rewritten; its command packed both notes and a rerun was refused as documented; one fresh-user trial; 80,778 tokens | [0.10.0 routing](#2026-10-27-behavior-routing-and-debug-0100) |
+| `review` | 0.10.0 | Passed | Found the unowned publication and the command check after completion; plan unchanged; one walkthrough; 77,285 tokens | [0.10.0 routing](#2026-10-27-behavior-routing-and-debug-0100) |
+| `ready` | 0.10.0 | Passed | Assess then Debug; no edits; the retry suggestion was rejected; 73,360 tokens | [0.10.0 routing](#2026-10-27-behavior-routing-and-debug-0100) |
+| `refactor` | 0.10.0 | Passed | Source 125 → 79 lines; contract outputs unchanged; invalid-amount bug fixed with a regression test; 113,141 tokens | [0.10.0 routing](#2026-10-27-behavior-routing-and-debug-0100) |
+| `fix` | 0.10.0 | Passed | Cause confirmed (-1380 minutes) before editing; `total 33:00`; only `entries.py` and the test changed; 75,361 tokens | [0.10.0 routing](#2026-10-27-behavior-routing-and-debug-0100) |
+| `cause` | 0.10.0 | Passed | Return sign fixed after printing the parsed moves; no clamp; regression test fails first; 73,549 tokens | [0.10.0 routing](#2026-10-27-behavior-routing-and-debug-0100) |
+| `diagnose` | 0.10.0 | Passed | Cause confirmed from the normalized keys; task files unchanged; 75,817 tokens | [0.10.0 routing](#2026-10-27-behavior-routing-and-debug-0100) |
+| `feature` | 0.10.0 | Passed | January totals 512.50; output without `--month` unchanged; month checked at the CLI; 85,129 tokens | [0.10.0 routing](#2026-10-27-behavior-routing-and-debug-0100) |
+| `docs` | 0.10.0 | Passed | Documentation 94 → 63 lines; the wrong FAQ claim and broken link fixed; code unchanged; 96,215 tokens | [0.10.0 routing](#2026-10-27-behavior-routing-and-debug-0100) |
+| `improve` | 0.10.0 | Passed | 405 → 228 words, 44%; hard rules kept; three behavior changes reported with losses; 89,918 tokens | [0.10.0 routing](#2026-10-27-behavior-routing-and-debug-0100) |
+| Activation | 0.9.0 description | Passed | Three repetitions: `tune` 36/36 should-trigger and 0/24 near misses; `holdout` 24/24 and 0/27, counting the three dictated fixes | [0.9.0](#2026-10-23-activation-goalless-improve-routing-and-maintainer-map-090) |
+
+## 2026-10-27 behavior routing and Debug (0.10.0)
+
+Routing now sorts a request by what happens to the result's behavior: not
+changed (Assess), kept while form changes (Refactor), restored to the existing
+contract (Debug), changed to a stated new behavior (Build), or changed toward a
+direction (Improve). Mixed requests run as steps of one kind each, and target
+and scope no longer pick a kind. `fix.md` became `debug.md`. Its Diagnose part,
+which Assess also reads when asked for a cause, requires a testable cause
+claim confirmed before any fix and forbids trial-and-error fixes. Its Fix part
+adds the revert check and keeping only the needed change. Two cases were added:
+`cause`, where clamping negative stock would also hide the symptom, and
+`diagnose`, which asks only for a cause. The `SKILL.md` body is 1,336 words and
+the references 2,623.
+
+### Conditions and inputs
+
+- Environment: macOS, Claude Code 2.1.302, Opus 5.5, Python 3.13.16.
+- Every case ran once on the revision, each in its own `prepare.py --case`
+  workspace with a fresh `general-purpose` subagent and the 0.9.0 case prompt.
+  The two new cases also ran once on the pre-routing 0.10.0 skill (`fix.md`,
+  SKILL.md `23aaf275…`).
+- Before the cases, one fresh agent classified 17 paraphrased requests with only
+  the routing section and matched the expected kind on all 17 (52,962 tokens).
+  Its notes led to three wording fixes: what behavior means for a document or
+  prompt, Improve covering a request with no stated goal, and "find why and fix
+  it" being one Debug step.
+
+| Input | SHA-256 |
+| --- | --- |
+| SKILL.md | `26a0fa608e02195f49dd9e7c18f5c1424bdcb1b9d4c9ac609a92044e420f82b9` |
+| debug.md | `b5df851a8ec1299df505e65d55ad9152c2a46711538ea58b93c5b2d69d58f8f0` |
+| Case definitions | `ef37111dc214db0db381bf825e0dc34fafe596ee19d9e85e4bed8aba78250399` |
+| Fixture `fixtures/cause` (sorted file listing) | `79fefb6eff4e33739854d5eb78f064bda4a5fae2a3e7acf4d5eba6b0b80e88d5` |
+| Fixture `fixtures/diagnose` (sorted file listing) | `116661e455ee4977fd1783ec9c21eb06ed6123a88e95396a8b036103a1740e2d` |
+
+### Task outcomes
+
+All ten cases passed on the revision; the Baselines table above gives each
+key outcome and its tokens, 840,553 in total. The coordinator compared
+protected files with the fixtures and reran delivered commands from clean
+copies. `improve` passed its size criterion, which 0.9.0 missed at 39%.
+
+| New case | Pre-routing skill | Revision |
+| --- | --- | --- |
+| `cause` | Passed; cause shown by the hand count `3 - 3 - 2 - 2 = -4`; 73,562 tokens | Passed; cause shown by printing the parsed moves; 73,549 tokens |
+| `diagnose` | Passed; routed as Review; 72,342 tokens | Passed; routed as Assess; 75,817 tokens |
+
+### Limits
+
+- One run per case. Neither new case separated the versions: on Opus 5.5 both
+  confirmed the cause and avoided the clamp.
+- `review` read the Diagnose section although it asked for no cause.
+- A trial subagent in `refactor` briefly wrote a scratch file outside the
+  workspace.
+- The `description` was unchanged, so whether "원인만 찾아줘" selects Loopy
+  was not measured.
+- Codex, other models, and human use were not exercised.
+
+## 2026-10-27 token use (0.10.0)
+
+`SKILL.md` now scales tokens as well as effort. It says to search before
+reading, read only the files or sections a decision needs, and reread one only
+after it changes. It also says to run narrow checks while working and the full
+required checks when the result settles, keep output short, write no plan, log,
+or notes file nobody asked for, and delegate only for evidence that cannot be
+had directly. `refactoring.md` drops the reader trial on the original and keeps
+one on the result. `independent-use.md` gives every critical task, and any
+repeat after a revision, to one evaluator unless one task's answer would give
+away another's. The `SKILL.md` body grew from 1,203 to 1,268 words.
+
+Three cases ran once on 0.9.0 and once on the revision. All six runs passed,
+and token use fell by 3%, which one run per version cannot tell from variance.
+
+### Conditions and inputs
+
+- Baseline: 0.9.0 at commit `55cae7d`, exported with `git archive`. Revision:
+  the working tree, which also holds `fix.md`.
+- Environment: macOS, Claude Code 2.1.302, Opus 5.5, Python 3.13.16.
+- Each run had its own `prepare.py --case` workspace and fresh
+  `general-purpose` subagent, with the 0.9.0 case prompt, which allows at most
+  one delegated fresh-context check.
+- Token counts are the host's total for each subagent. Whether they include a
+  nested trial's tokens is unknown.
+
+| Input | SHA-256 |
+| --- | --- |
+| SKILL.md | `23aaf2753496e50d6340edbeb34b015022d5917c453bd0db1c7801ce38c7c720` |
+| refactoring.md | `6d7cfc2286ace0dbb8e930840e7767a248dba0b105a50565ed78ae28e81d55dc` |
+| independent-use.md | `ac3fbcafd550a81b341745fe4f0502e75f7ef2ea63597c2d4c035f2728e84768` |
+| fix.md | `6c78fafed7612a15e456e091fa115ef28cd5891ca8497991b4182054110017c4` |
+
+### Task outcomes
+
+| Case | 0.9.0 | Revision |
+| --- | --- | --- |
+| `fix` | Passed; 74,756 tokens, 16 tool calls | Passed; 73,159 tokens, 17 tool calls |
+| `refactor` | Passed; 126,291 tokens, 29 tool calls | Passed; 123,840 tokens, 27 tool calls |
+| `guide` | Passed; 86,314 tokens, 19 tool calls | Passed; 81,599 tokens, 17 tool calls |
+| Total | 287,361 tokens | 278,598 tokens |
+
+The coordinator checked each result from a clean copy:
+
+- **`fix`.** Both versions made the same one-line `% (24 * 60)` fix and the same
+  regression test, which fails on the fixture's `entries.py`. Neither delegated.
+- **`refactor`.** Both match the original byte for byte on the sample text,
+  JSON, refusal, wrong header, BOM input, `--help`, and a missing file. Both
+  reject `abc` with exit 2, its line number, and no JSON, and keep the BOM
+  why-comment. Source went 125 → 77 lines in three modules on 0.9.0, and
+  125 → 67 in one `cli.py` on the revision.
+- **`guide`.** Both leave `parcel.py` and the notes unchanged. Each README's
+  command packs both notes into the same JSON, and a rerun is refused as the
+  README says. Each version ran one fresh-user trial, which succeeded.
+
+### Limits
+
+- One run per version, so a 3% difference is within run-to-run variance.
+- The case prompt allows one delegation. `refactoring.md` used to ask for a
+  reader trial before and after, and the 0.7.0 `refactor` and `docs` agents ran
+  both. Here each version ran one, so the saving from dropping the first is not
+  measured.
+- `review`, `ready`, `feature`, `docs`, and `improve` did not run on the
+  revision; the user chose three representative cases instead of the full set.
+- The 0.9.0 `fix` agent briefly wrote a scratch file outside its workspace.
+- Codex, other models, and human use were not exercised.
+
+## 2026-10-27 fix reference and proportional evaluation (0.10.0)
+
+0.10.0 adds `references/fix.md`, which the Fix row now links: reproduce first,
+fix the cause, write a regression test that fails first, and report anything
+else noticed without changing it. A narrow fix needs no independent use trial.
+`evals/README.md` now chooses runs by what changed, runs only the revised skill,
+and treats an unchanged case's last recorded run, listed in the new Baselines
+table above, as its baseline. Activation runs each draft once on `tune` and the
+final description three times on `holdout`. Under the old procedure this change
+would have run all eight cases twice; under the new one it ran `fix` once.
+
+### Conditions and inputs
+
+- Skill: 0.10.0 working tree, prepared with
+  `prepare.py --skill skills/loopy --case fix`.
+- Environment: macOS, Claude Code 2.1.302, Opus 5.5, Python 3.13.16. The
+  coordinator also ran the delivered tests on Python 3.9.6.
+- Baseline: the 0.9.0 `fix` entry below. The case definitions and fixture hash
+  are the same as in that entry.
+- One fresh Claude Code `general-purpose` subagent with the 0.9.0 case prompt.
+  The user's global instructions were active. It used 78,243 tokens over 18
+  tool calls.
+
+| Input | SHA-256 |
+| --- | --- |
+| SKILL.md | `e83694c5e44927431e240d00e4f08a569895db5f223e3ce52d8cda270a25b073` |
+| fix.md | `6c78fafed7612a15e456e091fa115ef28cd5891ca8497991b4182054110017c4` |
+| code.md | `9baaad839d77c8a33c8520a5efec39eff97a3936ed76d74390661cc962d64b92` |
+
+### Task outcome
+
+| Case | Result |
+| --- | --- |
+| `fix` | Passed every criterion, as the baseline did. `run.md` shows `deploy -21:00` and `total 9:00` reproduced, then the new test failing (`deploy -22:45`), then the one-line `% (24 * 60)` fix. A clean copy prints `total 33:00`, and all four tests pass on Python 3.13 and 3.9. The new test fails on the fixture's `entries.py`. Only `entries.py` and the added test differ from the fixture. The agent delegated nothing and reported the missing `python` command apart. |
+
+### Limits
+
+- One run. The order of steps was read from `run.md`, not the transcript.
+- The agent again did not mention the `None` return, so how Loopy reports a
+  smell it notices is still unobserved.
+- The new procedure was self-checked only; no fresh maintainer followed it.
+- Codex, other models, and human use were not exercised.
+
 ## 2026-10-23 fix case (0.9.0)
 
 The catalogue gains `fix`, a plain bug report on the Fix route. Since 0.9.0

@@ -38,10 +38,6 @@ the bug rules below. If the code cannot be observed, add the smallest seam that
 lets a check run, preferring existing interfaces, and record the gap until
 checks cover it.
 
-For substantial structural changes, also run fixed reader tasks through
-[Independent use](independent-use.md) before and after, such as a maintainer
-without project history locating a requested change and its callers.
-
 ## Reduce and reshape
 
 Reshape code toward [Code](code.md), renaming to resolve misleading meaning,
@@ -121,7 +117,10 @@ for a project-wide change. Exercise affected entrypoints and packaging or
 discovery paths, since static imports miss broken runtime references, test
 README commands against actual outputs, and search for remaining references to
 moved or removed names. Check the result against the structural criteria,
-including code or text that can still be removed.
+including code or text that can still be removed. For substantial structural
+changes, also run a fixed reader task through
+[Independent use](independent-use.md) on the result, such as a maintainer
+without project history locating a requested change and its callers.
 
 Finish when the requested areas are assessed, accepted structural changes and
 supported in-scope bugs are resolved, dependent migrations are complete, and

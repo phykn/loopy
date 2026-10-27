@@ -4,49 +4,71 @@ Follow this procedure when changing the skill's workflow, activation
 description, references, or completion criteria. Judge actual task results and
 artifacts; format checks alone cannot show that the instructions work.
 
+## Choose the runs
+
+Each case run is a full fresh-agent session, and each activation query is a
+partial Claude Code session per repetition and version, so run only what tests
+the change:
+
+| Change | Runs |
+| --- | --- |
+| Wording that keeps every rule's meaning, the README, metadata, or helpers | [Package and helper checks](#package-and-helper-checks) only |
+| One reference, or one row's link to it | That reference's cases below |
+| The shared loop in `SKILL.md` or a routing test | Every case |
+| The `description` alone | [Activation](#measure-activation) only |
+
+| Case | Kind | Input | Run when changing |
+| --- | --- | --- | --- |
+| `guide` | Build | A CLI whose README must become usable | `independent-use.md`, building for the next user |
+| `review` | Assess | A deployment plan to assess read-only | Assess routing, read-only and authorization limits |
+| `ready` | Assess, then Debug | An already-correct guide and an unsupported review finding | Findings and stopping rules |
+| `refactor` | Refactor | Code seeded with common agent habits and a pre-existing bug | `refactoring.md`, `code.md` |
+| `fix` | Debug | A bug report naming a symptom, next to a code smell that is not a bug | `debug.md`, Debug routing, `code.md` |
+| `cause` | Debug | A bug whose symptom a plausible workaround also hides | `debug.md`, Debug routing |
+| `diagnose` | Assess | A request to find a bug's cause without changing anything | Diagnosis in `debug.md`, Assess routing |
+| `feature` | Build | A feature to add to clean code | `code.md`, Build routing |
+| `docs` | Refactor | Documentation with repetition and a wrong claim | Document rules in `refactoring.md` |
+| `improve` | Improve | A verbose prompt with stale and conflicting rules | `improvement.md`, Improve routing |
+
+Run only the revised skill. A case's row in the
+[Baselines](results.md#baselines) table is its baseline while the case, its
+fixture, the host, and the model are unchanged. Run the baseline skill too only
+for a new or changed case or setup, or when the change claims a better outcome
+than the recorded one.
+
+These runs are the use check for a skill change and replace Loopy's own default
+independent use trial. Add a trial, reviewer, or repetition beyond them only
+when a result leaves a question that could change the release, and record why.
+
 ## Prepare and run
 
-1. Before editing, pick the relevant cases in [cases.json](cases.json), fix
-   their acceptance criteria, and keep the baseline skill and raw fixtures.
-   The cases are a focused sample, not full coverage; each one's inputs live
-   in `fixtures/<id>/`. A change to the shared loop or routing in `SKILL.md`
-   runs every case. The `description` only decides when Loopy is selected, so a
-   change to it alone runs [activation](#measure-activation) instead of cases.
-
-   | Case | Input | Run when changing |
-   | --- | --- | --- |
-   | `guide` | A CLI whose README must become usable | `independent-use.md`, building for the next user |
-   | `review` | A deployment plan to assess read-only | Review routing, read-only and authorization limits |
-   | `ready` | An already-correct guide and an unsupported review finding | Findings and stopping rules |
-   | `refactor` | Code seeded with common agent habits and a pre-existing bug | `refactoring.md`, `code.md` |
-   | `fix` | A bug report naming a symptom, next to a code smell that is not a bug | Fix routing, `code.md` |
-   | `feature` | A feature to add to clean code | `code.md`, Build routing |
-   | `docs` | Documentation with repetition and a wrong claim | Document rules in `refactoring.md` |
-   | `improve` | A verbose prompt with stale and conflicting rules | `improvement.md`, Improve routing |
-
-2. From the repository root, prepare one workspace with the baseline skill,
-   such as an export from `git archive HEAD skills/loopy | tar -x -C <dir>`
-   passed as `--skill <dir>/skills/loopy`, and a separate one with the revised
-   skill, using the commands below. Python 3.9+ with no external packages is
+1. Before editing, fix the chosen cases' acceptance criteria in
+   [cases.json](cases.json) and keep the raw fixtures. The cases are a focused
+   sample, not full coverage; each one's inputs live in `fixtures/<id>/`.
+2. From the repository root, prepare a workspace with the revised skill using
+   the commands below. For a baseline run, prepare a separate one from an export
+   such as `git archive HEAD skills/loopy | tar -x -C <dir>`, passed as
+   `--skill <dir>/skills/loopy`. Python 3.9+ with no external packages is
    enough.
 3. Give each workspace's `requests.md` to a fresh agent without the production
    conversation, expected answers, acceptance criteria, or earlier conclusions,
-   with the same resources, capabilities, and delegation authorization for both
-   versions. This is task execution, not a critique of the skill.
+   with the same resources, capabilities, and delegation authorization as the
+   baseline. This is task execution, not a critique of the skill.
 4. Judge the recorded actions and actual outputs against the withheld criteria;
    an agent's claim of success is not evidence by itself. Compare protected
-   files with the fixtures byte for byte, run delivered commands from a clean
-   copy, and have a separate fresh reader try any user task the producing agent
-   did not independently exercise. When the change touches `refactoring.md`,
-   also compare the instructions themselves for project-wide coverage, supported
-   external contracts, coherent migrations, baseline versus intended bug
-   behavior, and effects beyond return values; claim behavioral testing of
-   those paths only from an actual project fixture.
+   files with the fixtures byte for byte and run delivered commands from a clean
+   copy. When a criterion requires independent use that the producing agent did
+   not exercise, have a separate fresh reader try it. When the change touches
+   `refactoring.md`, also compare the instructions themselves for project-wide
+   coverage, supported external contracts, coherent migrations, baseline versus
+   intended bug behavior, and effects beyond return values; claim behavioral
+   testing of those paths only from an actual project fixture.
 5. Correct only supported problems and rerun the affected cases, not unchanged
-   trials until one passes. Record each case's version and conditions, input
-   identity, changed files, actual outcomes, acceptance result, and material
-   limits in [results.md](results.md), distinguishing self-checks, fresh-agent
-   attempts, and human use.
+   trials until one passes. Record the version and conditions, input identity,
+   changed files, token use when the host reports it, and material limits in
+   [results.md](results.md), with one row per case for its key outcome and
+   detail only for failed criteria, distinguishing self-checks, fresh-agent
+   attempts, and human use. Update each run case's row in its Baselines table.
 
 ```console
 python3 evals/prepare.py --skill skills/loopy
@@ -65,12 +87,11 @@ workspace and fresh agent for each case, and record when one agent ran several.
 ## Measure activation
 
 When changing the `description`, measure whether Claude Code selects Loopy for
-requests it should handle and not for near misses, with the same queries for
-the old and new description:
+requests it should handle and not for near misses:
 
 ```console
-python3 evals/activation.py --plugin <baseline-root> --set tune --out <dir>/base-tune.jsonl
-python3 evals/activation.py --plugin . --set tune --out <dir>/candidate-tune.jsonl
+python3 evals/activation.py --plugin . --set tune --reps 1 --out <dir>/draft-tune.jsonl
+python3 evals/activation.py --plugin . --set holdout --out <dir>/candidate-holdout.jsonl
 ```
 
 `--plugin` takes a plugin root: this repository, or for the baseline a
@@ -84,13 +105,15 @@ run to `--out`, so keep it outside the repository, and prints the selections
 per query and in total.
 
 [activation.json](activation.json) holds should-trigger queries and near
-misses. Shape a description on the `tune` set, then run both versions with
-`--set holdout` to confirm it on phrasings it was not shaped on. Each run is a
-partial Claude Code session that costs tokens and varies between runs, so use
-at least three repetitions (the default) and the model users run (`--model`,
-otherwise the Claude Code default), and record the setup. Skill-creator's
-`run_eval.py` judges only the first tool call, so global instructions that
-begin with file reads make every run there look like a miss.
+misses. Run each draft description, including the final one, on the `tune`
+set with one repetition, then run the final one on `holdout`, phrasings it was
+not shaped on, with the default three. Runs vary, so use the model users run
+(`--model`, otherwise the Claude Code default) and record the setup. The
+Baselines counts stand in for the old description while the queries, model,
+and runner are unchanged; otherwise run it the same way with
+`--plugin <baseline-root>`. Skill-creator's `run_eval.py` judges only the first
+tool call, so global instructions that begin with file reads make every run
+there look like a miss.
 
 ## Maintain the catalogue
 
@@ -134,6 +157,7 @@ adding a dependency to Loopy. After changing a helper, also prepare a packet and
 inspect it. These checks show package and helper consistency, not agent
 behavior or installation in either host.
 
-[results.md](results.md) records past runs with their baseline and revised
-skills, observed outcomes, retained guide artifacts, and limits. Consult it
-when maintaining the cases or comparing a later revision.
+[results.md](results.md) starts with a Baselines table of the latest run of each
+case and of activation. The entries below it record each run's conditions,
+outcomes, retained guide artifacts, and limits; read one only when you need
+that detail.

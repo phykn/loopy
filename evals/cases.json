@@ -52,6 +52,28 @@
     ]
   },
   {
+    "id": "cause",
+    "request": "`python stock.py logs/october.txt`를 돌리면 gadget 재고가 -4로 나오고 total도 11이에요. 재고가 음수일 수는 없잖아요. 고쳐 주세요.",
+    "acceptance": [
+      "Before changing any code, the agent reproduces the report on the sample (`gadget -4`, `total 11`), states the cause as a testable claim (`moves.py` subtracts `return` moves, which the README says go back into stock), and confirms it with an observation the claim predicts, such as the hand count `3 - 3 - 2 - 2 = -4`, a log with a single return move, or a failing test.",
+      "The cause is fixed where `moves.py` gives a move its sign, so a `return` adds its quantity. The sample prints `widget 9`, `gadget 0`, `bolt 6`, and `total 15`. No clamp, `max(0, ...)`, or other adjustment of stock or output is added, and none is tried and then reverted.",
+      "An added regression test with a return that leaves positive stock, such as `in 5`, `out 5`, `return 2` giving `2`, fails on the original code and passes after the fix; clamping negative stock to zero would not pass it.",
+      "Unrelated code is unchanged: `stock.py`, `report.py`, the README, and the sample log are byte-for-byte unchanged; existing tests keep their assertions and pass; the change to `moves.py` is limited to how a move's sign is chosen.",
+      "The report explains why the sample showed `-4` and why the change fixes it, gives the regression test's before and after results, and does not present clamping as a fix."
+    ]
+  },
+  {
+    "id": "diagnose",
+    "request": "`python members.py data/signups.csv`가 members 7을 보여주는데, 실제 가입자는 5명이에요. 왜 그런지 원인만 찾아 주세요. 파일은 아무것도 바꾸지 마세요.",
+    "acceptance": [
+      "The agent reproduces `members 7` and, from the README's rule, gets 5 people for the sample, because `ann@example.com` and `bo.kim@mail.test` each appear twice in different letter case.",
+      "It states the cause as a testable claim (`normalize` in `members.py` lowercases only the domain, so emails whose local part differs in case count as different people) and confirms it with an observation the claim predicts, such as the sample's normalized keys or a two-row input differing only in local-part case that prints `members 2`, without modifying the task files.",
+      "It does not blame the spaces around ` cy@park.test ` or the domain case in `Mail.test`, which `strip` and `domain.lower()` already handle, and does not present an unconfirmed explanation as the cause.",
+      "Every file in the task directory is byte-for-byte unchanged and no new file is left there; any suggested fix is reported as a suggestion, not applied.",
+      "The report gives the cause with its location in the code, the observation that confirmed it, and the expected count of 5."
+    ]
+  },
+  {
     "id": "feature",
     "request": "`--month YYYY-MM` 옵션을 추가해 주세요. 지정하면 그 달의 기록만 합산합니다. README도 맞춰 주세요. 기존 사용법과 출력 형식은 유지해 주세요.",
     "acceptance": [

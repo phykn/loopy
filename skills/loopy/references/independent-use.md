@@ -11,9 +11,10 @@ the author's reasoning. Fix observable tasks before the trial: run an example or
 locate and trace a requested change in code, follow a procedure or answer a
 decision question from a guide, or carry out a realistic request with a skill or
 prompt and inspect the resulting actions and artifacts. Cover the distinct
-critical paths, not a fixed count, and keep task wording, materials,
-environment, and evaluator capabilities comparable across a before and after
-comparison; a score never replaces the attempt.
+critical paths, not a fixed count, with one evaluator unless one task's answer
+would give away another's. Keep task wording, materials, environment, and
+evaluator capabilities comparable across a before and after comparison; a score
+never replaces the attempt.
 
 ## Give only normal user context
 
@@ -49,7 +50,7 @@ Compare the actual outputs with the acceptance evidence yourself, check whether
 a success relied on guessing or on knowledge the intended user would lack, and
 tell artifact problems from environment failures. Never change tasks to hide
 failures or try evaluators until one passes. After a relevant revision, repeat
-the affected task with a fresh evaluator.
+only the affected tasks, with one fresh evaluator.
 
 Completion needs the critical tasks to succeed and confirmed material obstacles
 to be resolved, not universal praise. An agent trial shows agent use under its

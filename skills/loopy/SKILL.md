@@ -20,7 +20,14 @@ their next action from the delivered result at its normal entrypoint.
 
 Loop through defining success, building, verifying, and resolving supported
 findings until the `done` conditions hold, then stop. A first draft or first
-passing check is not completion. Scale effort to the consequences.
+passing check is not completion.
+
+Scale effort and tokens to the consequences. Search for what a decision needs,
+read only those files or sections, and reread one only after it changes. While
+working, run the narrowest check that shows a property and keep its output
+short; run the full required checks when the result settles. Write no plan,
+log, or notes file that nobody asked for, and delegate only for evidence you
+cannot get directly.
 
 Follow the host's instruction hierarchy and the user's scope. This skill grants
 no permission for external actions or extra writes, except that choosing it, or
@@ -29,24 +36,28 @@ already offers, within the user's scope and writing only in an isolated copy. Do
 not delegate when the user, host, or project restricts delegation or its cost,
 or when the only way to delegate needs new setup, credentials, or approval.
 
-Match the request to the first kind whose test holds, and give each part of a
-mixed request its own:
+Sort each request by what happens to the result's behavior; a document,
+prompt, or skill behaves through what it tells its reader or agent to do. Target
+and scope, such as a prompt or a whole project, apply to every kind and choose
+none. Run a mixed request as steps of one kind each, in order.
 
-| Request | Test | What may change | Also read |
+| Behavior | Kind | Done when | Also read |
 | --- | --- | --- | --- |
-| Review, check, assess | Nothing may change | Nothing; deliver supported findings | |
-| Refactor, tidy, port | Behavior and meaning must stay | Structure and amount; supported bugs found are fixed | [Refactoring](references/refactoring.md) |
-| Fix | The result breaks its intended contract | What breaks it | |
-| Build, add, change, remove, complete, finish | The request names the change to make | That change, in new or existing work | |
-| Improve, make better | The request wants it better, with or without a goal such as shorter, faster, or friendlier | Whatever the goal needs, including behavior | [Improvement](references/improvement.md) |
+| Not changed | Assess: review, check, diagnose | Findings and causes are supported | [Debug](references/debug.md) up to Fix, for a cause |
+| Kept while form changes | Refactor: tidy, shorten, port | Behavior is the same, apart from supported bugs fixed as Debug steps | [Refactoring](references/refactoring.md) |
+| Restored to the existing contract | Debug, fix | The contract holds and the root cause is explained | [Debug](references/debug.md) |
+| Changed to a stated new behavior | Build: add, change, remove, complete | It works as stated | |
+| Changed toward a direction, stated or not | Improve, make better | It is measurably better than the baseline | [Improvement](references/improvement.md) |
 
-A port that must keep behavior is a refactor, "fix the slowness" with no broken
-contract is an improvement, and "check and fix" fixes contract-breaking findings
-and reports the rest. Saying what must stay names no change. "Make it shorter"
-is a refactor when everything must still work as before and an improvement when
-content may go. Ask when the kind is unclear and changes what may be altered.
-Read the reference before defining success, and [Code](references/code.md) for
-any code work.
+Removing options no caller uses changes no observable behavior, so it is a
+refactor. "Make it shorter" is a refactor when behavior must stay and an
+improvement when content may go. "Fix the slowness" is debugging when speed is
+in a documented contract and an improvement otherwise. "Just find why" is an
+assessment, and "find why and fix it" is one Debug step. "Check and fix" is
+Assess then Debug, which fixes contract-breaking findings and reports the rest.
+Saying what must stay states no new behavior. Ask when the kind is unclear and
+changes what may be altered. Read the references before defining success, and
+[Code](references/code.md) for any code work.
 
 ## Define success
 
@@ -117,8 +128,8 @@ them against the artifact's actual behavior; an evaluator's mistake is not by
 itself a defect. Accept a correction when evidence shows a material obstacle to
 the Outcome, Claim, or Preserve within Scope; reject stale, unsupported, already
 satisfied, or merely advisory findings without manufacturing changes, and keep
-each accepted one open until it is resolved or reported. A review-only task ends
-with its supported findings.
+each accepted one open until it is resolved or reported. An assessment ends with
+its supported findings.
 
 Fix the cause where it lives, such as a misleading name, missing premise, or
 wrong behavior, rather than adding explanation or redesign by reflex or for an
