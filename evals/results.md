@@ -9,7 +9,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | Activation | 0.9.0 description (unchanged in 1.0.0) | Passed | Three repetitions: `tune` 36/36 should-trigger and 0/24 near misses; `holdout` 24/24 and 0/27, counting the three dictated fixes | — | — | d1d8e0b `evals/results.md`, 0.9.0 entry |
 | Routing | 1.0.0 | Passed | 21/21 requests sorted as expected, in order, in both runs | 60,132 | — | [routing](#2026-11-06-routing-100) |
 | guide | 1.0.0 | Passed | The README gives the folder, Python 3.9+, the exact command, its output, and the expected JSON; a fresh trial user packed and checked the samples on the first try; regression only | 89,531 | 4/4 | [cases](#2026-11-06-cases-100) |
-| review | 1.0.0 | Passed | Found the unowned publishing step and the command check placed after publication, left owners as blanks to fill, and changed no file | 76,798 | pending | [cases](#2026-11-06-cases-100) |
+| review | 1.0.0 | Passed | Found the unowned publishing step and the command check placed after publication, left owners as blanks to fill, and changed no file; regression only | 76,798 | 3/3 | [cases](#2026-11-06-cases-100) |
 | ready | 1.0.0 | Passed | Checked the empty-folder result (`0`, exit 0) against the CLI, rejected the retry suggestion, and changed no file | 83,796 | pending | [cases](#2026-11-06-cases-100) |
 | refactor | 1.0.0 | Passed | Source 125 → 83 lines; sample outputs, refusals, and `--help` unchanged; the skipped invalid amount fixed with a test that fails on the original | 117,548 | pending | [cases](#2026-11-06-cases-100) |
 | fix | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration line and one test changed | 78,578 | pending | [cases](#2026-11-06-cases-100) |
@@ -639,4 +639,22 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   transcript. The trial user guessed whether "exactly" includes the final line
   break, how to check the Python version, and how to open the file; none of
   these stopped it.
+- Loopy-only criteria: none.
+
+### review (control)
+
+- Slot `review (control)`, run commit `d53d1f7`, attempt 1. Claude Code
+  2.1.317, effort `xhigh`, model `claude-opus-5-5`.
+- Tokens: 68,711, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 9 tool calls;
+  no Agent call. `git status --short` was empty after the run.
+- `review#1` passed: the reply names "게시 담당자와 방법이 없습니다 (6행)" and
+  "명령 확인이 게시 뒤에 있습니다 (7행)", with the completion rule that ignores
+  the check, the missing handoff, and Jae's missing environment.
+- `review#2` passed: the proposals are marked "파일에는 반영하지 않은 제안",
+  and the example plan keeps Mina and Jae in the roles the plan gives them and
+  leaves `<owner>` and `<decider>` blank; nothing claims the user's
+  authorization.
+- `review#3` passed: `plan.md` equals the fixture byte for byte, and the only
+  file the evaluator wrote was `run.md`.
 - Loopy-only criteria: none.
