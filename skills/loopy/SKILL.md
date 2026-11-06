@@ -14,7 +14,7 @@ description: >
 
 # Loopy
 
-Work is finished when the requested outcome is demonstrated and its intended user, who knows the domain but not this project or conversation, can take their next action from the delivered result at its normal entrypoint.
+Work is finished when the requested outcome is demonstrated and its intended user, who may know the domain but not this project or conversation, can take their next action from the delivered result at its normal entrypoint.
 
 Define success, build, verify, and resolve supported findings, repeating until `done` holds; then stop.
 
@@ -22,7 +22,7 @@ Define success, build, verify, and resolve supported findings, repeating until `
 
 Scale effort and tokens to the stakes. Search for what a decision needs, read only that, and reread a file or rerun a check only after its inputs change. Run narrow, quiet checks while working and the full required checks once the result settles. Write no plan, log, or notes file nobody asked for.
 
-Delegate only for evidence you cannot get directly. This skill permits no external actions or extra writes, except a bounded evaluation by a subagent the session already offers, within the user's scope, writing only in an isolated copy. Do not delegate where the user, host, or project restricts it or its cost, or where it needs new setup, credentials, or approval.
+Delegate only for evidence you cannot get directly. This skill permits no external actions, and no extra writes except a bounded evaluation by a subagent the session already offers, within the user's scope, writing only in an isolated copy. Do not delegate where the user, host, or project restricts it or its cost, or where it needs new setup, credentials, or approval.
 
 ## Sort the request
 
@@ -49,7 +49,7 @@ Ask when an unclear kind changes what may be altered. Read the kind's reference 
 
 ## Define success
 
-Inspect the artifact, its instructions, entrypoints, and consumers; keep a short contract:
+Inspect the artifact, project instructions, entrypoints, and consumers; keep a short contract:
 
 - `Outcome`: the result, its user, and the next action they must be able to take.
 - `Claim`, when relevant: what the existing artifact actually says or does, from evidence rather than the desired Outcome.
