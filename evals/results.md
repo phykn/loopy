@@ -21,6 +21,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | review (Codex) | 1.0.0 | Passed | Named the unowned publishing step and the command check after publication, named no owner for the gaps, and changed no file | 142,502 | — | [Codex](#2026-11-06-codex-100) |
 | refactor (Codex) | 1.0.0 | Failed | Behavior, `--help`, and the boundary checks kept and the invalid amount fixed with a regression test, but both output functions still compute the grand total (`refactor#3`), a host difference | 628,176 | — | [Codex](#2026-11-06-codex-100) |
 | fix (Codex) | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration lines and the added tests changed | 226,534 | — | [Codex](#2026-11-06-codex-100) |
+| feature (Codex) | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI, with every invalid value exiting 2 and writing nothing | 257,686 | — | [Codex](#2026-11-06-codex-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -1177,3 +1178,34 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   the new tests failing 2 of 6 before the fix and passing after; the reply and
   `run.md` report the missing `python` command apart from the fix, and nothing
   else changed.
+
+### feature (Codex)
+
+- Slot `feature (Codex)`, run commit `d6693db`, attempt 1. Codex CLI 0.166.0,
+  model `gpt-6.1-sol` with `medium` effort from `~/.codex/config.toml`; the
+  JSONL reports no model.
+- Tokens: 257,686 (input 253,119 and output 4,567; the usage object also
+  reports 220,672 cached input and 781 reasoning output tokens).
+- Isolation: `grep -c -F -f <tmp>/forbidden.txt <ws>.jsonl` printed 0 over 16
+  commands and two file changes, among them `rg --files` over the wiki's
+  `graph` folder; no subagent. `git status --short` was empty after the run.
+- `feature#1` passed: in a fresh copy, `--month 2026-01` prints `food 12.50`,
+  `rent 500.00`, and `total 512.50`, and writes the same totals with `--json`.
+  Without it, the sample's text and JSON are unchanged, and error runs differ
+  only in the usage line, which now lists `[--month YYYY-MM]`. The fixture's
+  tests pass on the new code, and `test_filters_month_in_text_and_json` covers
+  the filter; the new tests fail 8 times on the original code.
+- `feature#2` passed: `parse_month` in `cli.py` is the option's `type`, and
+  `2026-1`, `2026-13`, `2026-00`, `26-01`, `abc`, an empty value,
+  `2026-01-05`, and ` 2026-01` each exit 2 with no output or JSON.
+- `feature#3` passed: no docstring, comment, broad handler, fallback, or
+  wrapper was added; `parse_month` holds the check and catches only
+  `ValueError`.
+- `feature#4` passed: the diff is the `date` import, `parse_month`, the option,
+  the two-line filter in `main`, three tests, and the README lines; no existing
+  line was rewritten.
+- `feature#5` passed: the README adds the `--month 2026-01` command and says
+  the option sums "only records from the specified year and month", with the
+  January totals, the `--json` behavior, `total 0.00` when nothing matches,
+  and "An invalid month (such as `2026-13` or `2026-1`) is rejected with
+  status 2."; each claim matched a run in the fresh copy.
