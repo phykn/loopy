@@ -86,6 +86,70 @@ class CheckTests(unittest.TestCase):
         self.assertIn("acceptance", result.stderr)
         self.assertNotIn("Traceback", result.stderr)
 
+    def edit_skill(self, old, new):
+        path = self.root / "skills" / "loopy" / "SKILL.md"
+        text = path.read_text(encoding="utf-8")
+        self.assertIn(old, text)
+        path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+    def add_notes(self, text):
+        (self.root / "notes.md").write_text(text, encoding="utf-8")
+        with (self.root / "README.md").open("a", encoding="utf-8") as file:
+            file.write("\n[Notes](notes.md)\n")
+
+    def assert_rejected(self, message):
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn(message, result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_extra_frontmatter_key_is_rejected(self):
+        self.edit_skill("name: loopy\n", "name: loopy\nversion: 1\n")
+        self.assert_rejected("frontmatter keys must be name and description")
+
+    def test_skill_name_must_match_the_manifest(self):
+        self.edit_skill("name: loopy\n", "name: loopy-dev\n")
+        self.assert_rejected("name must be loopy")
+
+    def test_description_must_be_folded(self):
+        self.edit_skill("description: >\n  ", "description: ")
+        self.assert_rejected("description must be a folded scalar")
+
+    def test_long_description_is_rejected(self):
+        self.edit_skill("  or brainstorming.\n", "  or brainstorming.\n  " + "word " * 210 + "\n")
+        self.assert_rejected("description must have 1 to 1,024 characters")
+
+    def test_angle_bracket_in_description_is_rejected(self):
+        self.edit_skill("names Loopy.", "names <Loopy>.")
+        self.assert_rejected("description must not contain < or >")
+
+    def test_long_skill_body_is_rejected(self):
+        with (self.root / "skills" / "loopy" / "SKILL.md").open("a", encoding="utf-8") as file:
+            file.write("\n" + "word " * 1101 + "\n")
+        self.assert_rejected("words; the limit is 1,100")
+
+    def test_long_references_are_rejected(self):
+        with (self.root / "skills" / "loopy" / "references" / "code.md").open("a", encoding="utf-8") as file:
+            file.write("\n" + "word " * 2101 + "\n")
+        self.assert_rejected("words; the limit is 2,100")
+
+    def test_missing_anchor_in_the_same_file_is_rejected(self):
+        self.add_notes("# Notes\n\n[Here](#nowhere)\n")
+        self.assert_rejected("notes.md: missing anchor #nowhere")
+
+    def test_missing_anchor_in_another_file_is_rejected(self):
+        self.add_notes("[Skill](skills/loopy/SKILL.md#nowhere)\n")
+        self.assert_rejected("missing anchor skills/loopy/SKILL.md#nowhere")
+
+    def test_repeated_and_punctuated_headings_get_github_anchors(self):
+        self.add_notes("## What's new?\n\n## Notes\n\n## Notes\n\n[New](#whats-new) [Second](#notes-1)\n")
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_heading_inside_a_code_block_has_no_anchor(self):
+        self.add_notes("```\n# Not a heading\n```\n\n[Fake](#not-a-heading)\n")
+        self.assert_rejected("missing anchor #not-a-heading")
+
 
 if __name__ == "__main__":
     unittest.main()

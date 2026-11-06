@@ -10,7 +10,7 @@ from cases import load_cases
 def main():
     root = Path(__file__).resolve().parent.parent
     errors = []
-    for check in (check_metadata, check_cases, check_links):
+    for check in (check_metadata, check_cases, check_links, check_skill):
         try:
             errors.extend(check(root))
         except (OSError, ValueError, KeyError, TypeError) as exc:
@@ -19,7 +19,7 @@ def main():
         for error in errors:
             print(error, file=sys.stderr)
         return 1
-    print("Plugin metadata, evaluation inputs, and local Markdown links passed.")
+    print("Plugin metadata, evaluation inputs, local Markdown links, and the skill passed.")
     return 0
 
 
@@ -80,13 +80,75 @@ def check_links(root):
         text = path.read_text(encoding="utf-8")
         for target in re.findall(r"\[[^\]]*\]\(([^)]+)\)", text):
             url = urlsplit(target.strip().strip("<>"))
-            if url.scheme or url.netloc or not url.path:
+            if url.scheme or url.netloc or not (url.path or url.fragment):
                 continue
-            dst = (path.parent / unquote(url.path)).resolve()
+            dst = (path.parent / unquote(url.path)).resolve() if url.path else path
             if not dst.exists():
                 errors.append(f"{path.relative_to(root)}: missing link target {target}")
-            elif dst.is_file() and dst.suffix == ".md":
+                continue
+            is_markdown = dst.is_file() and dst.suffix == ".md"
+            if url.fragment and is_markdown and unquote(url.fragment) not in anchors(dst):
+                errors.append(f"{path.relative_to(root)}: missing anchor {target}")
+            if is_markdown:
                 pending.append(dst)
+    return errors
+
+
+def anchors(path):
+    """GitHub heading anchors: lowercase, drop punctuation, spaces to hyphens, -1 for repeats."""
+    found, counts, fence = set(), {}, False
+    for line in path.read_text(encoding="utf-8").split("\n"):
+        if line.startswith("```"):
+            fence = not fence
+            continue
+        heading = re.match(r"#{1,6} +(.+?) *$", line)
+        if fence or not heading:
+            continue
+        slug = re.sub(r"[^\w\- ]", "", heading.group(1).lower()).replace(" ", "-")
+        count = counts.get(slug, 0)
+        counts[slug] = count + 1
+        found.add(f"{slug}-{count}" if count else slug)
+    return found
+
+
+def check_skill(root):
+    manifest = json.loads((root / ".codex-plugin/plugin.json").read_text(encoding="utf-8"))
+    folder = root / manifest["skills"] / manifest["name"]
+    path = folder / "SKILL.md"
+    where = path.relative_to(root)
+    text = path.read_text(encoding="utf-8")
+    frontmatter = re.match(r"---\n(.*?)\n---\n", text, re.S)
+    if not frontmatter:
+        return [f"{where}: frontmatter must open and close with ---."]
+    errors = []
+    fields, key = {}, None
+    for line in frontmatter.group(1).split("\n"):
+        field = re.match(r"([\w-]+):(.*)", line)
+        if field:
+            key = field.group(1)
+            fields[key] = [field.group(2).strip()]
+        elif key and (line[:1] in (" ", "\t") or not line.strip()):
+            fields[key].append(line.strip())
+        else:
+            errors.append(f"{where}: unreadable frontmatter line {line!r}.")
+    if sorted(fields) != ["description", "name"]:
+        errors.append(f"{where}: frontmatter keys must be name and description, not {', '.join(sorted(fields))}.")
+    if " ".join(part for part in fields.get("name", []) if part) != manifest["name"]:
+        errors.append(f"{where}: name must be {manifest['name']}.")
+    description = fields.get("description", [""])
+    if description[0] != ">":
+        errors.append(f"{where}: description must be a folded scalar (>).")
+    folded = " ".join(part for part in description[1:] if part)
+    if not 1 <= len(folded) <= 1024:
+        errors.append(f"{where}: description must have 1 to 1,024 characters, not {len(folded):,}.")
+    if "<" in folded or ">" in folded:
+        errors.append(f"{where}: description must not contain < or >.")
+    body = len(text[frontmatter.end():].split())
+    if body > 1100:
+        errors.append(f"{where}: body has {body:,} words; the limit is 1,100.")
+    references = sum(len(p.read_text(encoding="utf-8").split()) for p in (folder / "references").glob("*.md"))
+    if references > 2100:
+        errors.append(f"{where.parent / 'references'}: references have {references:,} words; the limit is 2,100.")
     return errors
 
 
