@@ -17,6 +17,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged | 75,522 | pending | [cases](#2026-11-06-cases-100) |
 | feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month` | 106,516 | pending | [cases](#2026-11-06-cases-100) |
 | docs | 1.0.0 | Passed | Documentation 94 → 75 lines in two files; the FAQ's overwrite claim corrected and the broken link removed; code unchanged | 98,859 | pending | [cases](#2026-11-06-cases-100) |
+| improve | 1.0.0 | Failed | Failed `improve#1`: no review of the sample under the original prompt; the revision kept every hard rule at 405 → 233 words (42.5%) | 98,434 | pending | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -319,6 +320,58 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   `python cli.py CSV_FILE [--json JSON_PATH]` in `docs/usage.md` is a synopsis
   with placeholders, not a runnable command.
 
+### improve
+
+- Attempt 1, stopped: slot `improve`, run commit `07a5d86`. The coordinator
+  stopped the evaluator before it finished, when the session reached its usage
+  limit. The run was not judged, and its workspace was deleted. Tokens: 79,655
+  at the stop, from the transcript's last usage, recorded apart from the total.
+- Attempt 2: slot `improve`, run commit `07a5d86`. Claude Code 2.1.317, effort
+  `xhigh`, model `claude-opus-5-5`.
+- Tokens: 98,434, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 21 tool
+  calls in the evaluator's transcript and the nested transcript of its one
+  Agent call, a fresh agent given only the revised prompt and the sample.
+  `git status --short` was empty after the run.
+- The evaluator changed only `review-bot.md`; both notes and the sample equal
+  the fixture byte for byte.
+- `improve#1` failed. Before the first write to `review-bot.md`, the calls are
+  reads and `wc -l -w -c` (405 words), and the transcript holds no text that
+  states criteria. No review of `samples/pr-42.diff` under the original prompt
+  appears anywhere in the run: `run.md`, written after the edits, checks only
+  the revised prompt.
+- `improve#2` passed: the eight numbered rules keep never approve or merge,
+  changed lines only, the exact format with `blocker`, `major`, and `minor`,
+  skipping `gen/` and lockfiles, the author's language with English when
+  unsure, at most 10 comments with blockers first, and `request_changes` on a
+  blocker. The added clause "keep the severity words in English" keeps the
+  format exact and drops no rule.
+- `improve#3` passed: the history, the exhortations, and "Good code is
+  readable, maintainable, and correct" are gone, and a phrase search for them
+  finds nothing.
+- `improve#4` passed: the `ircbot` step is gone because the tool "was removed
+  in March 2026" (`notes/tools.md`); the style rule went and "Do not comment on
+  formatting" stayed; the forced praise went because the feedback calls it
+  "noise".
+- `improve#5` passed: `run.md` lists five behavior changes, each with what is
+  lost, apart from four wording and structure cuts, and the reply keeps that
+  split; both give 405 → 233 words, 42.5% fewer by `len(text.split())`.
+- `improve#6` passed. Use: in the coordinator trial below, the bot posted one
+  Korean comment in the required form on the off-by-one,
+  `[blocker] app/history.py:5 - items[-n - 1:]은 최근 n건이 아니라 n+1건을 반환합니다 ...`,
+  called `request_changes`, and skipped the quote change and `gen/schema.py`,
+  with no `ircbot` call and no approval. The notes and the sample equal the
+  fixture in the workspace and in the trial copy.
+- Coordinator trial: 59,397 tokens, Claude Code 2.1.317, effort `xhigh`, model
+  `claude-opus-5-5`; isolation audit exit 0 over 4 tool calls, no nested
+  transcript. The trial bot read only `review-bot.md` and the diff, and left
+  out a doubt about sorting payments without `paid_at` because the diff does
+  not show that data.
+- Cause of `improve#1`: skill wording. `references/improvement.md` said
+  "Record the baseline on those tasks and measures", and the evaluator
+  recorded only the measure. The change below makes the baseline run the tasks
+  on the current version before the first edit, and the slot reruns.
+
 ### Changes during this work
 
 - `d5fef94` changed `evals/audit.py`, its test, and `evals/README.md`: each
@@ -329,6 +382,13 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   package checks and unit tests, which passed on both Pythons, and one prepared
   workspace's `requests.md` and `prompt.md`, read for `fix`. No slot needs a
   rerun.
+- `57697eb` changed `references/improvement.md`: before the first edit, the
+  baseline now runs the criteria's tasks and measures on the current version
+  and records the results, after `improve` attempt 2 recorded only the word
+  count. Selection-table row: one reference, `improvement.md` → `improve`. It
+  requires `improve`, rerun as attempt 3, and `improve (Codex)`, which T12 runs
+  after this commit. The package checks and unit tests passed on both Pythons; the
+  references total 2,098 words.
 
 ### Limits
 
