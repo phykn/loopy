@@ -16,6 +16,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | cause | 1.0.0 | Passed | Return sign fixed after the parsed moves showed `('gadget', -2)`; no clamp; the new test fails on the original and on a clamped copy | 74,896 | pending | [cases](#2026-11-06-cases-100) |
 | diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged | 75,522 | pending | [cases](#2026-11-06-cases-100) |
 | feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month` | 106,516 | pending | [cases](#2026-11-06-cases-100) |
+| docs | 1.0.0 | Passed | Documentation 94 → 75 lines in two files; the FAQ's overwrite claim corrected and the broken link removed; code unchanged | 98,859 | pending | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -284,6 +285,39 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 - `feature#5` passed: the README adds the `--month 2026-01` command, "With
   `--month YYYY-MM`, it sums only the rows dated in that month", and the
   rejection of an invalid date with `--month`, which the tests confirm.
+
+### docs
+
+- Slot `docs`, run commit `defef52`, attempt 1. Claude Code 2.1.317, effort
+  `xhigh`, model `claude-opus-5-5`.
+- Tokens: 98,859, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 31 tool
+  calls in the evaluator's transcript and the nested transcript of its one
+  Agent call, a fresh user of an isolated copy. `git status --short` was empty
+  after the run.
+- `docs#1` passed: the README gives Python 3.9 or newer with nothing to install
+  and the sample command, and its one link reaches `docs/usage.md`. That page
+  gives the `--json` command, alphabetical order and two decimals, the JSON
+  shape, the refusal to replace, the exact header, the category comparison,
+  decimal amounts, the byte order mark, and exit status 2 with the line.
+- `docs#2` passed: the evaluator ran a second `--json` to the same path (exit
+  2, file unchanged), `docs/usage.md` now says "Ledger never replaces an
+  existing file", and the reply reports the FAQ's overwrite claim under its own
+  heading.
+- `docs#3` passed: the `docs/output.md` link is gone, and the one local link
+  left, `README.md` to `docs/usage.md`, resolves.
+- `docs#4` passed: the FAQ's five entries were merged and the file deleted;
+  output, JSON, input, and error rules live only in `docs/usage.md`, and filler
+  such as "Ledger is a tool" and "It is important to note" is gone.
+- `docs#5` passed: `cli.py`, `records.py`, `report.py`, and the sample equal the
+  fixture byte for byte, and `docs/usage.md` is still at the path the epilog
+  names.
+- `docs#6` passed: documentation lines 94 → 75 (28 and 47) with every premise
+  above kept, and the reply gives "94줄에서 75줄로" and names the factual fixes.
+- `docs#7` passed: in a fresh copy, the README command prints exactly its text
+  block, and the `--json` command exits 0 and writes the described JSON.
+  `python cli.py CSV_FILE [--json JSON_PATH]` in `docs/usage.md` is a synopsis
+  with placeholders, not a runnable command.
 
 ### Changes during this work
 
