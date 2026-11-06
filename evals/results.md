@@ -15,6 +15,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | fix | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration line and one test changed | 78,578 | pending | [cases](#2026-11-06-cases-100) |
 | cause | 1.0.0 | Passed | Return sign fixed after the parsed moves showed `('gadget', -2)`; no clamp; the new test fails on the original and on a clamped copy | 74,896 | pending | [cases](#2026-11-06-cases-100) |
 | diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged | 75,522 | pending | [cases](#2026-11-06-cases-100) |
+| feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month` | 106,516 | pending | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -256,6 +257,33 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   fixture, with no new file; the fix is only a suggestion for whoever fixes it.
 - `diagnose#5` passed: the reply gives `members.py`, `normalize()`, lines 34–36,
   the keys and the two-row run as evidence, and "실제 5명".
+
+### feature
+
+- Slot `feature`, run commit `74ef376`, attempt 1. Claude Code 2.1.317, effort
+  `xhigh`, model `claude-opus-5-5`.
+- Tokens: 106,516, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 14 tool
+  calls; no Agent call. `git status --short` was empty after the run.
+- `feature#1` passed: in a fresh copy, `--month 2026-01` prints `food 12.50`,
+  `rent 500.00`, and `total 512.50`, and writes the same totals with `--json`.
+  Without it, the sample's text and JSON are unchanged, and error runs differ
+  only in the usage line, which now lists `[--month YYYY-MM]`. The fixture's
+  tests pass on the new code, and `test_sums_only_given_month` covers the
+  filter.
+- `feature#2` passed: `parse_month` in `cli.py` is the option's `type`, and
+  `2026-1`, `2026-13`, `2026-00`, `26-01`, `abc`, an empty value,
+  `2026-01-05`, and ` 2026-01` each exit 2 with no output or JSON.
+- `feature#3` passed: no docstring, no broad handler, no fallback, and no
+  wrapper was added. `parse_month` and `is_iso_date` hold the checks, and the
+  one added comment gives a reason: "Python 3.11+ also parses forms such as
+  20260105; the round trip keeps only YYYY-MM-DD."
+- `feature#4` passed: the diff is the option, the month filter in
+  `read_records` with its date check, three tests, and three README lines; no
+  existing line was rewritten except the `read_records` call and signature.
+- `feature#5` passed: the README adds the `--month 2026-01` command, "With
+  `--month YYYY-MM`, it sums only the rows dated in that month", and the
+  rejection of an invalid date with `--month`, which the tests confirm.
 
 ### Changes during this work
 
