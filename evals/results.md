@@ -13,7 +13,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | ready | 1.0.0 | Passed | Checked the empty-folder result (`0`, exit 0) against the CLI, rejected the retry suggestion, and changed no file; regression only | 83,796 | 3/3 | [cases](#2026-11-06-cases-100) |
 | refactor | 1.0.0 | Passed | Source 125 → 83 lines; sample outputs, refusals, and `--help` unchanged; the skipped invalid amount fixed with a test that fails on the original | 117,548 | 6/7 | [cases](#2026-11-06-cases-100) |
 | fix | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration line and one test changed | 78,578 | 4/5 | [cases](#2026-11-06-cases-100) |
-| cause | 1.0.0 | Passed | Return sign fixed after the parsed moves showed `('gadget', -2)`; no clamp; the new test fails on the original and on a clamped copy | 74,896 | pending | [cases](#2026-11-06-cases-100) |
+| cause | 1.0.0 | Passed | Return sign fixed after the parsed moves showed `('gadget', -2)`; no clamp; the new test fails on the original and on a clamped copy; regression only | 74,896 | 5/5 | [cases](#2026-11-06-cases-100) |
 | diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged | 75,522 | pending | [cases](#2026-11-06-cases-100) |
 | feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month` | 106,516 | pending | [cases](#2026-11-06-cases-100) |
 | docs | 1.0.0 | Passed | Documentation 94 → 75 lines in two files; the FAQ's overwrite claim corrected and the broken link removed; code unchanged | 98,859 | pending | [cases](#2026-11-06-cases-100) |
@@ -819,3 +819,34 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   fix, and the new test failing on a copy of the old code; it reports the
   missing `python` command apart from the fix and changes nothing else.
 - Loopy-only criteria: `fix#1`.
+
+### cause (control)
+
+- Slot `cause (control)`, run commit `b34ec92`, attempt 1. Claude Code
+  2.1.317, effort `xhigh`, model `claude-opus-5-5`.
+- Tokens: 69,211, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 16 tool calls;
+  no Agent call. `git status --short` was empty after the run.
+- `cause#1` passed: by `audit.py --calls`, line 42 printed `gadget -4` and
+  `total 11`; the text at line 45 names `moves.py` line 22, "which subtracts
+  `return` like `out`, while the README says returns go back into stock"; the
+  new test failed at line 69 with `gadget -2`, as that claim predicts, before
+  the only code edit, at line 71. An earlier edit of `moves.py`, at line 46,
+  was refused because the file had not been read, and changed nothing.
+- `cause#2` passed: `moves.py` now negates only `out` (`if kind == "out":`);
+  the sample prints `widget 9`, `gadget 0`, `bolt 6`, and `total 15`. The
+  run's edits are the added test and that line, and none adds or removes a
+  clamp.
+- `cause#3` passed: `test_returns_go_back_into_stock` (`in 3`, `out 3`,
+  `return 2` giving `gadget 2`) fails on the fixture's code and passes on the
+  new. On a copy of the fixture that clamps stock at zero, the sample prints
+  the right totals but this test fails.
+- `cause#4` passed: only that line of `moves.py` and the added test differ from
+  the fixture; `stock.py`, `report.py`, the README, and the log are byte for
+  byte unchanged, and the three existing tests are untouched and pass.
+- `cause#5` passed: the reply says returns were subtracted like shipments, so
+  gadget came to 3-3-2-2=-4 instead of 0 and the total was 4 too low; that only
+  `out` is subtracted now; and that the new test failed before the fix and all
+  four pass after. It leaves negative stock from over-shipping as a question
+  instead of clamping.
+- Loopy-only criteria: none.
