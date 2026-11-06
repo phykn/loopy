@@ -20,6 +20,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | improve | 1.0.0 | Passed | Attempt 6, after a fourth wording fix the person chose: the criteria and a walkthrough of the sample under the original prompt were written before the first edit; every hard rule kept at 405 → 232 words (42.7%), and the trial bot posted the expected blocker | 96,438 | 3/6 | [cases](#2026-11-06-cases-100) |
 | review (Codex) | 1.0.0 | Passed | Named the unowned publishing step and the command check after publication, named no owner for the gaps, and changed no file | 142,502 | — | [Codex](#2026-11-06-codex-100) |
 | refactor (Codex) | 1.0.0 | Failed | Behavior, `--help`, and the boundary checks kept and the invalid amount fixed with a regression test, but both output functions still compute the grand total (`refactor#3`), a host difference | 628,176 | — | [Codex](#2026-11-06-codex-100) |
+| fix (Codex) | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration lines and the added tests changed | 226,534 | — | [Codex](#2026-11-06-codex-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -1144,3 +1145,35 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   sums and the normalization; with the same text, the Claude Code run removed
   the duplicated total, and so did the control run without the skill. The text
   is unchanged, so the slot was not rerun.
+
+### fix (Codex)
+
+- Slot `fix (Codex)`, run commit `fb79bc6`, attempt 1. Codex CLI 0.166.0,
+  model `gpt-6.1-sol` with `medium` effort from `~/.codex/config.toml`; the
+  JSONL reports no model.
+- Tokens: 226,534 (input 223,308 and output 3,226; the usage object also
+  reports 192,768 cached input and 207 reasoning output tokens).
+- Isolation: `grep -c -F -f <tmp>/forbidden.txt <ws>.jsonl` printed 0 over 13
+  commands and three file changes; no subagent. `git status --short` was empty
+  after the run. The tests ran with `TMPDIR` set to a folder in the workspace.
+- `fix#1` passed: by the JSONL event order, event 24 printed `deploy -21:00`
+  and `total 9:00`, event 26 printed the parsed `[('deploy', -1380)]`, event 33
+  named `23:30-00:30` as the cause after the new tests failed at event 32, and
+  the first edit to `entries.py` came at event 35.
+- `fix#2` passed: the change adds `if end < start: end += 24 * 60` before
+  `end - start` where `read_entries` stores the duration; the sample prints
+  `build 22:30`, `review 7:30`, `deploy 3:00`, and `total 33:00`;
+  `test_counts_overnight_entries` and `test_week_total_exceeds_24_hours` fail on
+  the fixture's code and pass on the new.
+- `fix#3` passed: only those two lines in `entries.py` and three added tests
+  differ from the fixture; the third, `test_equal_times_count_as_zero`, pins
+  the boundary of the new comparison. `to_minutes`, its `None` check,
+  `worklog.py`, `report.py`, the README, and the log are byte for byte
+  unchanged, and the three existing tests are untouched.
+- `fix#4` passed: the three existing tests pass on the new code, covering task
+  order, `H:MM`, ignored blank and comment lines, and exit 2 with the line
+  number for malformed and out-of-range times.
+- `fix#5` passed: `run.md` gives the cause with the −1380 minutes, the fix, and
+  the new tests failing 2 of 6 before the fix and passing after; the reply and
+  `run.md` report the missing `python` command apart from the fix, and nothing
+  else changed.
