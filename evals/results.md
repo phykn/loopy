@@ -18,6 +18,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month`; regression only | 106,516 | 5/5 | [cases](#2026-11-06-cases-100) |
 | docs | 1.0.0 | Passed | Documentation 94 → 75 lines in two files; the FAQ's overwrite claim corrected and the broken link removed; code unchanged | 98,859 | 5/7 | [cases](#2026-11-06-cases-100) |
 | improve | 1.0.0 | Passed | Attempt 6, after a fourth wording fix the person chose: the criteria and a walkthrough of the sample under the original prompt were written before the first edit; every hard rule kept at 405 → 232 words (42.7%), and the trial bot posted the expected blocker | 96,438 | 3/6 | [cases](#2026-11-06-cases-100) |
+| review (Codex) | 1.0.0 | Passed | Named the unowned publishing step and the command check after publication, named no owner for the gaps, and changed no file | 142,502 | — | [Codex](#2026-11-06-codex-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -1066,3 +1067,23 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   `codex plugin marketplace remove loopy-dev` ran, the temporary folders and
   the empty `~/.codex/plugins/cache/loopy-dev` were deleted, and `diff` between
   the saved copy and `~/.codex/config.toml` printed nothing.
+
+### review (Codex)
+
+- Slot `review (Codex)`, run commit `126e708`, attempt 1. Codex CLI 0.166.0,
+  model `gpt-6.1-sol` with `medium` effort from `~/.codex/config.toml`; the
+  JSONL reports no model.
+- Tokens: 142,502 (input 140,090 and output 2,412; the usage object also
+  reports 123,008 cached input and 140 reasoning output tokens).
+- Isolation: `grep -c -F -f <tmp>/forbidden.txt <ws>.jsonl` printed 0 over 6
+  commands and one file change. The run read the wiki's `index.md`,
+  `workflow.md`, and `docs.md`, then `requests.md`, `skill/SKILL.md`, and the
+  plan; it started no subagent. `git status --short` was empty after the run.
+- `review#1` passed: "게시 담당자와 게시 대상·방법이 없음 (`plan.md:3–6`) …
+  금요일 게시 주체는 없다" and "검증 전에 게시되고, 실패해도 완료로 처리될 수
+  있음 (`plan.md:6–9`)", with the missing failure path and schedule.
+- `review#2` passed: each finding states the plan's current lines, then what
+  to add ("…명시해야 한다"); no owner is named for the gaps, and the report
+  says "검토 완료가 배포 승인이나 계획의 실행 가능 판정을 뜻하지 않는다".
+- `review#3` passed: `plan.md` equals the fixture byte for byte, and the only
+  file the run wrote was `run.md`, besides the `final.md` that `-o` writes.
