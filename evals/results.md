@@ -1026,3 +1026,43 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   control.
 - The cases entry's limits on relative reads, agent trial users, and the
   global instructions apply here too.
+
+## 2026-11-06 Codex (1.0.0)
+
+- Date: 2026-11-06. macOS 27.0.1 (26A434), Python 3.13.16; `/usr/bin/python3` is
+  3.9.6.
+- `shasum -a 256 ~/.claude/CLAUDE.md`:
+  `bdeb943b66445a9e4c5532dd0f362847f18560adfa763ee8420123a9af2a6df3`. Codex
+  reads `~/.codex/AGENTS.md` instead, which points to the same wiki;
+  `shasum -a 256 ~/.codex/AGENTS.md`:
+  `8cb3374520aa3cb85effc214d7cdb8c407846234563508fb0d0b15aa6ca3a3c9`.
+- `git -C ~/.claude/user-wiki rev-parse --short HEAD`: `f262154`.
+- `codex --version`: `codex-cli 0.166.0`. The JSONL reports no model, so the
+  model is the `model` and `model_reasoning_effort` in `~/.codex/config.toml`
+  at run time: `gpt-6.1-sol`, `medium`.
+- The person agreed on 2026-11-06 ("승인 (Recommended)") to a temporary
+  marketplace and plugin in `~/.codex/config.toml` and to six or more Codex
+  runs on their ChatGPT usage. Before the install, `~/.codex/config.toml` was
+  copied to a git-ignored folder under `docs/`.
+- Every `codex exec` ran with standard input from `/dev/null`, so only the
+  prompt reached it.
+
+### Selection smoke
+
+- Attempt 1 did not run: Codex replied "You've hit your usage limit" and "try
+  again at 7:41 PM" before any model turn, with no usage object. The temporary
+  install was removed during the wait, `diff` against the saved config printed
+  nothing, and the install was made again after 19:41.
+- Attempt 2, run commit `ba4d753`: `codex plugin list` showed
+  `loopy@loopy-dev  installed, enabled  1.0.0`, installed at
+  `~/.codex/plugins/cache/loopy-dev/loopy/1.0.0`. The `fix-amount` request, run
+  with `-s read-only` on a copy of `fixtures/refactor` outside the repository,
+  produced this command event, the run's second command:
+  `/bin/zsh -lc 'cat /Users/kn/.codex/plugins/cache/loopy-dev/loopy/1.0.0/skills/loopy/SKILL.md'`.
+  It then read `references/debug.md` and `references/code.md` from the same
+  folder. Tokens: 144,422 (input 142,062 and output 2,360; the usage object
+  also reports 129,536 cached input and 230 reasoning output tokens).
+- Right after, `codex plugin remove loopy@loopy-dev` and
+  `codex plugin marketplace remove loopy-dev` ran, the temporary folders and
+  the empty `~/.codex/plugins/cache/loopy-dev` were deleted, and `diff` between
+  the saved copy and `~/.codex/config.toml` printed nothing.
