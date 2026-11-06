@@ -16,7 +16,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | cause | 1.0.0 | Passed | Return sign fixed after the parsed moves showed `('gadget', -2)`; no clamp; the new test fails on the original and on a clamped copy; regression only | 74,896 | 5/5 | [cases](#2026-11-06-cases-100) |
 | diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged; regression only | 75,522 | 5/5 | [cases](#2026-11-06-cases-100) |
 | feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month`; regression only | 106,516 | 5/5 | [cases](#2026-11-06-cases-100) |
-| docs | 1.0.0 | Passed | Documentation 94 → 75 lines in two files; the FAQ's overwrite claim corrected and the broken link removed; code unchanged | 98,859 | pending | [cases](#2026-11-06-cases-100) |
+| docs | 1.0.0 | Passed | Documentation 94 → 75 lines in two files; the FAQ's overwrite claim corrected and the broken link removed; code unchanged | 98,859 | 5/7 | [cases](#2026-11-06-cases-100) |
 | improve | 1.0.0 | Passed | Attempt 6, after a fourth wording fix the person chose: the criteria and a walkthrough of the sample under the original prompt were written before the first edit; every hard rule kept at 405 → 232 words (42.7%), and the trial bot posted the expected blocker | 96,438 | pending | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
@@ -904,3 +904,40 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   `total 0.00` of an empty month, and the rejections, which a clean copy
   confirms: `2026-02-30` under `--month` exits 2 with `line 3` and no JSON.
 - Loopy-only criteria: none.
+
+### docs (control)
+
+- Slot `docs (control)`, run commit `7978c95`, attempt 1. Claude Code 2.1.317,
+  effort `xhigh`, model `claude-opus-5-5`.
+- Tokens: 90,300, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 25 tool
+  calls in the evaluator's transcript and the nested transcript of its one
+  Agent call, a read-only reviewer of the result. `git status --short` was
+  empty after the run.
+- `docs#1` passed: the README gives Python 3.9 or newer with nothing to install
+  and the sample command, and links to `docs/usage.md`, which gives the
+  `--json` command, alphabetical order and two decimals, the JSON shape, the
+  refusal to replace, the exact header, the category comparison, decimal
+  amounts, the byte order mark, and exit status 2 with the line.
+- `docs#2` passed: `run.md` sets `cli.py:15-16` against the FAQ's overwrite
+  claim, the evaluator's check script ran `--json` to an existing path (exit
+  2, file unchanged), the FAQ now says "Ledger stops with an error and leaves
+  the file unchanged", and the reply reports it as "사실 오류 수정", apart from
+  the structure.
+- `docs#3` passed: the `docs/output.md` link is gone, and all six local links
+  resolve.
+- `docs#4` failed: the FAQ keeps three entries that restate rules
+  `docs/usage.md` owns, each with a link: the category comparison nearly word
+  for word, the refusal to replace, and the amount error. `run.md` keeps the
+  page because "파일 삭제는 되돌릴 수 없고". The sample command also appears in
+  both the README and `docs/usage.md`.
+- `docs#5` passed: `cli.py`, `records.py`, `report.py`, and the sample equal the
+  fixture byte for byte, and `docs/usage.md` is still at the path the epilog
+  names.
+- `docs#6` failed: documentation lines went 94 → 104 (README 34 → 32, FAQ
+  23 → 16, usage 37 → 56), and neither `run.md` nor the reply gives a line
+  change; both name the factual fix.
+- `docs#7` passed: in a fresh copy, the README command prints exactly its text
+  block, and the `--json` command exits 0 and writes a file equal to the JSON
+  block in `docs/usage.md`.
+- Loopy-only criteria: `docs#4`, `docs#6`.
