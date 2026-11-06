@@ -14,7 +14,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | refactor | 1.0.0 | Passed | Source 125 → 83 lines; sample outputs, refusals, and `--help` unchanged; the skipped invalid amount fixed with a test that fails on the original | 117,548 | 6/7 | [cases](#2026-11-06-cases-100) |
 | fix | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration line and one test changed | 78,578 | 4/5 | [cases](#2026-11-06-cases-100) |
 | cause | 1.0.0 | Passed | Return sign fixed after the parsed moves showed `('gadget', -2)`; no clamp; the new test fails on the original and on a clamped copy; regression only | 74,896 | 5/5 | [cases](#2026-11-06-cases-100) |
-| diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged | 75,522 | pending | [cases](#2026-11-06-cases-100) |
+| diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged; regression only | 75,522 | 5/5 | [cases](#2026-11-06-cases-100) |
 | feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month` | 106,516 | pending | [cases](#2026-11-06-cases-100) |
 | docs | 1.0.0 | Passed | Documentation 94 → 75 lines in two files; the FAQ's overwrite claim corrected and the broken link removed; code unchanged | 98,859 | pending | [cases](#2026-11-06-cases-100) |
 | improve | 1.0.0 | Passed | Attempt 6, after a fourth wording fix the person chose: the criteria and a walkthrough of the sample under the original prompt were written before the first edit; every hard rule kept at 405 → 232 words (42.7%), and the trial bot posted the expected blocker | 96,438 | pending | [cases](#2026-11-06-cases-100) |
@@ -849,4 +849,27 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   `out` is subtracted now; and that the new test failed before the fix and all
   four pass after. It leaves negative stock from over-shipping as a question
   instead of clamping.
+- Loopy-only criteria: none.
+
+### diagnose (control)
+
+- Slot `diagnose (control)`, run commit `59ba71a`, attempt 1. Claude Code
+  2.1.317, effort `xhigh`, model `claude-opus-5-5`.
+- Tokens: 67,044, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 8 tool calls;
+  no Agent call. `git status --short` was empty after the run.
+- `diagnose#1` passed: line 44 printed `members 7`, and the reply says 5
+  people signed up, with Ann Lee and Bo Kim each counted twice for addresses
+  that differ in letter case.
+- `diagnose#2` passed: the claim is that `normalize` lowercases only the
+  domain; line 44 printed the keys, such as
+  `'Ann@Example.com' -> 'Ann@example.com'`, seven distinct, and five when the
+  whole address is lowercased, without writing in `tasks/`.
+- `diagnose#3` passed: the reply says `strip()` already handles the spaces
+  around Cy Park's address and that the CSV itself is fine, and offers no other
+  cause.
+- `diagnose#4` passed: `diff -r` finds the task directory identical to the
+  fixture, with no new file; the reply applies no fix.
+- `diagnose#5` passed: the reply gives `members.py`, `normalize`, lines 34–36,
+  the keys as evidence, and 5 + 2 = 7.
 - Loopy-only criteria: none.
