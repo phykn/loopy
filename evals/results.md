@@ -1304,3 +1304,86 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 - Each slot ran once, with the model and effort in the person's Codex config
   (`gpt-6.1-sol`; `medium`, and `high` for `improve`), not the `xhigh` effort
   of the Claude Code runs.
+
+## 2026-11-06 release (1.0.0)
+
+- Date: 2026-11-06. macOS 27.0.1 (26A434), Python 3.13.16; `/usr/bin/python3` is
+  3.9.6.
+- `shasum -a 256 ~/.claude/CLAUDE.md`:
+  `bdeb943b66445a9e4c5532dd0f362847f18560adfa763ee8420123a9af2a6df3`.
+- `git -C ~/.claude/user-wiki rev-parse --short HEAD`: `f262154`.
+
+### Word counts
+
+| Text | 0.10.0 (`d1d8e0b`) | 1.0.0 |
+| --- | --- | --- |
+| `SKILL.md` body | 1,336 | 1,097 |
+| References, five files | 2,623 | 2,100 |
+
+Words are counted with `len(text.split())`; the body is the text after the
+front matter.
+
+### Activation
+
+- Run commit `3f1b5b3`. The `claude` CLI is Claude Code 2.1.318, and the runs
+  used its default model, `claude-fable-5-1`.
+- First try: the CLI was not logged in (`claude auth status` printed
+  `"loggedIn": false`), so the host check replied "Not logged in · Please run
+  /login" and the queries were not run. The person then ran
+  `claude auth login`.
+- Host check, in an empty folder outside the repository: the first `system`
+  event lists one plugin named `loopy`, with path
+  `/Volumes/SSD/code/loopy-rebuild`, source `loopy@inline`, and version
+  `1.0.0`; `--settings` disabled the installed `loopy@loopy`. The reply was
+  "OK".
+- Queries, one repetition each from a file outside the repository:
+  `fix-amount` gave `loopy`, its first tool call `Skill:loopy:loopy`, and
+  `rename` gave `edit`, after `Read`, `Bash`, two more `Read` calls, and
+  `Edit`. Both match.
+
+### Final text
+
+The first run commit for 1.0.0 is `46c736b`, and
+`git log --format=%h 46c736b..HEAD -- skills/loopy evals/prepare.py evals/README.md`
+lists five commits.
+
+| Commit | Files | Selection-table row | Required slots | Last judged runs | `git merge-base --is-ancestor` |
+| --- | --- | --- | --- | --- | --- |
+| `9230073` | `references/improvement.md` | One reference, `improvement.md` → `improve` | `improve`, `improve (Codex)` | `f33ecb3`, `91a4456` | Succeeded for both |
+| `76d8e27` | `references/improvement.md` | One reference, `improvement.md` → `improve` | `improve`, `improve (Codex)` | `f33ecb3`, `91a4456` | Succeeded for both |
+| `d035cf8` | `references/improvement.md` | One reference, `improvement.md` → `improve` | `improve`, `improve (Codex)` | `f33ecb3`, `91a4456` | Succeeded for both |
+| `57697eb` | `references/improvement.md` | One reference, `improvement.md` → `improve` | `improve`, `improve (Codex)` | `f33ecb3`, `91a4456` | Succeeded for both |
+| `d5fef94` | `evals/README.md`, `evals/audit.py`, `evals/test_audit.py` | Evaluation tool code that keeps every sentence sent to evaluators, and the README | None; the package checks and unit tests | — | Not required |
+
+All 36 Claude Code run records in this file, trials included, name Claude
+Code 2.1.317, effort `xhigh`, and model `claude-opus-5-5`, so `Routing`, the
+10 cases, and the 10 control runs ran with the same model and effort.
+
+### Last checks
+
+- `python3 evals/check.py` and `/usr/bin/python3 evals/check.py` print
+  "Plugin metadata, evaluation inputs, the routing set, local Markdown links,
+  and the skill passed."
+- `python3 -m unittest discover -s evals` and
+  `/usr/bin/python3 -m unittest discover -s evals` each ran 46 tests: OK.
+- `git grep` for the retired outputs folder and the retired validation script
+  printed nothing.
+
+### Remaining limits
+
+- The cases are the set the skill was tuned on, and the coordinator judged
+  every run knowing which were controls.
+- Each slot ran once. A criterion judged by what calls show before the first
+  edit, such as `fix#1` or `improve#1`, depends on whether an agent writes its
+  reasoning where the record shows it.
+- The isolation audit misses a relative read that names no forbidden string,
+  and Codex subagents left no events to audit.
+- The 10 cases' token total, 898,482, is over R11's cap of 840,553; the person
+  accepted the causes ("계속").
+- In Codex, `refactor#3` and `improve#1` failed as host differences, and the
+  person chose not to rerun them ("코덱스는 적당이 해 토큰 다썼어").
+  `improve (Codex)` ran with `high` effort after the Codex config changed
+  outside this work.
+- The activation check ran two queries once, with the CLI's default model; the
+  description is unchanged since 0.9.0, whose full check is the Activation
+  baseline.
