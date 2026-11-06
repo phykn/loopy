@@ -22,6 +22,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | refactor (Codex) | 1.0.0 | Failed | Behavior, `--help`, and the boundary checks kept and the invalid amount fixed with a regression test, but both output functions still compute the grand total (`refactor#3`), a host difference | 628,176 | — | [Codex](#2026-11-06-codex-100) |
 | fix (Codex) | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration lines and the added tests changed | 226,534 | — | [Codex](#2026-11-06-codex-100) |
 | feature (Codex) | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI, with every invalid value exiting 2 and writing nothing | 257,686 | — | [Codex](#2026-11-06-codex-100) |
+| improve (Codex) | 1.0.0 | Failed | 405 → 184 words (54.6%) with every hard rule kept, and the trial bot posted the expected blocker; but the events cannot show the baseline `run.md` says it wrote before the first edit (`improve#1`), a host difference | 494,087 | — | [Codex](#2026-11-06-codex-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -1078,7 +1079,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   JSONL reports no model.
 - Tokens: 142,502 (input 140,090 and output 2,412; the usage object also
   reports 123,008 cached input and 140 reasoning output tokens).
-- Isolation: `grep -c -F -f <tmp>/forbidden.txt <ws>.jsonl` printed 0 over 6
+- Isolation: `grep -c -F -f <tmp>/forbidden.txt <ws>.jsonl` printed 0 over 5
   commands and one file change. The run read the wiki's `index.md`,
   `workflow.md`, and `docs.md`, then `requests.md`, `skill/SKILL.md`, and the
   plan; it started no subagent. `git status --short` was empty after the run.
@@ -1154,7 +1155,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   JSONL reports no model.
 - Tokens: 226,534 (input 223,308 and output 3,226; the usage object also
   reports 192,768 cached input and 207 reasoning output tokens).
-- Isolation: `grep -c -F -f <tmp>/forbidden.txt <ws>.jsonl` printed 0 over 13
+- Isolation: `grep -c -F -f <tmp>/forbidden.txt <ws>.jsonl` printed 0 over 15
   commands and three file changes; no subagent. `git status --short` was empty
   after the run. The tests ran with `TMPDIR` set to a folder in the workspace.
 - `fix#1` passed: by the JSONL event order, event 24 printed `deploy -21:00`
@@ -1186,7 +1187,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   JSONL reports no model.
 - Tokens: 257,686 (input 253,119 and output 4,567; the usage object also
   reports 220,672 cached input and 781 reasoning output tokens).
-- Isolation: `grep -c -F -f <tmp>/forbidden.txt <ws>.jsonl` printed 0 over 16
+- Isolation: `grep -c -F -f <tmp>/forbidden.txt <ws>.jsonl` printed 0 over 17
   commands and two file changes, among them `rg --files` over the wiki's
   `graph` folder; no subagent. `git status --short` was empty after the run.
 - `feature#1` passed: in a fresh copy, `--month 2026-01` prints `food 12.50`,
@@ -1209,3 +1210,85 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   January totals, the `--json` behavior, `total 0.00` when nothing matches,
   and "An invalid month (such as `2026-13` or `2026-1`) is rejected with
   status 2."; each claim matched a run in the fresh copy.
+
+### improve (Codex)
+
+- Slot `improve (Codex)`, run commit `91a4456`, attempt 1. Codex CLI 0.166.0,
+  model `gpt-6.1-sol` with `medium` effort from `~/.codex/config.toml`; the
+  JSONL reports no model.
+- Tokens: 494,087 (input 484,375 and output 9,712; the usage object also
+  reports 466,048 cached input and 1,649 reasoning output tokens).
+- Isolation: `grep -c -F -f <tmp>/forbidden.txt <ws>.jsonl` printed 0 over 19
+  commands and 7 file changes. `git status --short` was empty after the run.
+  `run.md` reports one fresh subagent that reviewed three pull requests from
+  copies in `scratch/trial/`; the JSONL holds no event for it, so its reads
+  were not audited.
+- The run changed only `review-bot.md`; both notes and the sample equal the
+  fixture byte for byte. Outside the task it wrote `scratch/`: a copy of the
+  original, the trial inputs and result, and `verify_trial.py`.
+- `improve#1` failed, as not shown. Before the first edit of `review-bot.md`
+  at event 35, the events show the word count (event 26, `63 405 2383`), a
+  message naming the formatting conflict, the forced praise, and the `ircbot`
+  call to remove and the rules to keep (event 29), a copy of the original
+  (event 31), and the creation of `run.md` (event 33). Codex's file-change
+  events carry a path but no content, so what `run.md` held at event 33 is not
+  in the record. Its final text has "편집 전 계약과 기준" and "편집 전 관측"
+  sections with tasks for `pr-42` and a walkthrough of the sample under the
+  original prompt, but nothing dates them, and Judging takes the order from the
+  events, not from `run.md`.
+- `improve#2` passed: the three sections keep never approve or merge, changed
+  lines only, the exact format with `blocker`, `major`, and `minor`, skipping
+  `gen/` and lockfiles, "Write in the language of the author's PR description;
+  use English if unsure.", at most 10 comments keeping the most severe with
+  blockers first, and `request_changes` on a blocker.
+- `improve#3` passed: the history, the exhortation paragraphs, the closing
+  "Remember" line, and "Good code is readable, maintainable, and correct" are
+  gone; one opening line keeps "useful, respectful feedback on correctness,
+  security, readability, and maintainability".
+- `improve#4` passed: the `ircbot` step is gone because `notes/tools.md` says
+  the tool was removed; the always-comment-on-style sentence went and the
+  formatting rule stayed, naming spacing, quotes, and line length, "the linter
+  handles it"; the forced praise went because the feedback calls it noise.
+- `improve#5` passed: `run.md` lists the wording cuts apart from three behavior
+  changes, each with what is lost, such as "잃는 동작은 불필요한 서식 댓글이다";
+  it and the reply give 405 → 184 words, 54.6% fewer by `len(text.split())`.
+- `improve#6` passed. Use: in the coordinator trial, the bot posted one Korean
+  `[blocker] app/history.py:5` comment in the required form on the slice that
+  returns n+1 items and called `request_changes`, and skipped the quote change
+  and `gen/schema.py`, with no `ircbot` call, no praise, and no approval. The
+  notes and the sample equal the fixture in the workspace and in the trial
+  copy.
+- Coordinator trial, run as a Claude Code subagent as Codex runs require:
+  59,551 tokens, the host's report, equal to the transcript's last usage;
+  Claude Code 2.1.317, effort `xhigh`, model `claude-opus-5-5`; isolation
+  audit exit 0 over 3 tool calls, no nested transcript.
+- Failure triage for `improve#1`: a host difference in what the record shows,
+  not skill wording. The run wrote `run.md` before its first edit, as
+  `references/improvement.md` asks, but Codex's events do not record what a
+  patch writes, where a Claude Code `Write` call does. The text is unchanged,
+  so the slot was not rerun.
+
+### Codex summary
+
+- `review`, `fix`, and `feature` passed every criterion in Codex.
+  `refactor (Codex)` failed `refactor#3` and `improve (Codex)` failed
+  `improve#1`; Failure triage gives both a host difference, not skill wording,
+  so the skill was not changed and neither slot was rerun. All five slots
+  passing every criterion, the Codex check's completion condition, is not met,
+  and the person decides how to proceed.
+- Tokens over the five runs: 1,748,985, besides 144,422 for the selection
+  smoke; they are not compared with the Claude Code total.
+
+### Codex limits
+
+- `codex exec --json` emits no event for a subagent. `refactor` and `improve`
+  each report one in `run.md`, with results in `scratch/`, but its commands
+  were not audited.
+- File-change events carry a path and a kind but no content, so a criterion
+  judged by what the record shows before the first edit can be shown in Claude
+  Code, whose `Write` calls hold the text, and not in Codex (`improve#1`).
+- The isolation check is a fixed-string search over the events, so a read
+  that names none of the strings goes unseen, and `--ephemeral` keeps no
+  session file to compare.
+- Each slot ran once, with the model and effort in the person's Codex config
+  (`gpt-6.1-sol`, `medium`), not the `xhigh` effort of the Claude Code runs.
