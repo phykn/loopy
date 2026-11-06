@@ -19,6 +19,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | docs | 1.0.0 | Passed | Documentation 94 → 75 lines in two files; the FAQ's overwrite claim corrected and the broken link removed; code unchanged | 98,859 | 5/7 | [cases](#2026-11-06-cases-100) |
 | improve | 1.0.0 | Passed | Attempt 6, after a fourth wording fix the person chose: the criteria and a walkthrough of the sample under the original prompt were written before the first edit; every hard rule kept at 405 → 232 words (42.7%), and the trial bot posted the expected blocker | 96,438 | 3/6 | [cases](#2026-11-06-cases-100) |
 | review (Codex) | 1.0.0 | Passed | Named the unowned publishing step and the command check after publication, named no owner for the gaps, and changed no file | 142,502 | — | [Codex](#2026-11-06-codex-100) |
+| refactor (Codex) | 1.0.0 | Failed | Behavior, `--help`, and the boundary checks kept and the invalid amount fixed with a regression test, but both output functions still compute the grand total (`refactor#3`), a host difference | 628,176 | — | [Codex](#2026-11-06-codex-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -1087,3 +1088,59 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   says "검토 완료가 배포 승인이나 계획의 실행 가능 판정을 뜻하지 않는다".
 - `review#3` passed: `plan.md` equals the fixture byte for byte, and the only
   file the run wrote was `run.md`, besides the `final.md` that `-o` writes.
+
+### refactor (Codex)
+
+- Slot `refactor (Codex)`, run commit `3330f5a`, attempt 1. Codex CLI 0.166.0,
+  model `gpt-6.1-sol` with `medium` effort from `~/.codex/config.toml`; the
+  JSONL reports no model.
+- Tokens: 628,176 (input 618,750 and output 9,426; the usage object also
+  reports 587,264 cached input and 1,683 reasoning output tokens).
+- Isolation: `grep -c -F -f <tmp>/forbidden.txt <ws>.jsonl` printed 0 over 17
+  commands and one file change. The run read the wiki's `index.md`,
+  `workflow.md`, `code.md`, and `docs.md`, the skill with four references, and
+  the task. `git status --short` was empty after the run. `run.md` reports one
+  fresh subagent that followed the README on a copy and left its results in
+  `scratch/trial-use/`; the JSONL holds no event for it, so its reads were not
+  audited. The fixture's tests made and removed temporary folders under
+  `$TMPDIR`, as in the Claude Code runs, and `run.md` says so.
+- `refactor#1` passed: in fresh copies of the fixture and the result, the
+  sample's text, the JSON run and file bytes, the existing-output refusal, the
+  wrong-header rejection, `--help`, a missing source, and a CSV without a BOM
+  gave the same output and exit status.
+- `refactor#2` passed: `records.py` keeps "Bank exports may start with a byte
+  order mark." over `encoding="utf-8-sig"`; `cli.py` still checks the source
+  and the existing output, and `read_records` still checks the header.
+- `refactor#3` failed: no file-top docstring is left, the `--help` text is the
+  `description` argument, and the restating comments, commented-out code,
+  `format_amount_old`, the `os` and `sys` imports, `DEBUG`, `load`, the `sort`
+  option, the `None` guard, and the second category normalization are gone, and
+  one `sum_categories` makes the category totals for both outputs. But
+  `format_text` and `write_json` each still compute
+  `sum(totals.values(), Decimal('0'))`, the fixture's two lines unchanged;
+  `run.md` names only the category sums as the removed duplicate. The Claude
+  Code skill and control runs computed that total once.
+- `refactor#4` passed: a row with amount `oops` or an empty amount now exits 2
+  with `line 3: amount must be a number` and writes no JSON, where the original
+  exited 0 and skipped it. The new tests fail 8 times on the original code and
+  pass on the new, and `run.md` reports the fix under its own heading, apart
+  from the structural changes.
+- `refactor#5` passed: the six tests cover the text totals, the JSON file, the
+  existing-output refusal, and the header and amount rejections;
+  `test_prints_total_line` is gone.
+- `refactor#6` passed: source lines 125 → 85 with plain names such as
+  `sum_categories` and `format_text`; `run.md` gives "합계 125→85 (40줄 감소).
+  테스트 61→84 (23줄 증가), README 23→23 (변경 없음)" and names the bug-fix
+  additions.
+- `refactor#7` passed: `run.md` assesses all three modules, the tests, the
+  README, the sample, and the dependencies, and changed each module and the
+  tests for the findings it names.
+- The run also writes the JSON with mode `x`, so a file created after the first
+  check is refused, and rejects `NaN` and infinite amounts; it reports both as
+  fixes.
+- Failure triage for `refactor#3`: a host difference, not skill wording.
+  `references/refactoring.md` already says to remove "duplicated knowledge
+  with the same reason to change", and this run applied it to the category
+  sums and the normalization; with the same text, the Claude Code run removed
+  the duplicated total, and so did the control run without the skill. The text
+  is unchanged, so the slot was not rerun.
