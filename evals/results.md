@@ -982,3 +982,47 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   `claude-opus-5-5`; isolation audit exit 0 over 4 tool calls, no nested
   transcript.
 - Loopy-only criteria: `improve#1`, `improve#3`, `improve#5`.
+
+### Comparison
+
+| Case | 1.0.0 tokens | 1.0.0 attempts | Control tokens | Control attempts | Criteria passed (1.0.0, control) | Loopy-only criteria |
+| --- | --- | --- | --- | --- | --- | --- |
+| guide | 89,531 | 1 | 81,995 | 1 | 4/4, 4/4 | none |
+| review | 76,798 | 2 (1 invalid) | 68,711 | 1 | 3/3, 3/3 | none |
+| ready | 83,796 | 1 | 71,974 | 1 | 3/3, 3/3 | none |
+| refactor | 117,548 | 1 | 120,260 | 1 | 7/7, 6/7 | `refactor#6` |
+| fix | 78,578 | 1 | 70,695 | 1 | 5/5, 4/5 | `fix#1` |
+| cause | 74,896 | 1 | 69,211 | 1 | 5/5, 5/5 | none |
+| diagnose | 75,522 | 1 | 67,044 | 1 | 5/5, 5/5 | none |
+| feature | 106,516 | 1 | 91,960 | 1 | 5/5, 5/5 | none |
+| docs | 98,859 | 1 | 90,300 | 1 | 7/7, 5/7 | `docs#4`, `docs#6` |
+| improve | 96,438 | 6 (1 stopped, 4 failed) | 77,133 | 1 | 6/6, 3/6 | `improve#1`, `improve#3`, `improve#5` |
+| Total | 898,482 | 16 | 809,283 | 10 | 50/50, 43/50 | 7 in 4 cases |
+
+- Tokens are each slot's last judged run, the host's report. The coordinator
+  trials are apart: `guide` 61,258 with the skill and 60,470 without,
+  `improve` 60,690 and 59,593.
+- With the skill, the last judged runs used 89,199 more tokens, 11.0% above
+  the control; only `refactor` used fewer, by 2,712.
+- The seven Loopy-only criteria fall in three groups: what the report gives,
+  the line change or each behavior change with its loss (`refactor#6`,
+  `docs#6`, `improve#5`; in `docs` the lines also rose); evidence written
+  before the first edit (`fix#1`, `improve#1`); and removing repetition or
+  generic advice (`docs#4`, `improve#3`). `guide`, `review`, `ready`, `cause`,
+  `diagnose`, and `feature` have none, and their Baselines rows say
+  "regression only".
+
+### Control limits
+
+- Control evaluators ran in this Claude Code session, whose skill list still
+  names the installed Loopy plugin. `requests.md` told them not to use any
+  Loopy skill, and no subagent transcript in this session holds a Skill call.
+- The comparison uses the ten cases the skill was tuned on, so it may
+  overstate the skill's effect on new tasks.
+- Each slot ran once. A criterion judged by what a call shows before the
+  first edit, such as `fix#1` or `improve#1`, can turn on whether an agent
+  writes its reasoning down.
+- The coordinator judged both runs of each case and knew which was the
+  control.
+- The cases entry's limits on relative reads, agent trial users, and the
+  global instructions apply here too.
