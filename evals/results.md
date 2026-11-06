@@ -14,6 +14,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | refactor | 1.0.0 | Passed | Source 125 → 83 lines; sample outputs, refusals, and `--help` unchanged; the skipped invalid amount fixed with a test that fails on the original | 117,548 | pending | [cases](#2026-11-06-cases-100) |
 | fix | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration line and one test changed | 78,578 | pending | [cases](#2026-11-06-cases-100) |
 | cause | 1.0.0 | Passed | Return sign fixed after the parsed moves showed `('gadget', -2)`; no clamp; the new test fails on the original and on a clamped copy | 74,896 | pending | [cases](#2026-11-06-cases-100) |
+| diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged | 75,522 | pending | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -234,6 +235,27 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   instead of added, which gave `-4` and `11`; that only `out` is negated now; and
   that the new test failed as `gadget -2` before the fix and passes after. It
   leaves negative stock from over-shipping as a question instead of clamping.
+
+### diagnose
+
+- Slot `diagnose`, run commit `cfd869f`, attempt 1. Claude Code 2.1.317, effort
+  `xhigh`, model `claude-opus-5-5`.
+- Tokens: 75,522, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 12 tool
+  calls; no Agent call. `git status --short` was empty after the run.
+- `diagnose#1` passed: line 51 printed `members 7`, and the reply says the
+  real count is 5 because rows 4 and 6 repeat `ann@example.com` and
+  `bo.kim@mail.test` in other letter case.
+- `diagnose#2` passed: the claim is that `normalize` lowercases only the
+  domain; line 51 printed the keys, such as `'Ann@Example.com' -> 'Ann@example.com'`,
+  and line 56 ran the README's two-row example and printed `members 2`, all
+  outside `tasks/`.
+- `diagnose#3` passed: the reply says "앞뒤 공백은 제대로 처리됩니다", names the
+  domain lowercasing as working, and offers no other cause.
+- `diagnose#4` passed: `diff -r` finds the task directory identical to the
+  fixture, with no new file; the fix is only a suggestion for whoever fixes it.
+- `diagnose#5` passed: the reply gives `members.py`, `normalize()`, lines 34–36,
+  the keys and the two-row run as evidence, and "실제 5명".
 
 ### Changes during this work
 
