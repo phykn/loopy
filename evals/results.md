@@ -15,7 +15,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | fix | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration line and one test changed | 78,578 | 4/5 | [cases](#2026-11-06-cases-100) |
 | cause | 1.0.0 | Passed | Return sign fixed after the parsed moves showed `('gadget', -2)`; no clamp; the new test fails on the original and on a clamped copy; regression only | 74,896 | 5/5 | [cases](#2026-11-06-cases-100) |
 | diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged; regression only | 75,522 | 5/5 | [cases](#2026-11-06-cases-100) |
-| feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month` | 106,516 | pending | [cases](#2026-11-06-cases-100) |
+| feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month`; regression only | 106,516 | 5/5 | [cases](#2026-11-06-cases-100) |
 | docs | 1.0.0 | Passed | Documentation 94 → 75 lines in two files; the FAQ's overwrite claim corrected and the broken link removed; code unchanged | 98,859 | pending | [cases](#2026-11-06-cases-100) |
 | improve | 1.0.0 | Passed | Attempt 6, after a fourth wording fix the person chose: the criteria and a walkthrough of the sample under the original prompt were written before the first edit; every hard rule kept at 405 → 232 words (42.7%), and the trial bot posted the expected blocker | 96,438 | pending | [cases](#2026-11-06-cases-100) |
 
@@ -872,4 +872,35 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   fixture, with no new file; the reply applies no fix.
 - `diagnose#5` passed: the reply gives `members.py`, `normalize`, lines 34–36,
   the keys as evidence, and 5 + 2 = 7.
+- Loopy-only criteria: none.
+
+### feature (control)
+
+- Slot `feature (control)`, run commit `4783c5c`, attempt 1. Claude Code
+  2.1.317, effort `xhigh`, model `claude-opus-5-5`.
+- Tokens: 91,960, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 18 tool
+  calls; no Agent call. `git status --short` was empty after the run.
+- `feature#1` passed: in a fresh copy, `--month 2026-01` prints `food 12.50`,
+  `rent 500.00`, and `total 512.50`, and writes the same totals with `--json`.
+  Without it, the sample's text and JSON are unchanged, and error runs differ
+  only in the usage line, which now lists `[--month YYYY-MM]`. The fixture's
+  tests pass on the new code, and the four new tests, which fail on the
+  original code, cover the filter.
+- `feature#2` passed: `parse_month` in `cli.py` is the option's `type`, and
+  `2026-13`, `2026-00`, `26-01`, `abc`, an empty value, `2026-01-05`, and
+  ` 2026-01` each exit 2 with no output or JSON. `2026-1` is accepted as
+  January, which `run.md` records as a decision and the README does not rule
+  out.
+- `feature#3` passed: no docstring, comment, broad handler, fallback, unused
+  option, or wrapper was added; `parse_month` turns `strptime`'s `ValueError`
+  into the option's error.
+- `feature#4` passed: the diff is the option, the month filter in
+  `read_records` with its date check, four tests, and the README's command and
+  two paragraphs; no existing line was rewritten except the `read_records` call
+  and signature and the README's rejection sentence.
+- `feature#5` passed: the README adds the `--month 2026-01` command, "With
+  `--month YYYY-MM`, it sums only the rows dated in that month", the
+  `total 0.00` of an empty month, and the rejections, which a clean copy
+  confirms: `2026-02-30` under `--month` exits 2 with `line 3` and no JSON.
 - Loopy-only criteria: none.
