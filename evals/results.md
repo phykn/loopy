@@ -17,7 +17,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged | 75,522 | pending | [cases](#2026-11-06-cases-100) |
 | feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month` | 106,516 | pending | [cases](#2026-11-06-cases-100) |
 | docs | 1.0.0 | Passed | Documentation 94 → 75 lines in two files; the FAQ's overwrite claim corrected and the broken link removed; code unchanged | 98,859 | pending | [cases](#2026-11-06-cases-100) |
-| improve | 1.0.0 | Failed | Attempt 5 failed only `improve#1`: its review of the sample under the original prompt was written down after the edits; every hard rule kept at 405 → 227 words (44.0%), and the trial bot posted the expected blocker | 94,737 | pending | [cases](#2026-11-06-cases-100) |
+| improve | 1.0.0 | Passed | Attempt 6, after a fourth wording fix the person chose: the criteria and a walkthrough of the sample under the original prompt were written before the first edit; every hard rule kept at 405 → 232 words (42.7%), and the trial bot posted the expected blocker | 96,438 | pending | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -509,6 +509,55 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 - The person chose one more fix beyond the cap ("나로 해봐", 2026-11-06). The
   fourth change below follows, and the slot reruns as attempt 6.
 
+- Attempt 6: slot `improve`, run commit `f33ecb3`. Claude Code 2.1.317, effort
+  `xhigh`, model `claude-opus-5-5`.
+- Tokens: 96,438, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 23 tool
+  calls in the evaluator's transcript and the nested transcript of its one
+  Agent call, a fresh agent given only the revised prompt, two sample pull
+  requests, and the two tool signatures. `git status --short` was empty after
+  the run.
+- The evaluator changed only `review-bot.md`; both notes and the sample equal
+  the fixture byte for byte. Outside the task it wrote
+  `eval/baseline/review-bot.md`, a copy of the original, and `eval/pr-43.diff`,
+  a second sample of its own.
+- `improve#1` passed. Before the first write to `review-bot.md`, the evaluator
+  wrote `run.md` with "Contract (written before the first edit)": the bot's
+  reviews of `pr-42` and of the second sample and a maintainer's reading as
+  tasks with expected results, and the measures. Its "Baseline (original file
+  ..., before editing)" gives 63 lines, 405 words, one contradiction, and one
+  call to a removed tool, and a self-check walkthrough of `pr-42` under the
+  original prompt: the blocker likely found, but a quote comment, the forced
+  praise, and the `ircbot` call.
+- `improve#2` passed: the three sections keep never approve or merge, changed
+  lines only, the exact format with `blocker`, `major`, and `minor`, skipping
+  `gen/` and lockfiles, "Write everything you post in the language of the pull
+  request description. If you are not sure, use English.", at most 10 comments
+  with blockers first, and `request_changes` on a blocker.
+- `improve#3` passed: the history, the exhortations, and the generic advice are
+  gone, and a phrase search for them finds nothing.
+- `improve#4` passed: the `ircbot` step is gone because the tool was removed in
+  March 2026 (`notes/tools.md`); the style rule went and the formatting rule
+  stayed, now naming spacing, quotes, and line length; the forced praise went
+  because the feedback calls it noise.
+- `improve#5` passed: `run.md` lists three behavior changes, each with "Lost:",
+  apart from the wording and structure changes; it and the message to the user
+  give 405 → 232 words, 42.7% fewer by `len(text.split())`.
+- `improve#6` passed. Use: in the coordinator trial, the bot posted a Korean
+  `[blocker] app/history.py:5` comment in the required form on the off-by-one
+  and a `[minor]` comment on sorting without `paid_at`, called
+  `request_changes`, and skipped the quote change and `gen/schema.py`, with no
+  `ircbot` call and no approval. The notes and the sample equal the fixture in
+  the workspace and in the trial copy.
+- Coordinator trial: 60,690 tokens, Claude Code 2.1.317, effort `xhigh`, model
+  `claude-opus-5-5`; isolation audit exit 0 over 4 tool calls, no nested
+  transcript.
+- The baseline walkthrough put the blocker on line 12, its line in the diff
+  file; after its trial the evaluator recounted the new file and recorded the
+  correction to line 5. It also restored the language rule's scope, which its
+  first draft had narrowed and its trial flagged, and rechecked that line by
+  reading only.
+
 ### Token total
 
 | Case | 0.10.0 | 1.0.0 | Change |
@@ -522,8 +571,8 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | diagnose | 75,817 | 75,522 | −295 |
 | feature | 85,129 | 106,516 | +21,387 |
 | docs | 96,215 | 98,859 | +2,644 |
-| improve | 89,918 | 94,737 | +4,819 |
-| Total | 840,553 | 896,781 | +56,228 (+6.7%) |
+| improve | 89,918 | 96,438 | +6,520 |
+| Total | 840,553 | 898,482 | +57,929 (+6.9%) |
 
 - The 1.0.0 column is each slot's last judged run; failed, invalid, and stopped
   runs are recorded apart. The total is over R11's cap of 840,553.
@@ -534,7 +583,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 - `feature` adds 21,387: its evaluator also checked each row's date when
   `--month` is given and fixed one bug of its own during the run. `code.md`
   keeps the 0.10.0 rule on validating input at trust boundaries.
-- The other 19,841 is spread over the remaining cases, led by `ready`
+- The other 21,542 is spread over the remaining cases, led by `ready`
   (+10,436) and `guide` (+8,753). Old runs of one case already differed by up
   to 5,084 tokens (`fix` 73,159–78,243; `guide` 81,599–86,314); `guide` is
   3,217 above its highest 0.10.0 run.
@@ -542,7 +591,9 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   references 2,623 → 2,100), so the coordinator judged the rise not
   skill-caused. Failure triage sends such a rise to the person. On 2026-11-06,
   asked whether to accept it as environment-caused, the person answered "계속"
-  ("continue"), which is recorded as acceptance.
+  ("continue"), which is recorded as acceptance. That answer was given at
+  896,781; `improve` attempt 6, the rerun the person chose afterward, replaced
+  attempt 5 and added 1,701.
 
 ### Changes during this work
 
@@ -605,6 +656,10 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   sends every evaluator to the user wiki; the runs read two to four of its
   pages, about 1,350 words for four, so token comparisons with those baselines
   include this change.
+- Evaluators write no text between tool calls, and their thinking is
+  redacted, so a criterion judged by order counts only what a call shows.
+  `improve` attempts 2 to 5 may have walked through the sample before their
+  edits without writing it down.
 
 ## 2026-11-06 control (1.0.0)
 
