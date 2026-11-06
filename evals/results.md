@@ -17,7 +17,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged | 75,522 | pending | [cases](#2026-11-06-cases-100) |
 | feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month` | 106,516 | pending | [cases](#2026-11-06-cases-100) |
 | docs | 1.0.0 | Passed | Documentation 94 → 75 lines in two files; the FAQ's overwrite claim corrected and the broken link removed; code unchanged | 98,859 | pending | [cases](#2026-11-06-cases-100) |
-| improve | 1.0.0 | Failed | Failed `improve#1`: no review of the sample under the original prompt; the revision kept every hard rule at 405 → 233 words (42.5%) | 98,434 | pending | [cases](#2026-11-06-cases-100) |
+| improve | 1.0.0 | Failed | Attempt 3 failed `improve#1`: the review of the sample under the original prompt was written only after the edits; every hard rule kept at 405 → 217 words (46.4%) | 90,488 | pending | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -372,6 +372,48 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   recorded only the measure. The change below makes the baseline run the tasks
   on the current version before the first edit, and the slot reruns.
 
+- Attempt 3: slot `improve`, run commit `e4db507`. Claude Code 2.1.317, effort
+  `xhigh`, model `claude-opus-5-5`.
+- Tokens: 90,488, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 20 tool
+  calls in the evaluator's transcript and the nested transcript of its one
+  Agent call, a fresh agent given only the revised prompt, the sample, and the
+  two tool signatures. `git status --short` was empty after the run.
+- The evaluator changed only `review-bot.md`; both notes and the sample equal
+  the fixture byte for byte.
+- `improve#1` failed. Before the first write to `review-bot.md`, the one
+  baseline call measured the original (63 lines, 405 words, 17 exhortation
+  words) and listed its conflicting and obsolete lines, and the transcript
+  holds no text. The review of `samples/pr-42.diff` under the original prompt
+  appears only in the "Baseline" section of `run.md`, written after the edits,
+  as a "walkthrough plus the observed behavior in `feedback.md`".
+- `improve#2` passed: the three sections keep never approve or merge, changed
+  lines only, the exact format with `blocker`, `major`, and `minor`, skipping
+  `gen/` and lockfiles, "the language of the pull request description; if
+  unsure, use English" for comments and the summary, at most 10 comments with
+  blockers first, and `request_changes` on a blocker.
+- `improve#3` passed: the history, the exhortations, and the generic advice are
+  gone, and a phrase search for them finds nothing.
+- `improve#4` passed: the `ircbot` step is gone because the tool "was removed
+  in March 2026"; the style rule went and the formatting rule stayed; the
+  forced praise went because the feedback calls it noise.
+- `improve#5` passed: `run.md` lists three behavior changes, each with "Lost:",
+  apart from the wording and structure changes, and gives 217 words (was 405),
+  46.4% fewer by `len(text.split())`. The reply repeats 405 to 217 words; the
+  message to the user gives lines, 63 to 31.
+- `improve#6` passed. Use: in the coordinator trial, the bot posted one Korean
+  `[blocker] app/history.py:5` comment in the required form on the off-by-one,
+  called `request_changes`, and skipped the quote change and `gen/schema.py`,
+  with no `ircbot` call and no approval. The notes and the sample equal the
+  fixture in the workspace and in the trial copy.
+- Coordinator trial: 59,236 tokens, Claude Code 2.1.317, effort `xhigh`, model
+  `claude-opus-5-5`; isolation audit exit 0 over 4 tool calls, no nested
+  transcript.
+- Cause of `improve#1`: skill wording. After `57697eb` the sentence still began
+  "Before editing" and put the baseline run in a "then" clause; the evaluator
+  ran the measures before the edit and wrote the walkthrough down at the end.
+  The second change below ties the record to the first edit.
+
 ### Changes during this work
 
 - `d5fef94` changed `evals/audit.py`, its test, and `evals/README.md`: each
@@ -389,6 +431,15 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   requires `improve`, rerun as attempt 3, and `improve (Codex)`, which T12 runs
   after this commit. The package checks and unit tests passed on both Pythons; the
   references total 2,098 words.
+- `d035cf8` changed `references/improvement.md` again: the criteria sentence no
+  longer carries the timing, and a sentence of its own says "Before the first
+  edit, run those tasks and measures on the current version and record the
+  results as the baseline", after `improve` attempt 3 wrote its baseline
+  walkthrough only at the end. Selection-table row: one reference,
+  `improvement.md` → `improve`. It requires `improve`, rerun as attempt 4, and
+  `improve (Codex)`, which T12 runs after this commit. The package checks and
+  unit tests passed on both Pythons; the references total 2,099 words. This is
+  the second of the three skill fixes Failure triage allows in this task.
 
 ### Limits
 
