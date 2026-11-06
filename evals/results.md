@@ -1044,7 +1044,8 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 - `git -C ~/.claude/user-wiki rev-parse --short HEAD`: `f262154`.
 - `codex --version`: `codex-cli 0.166.0`. The JSONL reports no model, so the
   model is the `model` and `model_reasoning_effort` in `~/.codex/config.toml`
-  at run time: `gpt-6.1-sol`, `medium`.
+  at run time: `gpt-6.1-sol` with `medium`, except `improve`, which started
+  after the file changed to `high` (Codex summary).
 - The person agreed on 2026-11-06 ("승인 (Recommended)") to a temporary
   marketplace and plugin in `~/.codex/config.toml` and to six or more Codex
   runs on their ChatGPT usage. Before the install, `~/.codex/config.toml` was
@@ -1184,7 +1185,8 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 
 - Slot `feature (Codex)`, run commit `d6693db`, attempt 1. Codex CLI 0.166.0,
   model `gpt-6.1-sol` with `medium` effort from `~/.codex/config.toml`; the
-  JSONL reports no model.
+  JSONL reports no model. The run started at 19:58:43, 10 seconds before the
+  file changed to `high`, and Codex reads it at start.
 - Tokens: 257,686 (input 253,119 and output 4,567; the usage object also
   reports 220,672 cached input and 781 reasoning output tokens).
 - Isolation: `grep -c -F -f <tmp>/forbidden.txt <ws>.jsonl` printed 0 over 17
@@ -1214,7 +1216,8 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 ### improve (Codex)
 
 - Slot `improve (Codex)`, run commit `91a4456`, attempt 1. Codex CLI 0.166.0,
-  model `gpt-6.1-sol` with `medium` effort from `~/.codex/config.toml`; the
+  model `gpt-6.1-sol` with `high` effort from `~/.codex/config.toml`, which
+  changed from `medium` at 19:58:53, before this run started at 20:01:52; the
   JSONL reports no model.
 - Tokens: 494,087 (input 484,375 and output 9,712; the usage object also
   reports 466,048 cached input and 1,649 reasoning output tokens).
@@ -1274,8 +1277,16 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   `refactor (Codex)` failed `refactor#3` and `improve (Codex)` failed
   `improve#1`; Failure triage gives both a host difference, not skill wording,
   so the skill was not changed and neither slot was rerun. All five slots
-  passing every criterion, the Codex check's completion condition, is not met,
-  and the person decides how to proceed.
+  passing every criterion, the Codex check's completion condition, is not met.
+  The person answered "코덱스는 적당이 해 토큰 다썼어" (2026-11-06): their
+  ChatGPT usage is spent, so no Codex slot is rerun, and the two failures
+  stand as recorded host differences.
+- After the runs, `diff` between the saved copy and `~/.codex/config.toml`
+  printed one change, `model_reasoning_effort` from `medium` to `high`. The
+  file changed at 19:58:53, with the Codex app's state file at 19:59:16, after
+  the temporary install was removed and `diff` printed nothing (19:43), so the
+  change came from outside this work. It was left as it is and reported to the
+  person.
 - Tokens over the five runs: 1,748,985, besides 144,422 for the selection
   smoke; they are not compared with the Claude Code total.
 
@@ -1291,4 +1302,5 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   that names none of the strings goes unseen, and `--ephemeral` keeps no
   session file to compare.
 - Each slot ran once, with the model and effort in the person's Codex config
-  (`gpt-6.1-sol`, `medium`), not the `xhigh` effort of the Claude Code runs.
+  (`gpt-6.1-sol`; `medium`, and `high` for `improve`), not the `xhigh` effort
+  of the Claude Code runs.
