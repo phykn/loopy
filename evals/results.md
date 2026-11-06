@@ -8,7 +8,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | --- | --- | --- | --- | --- | --- | --- |
 | Activation | 0.9.0 description (unchanged in 1.0.0) | Passed | Three repetitions: `tune` 36/36 should-trigger and 0/24 near misses; `holdout` 24/24 and 0/27, counting the three dictated fixes | — | — | d1d8e0b `evals/results.md`, 0.9.0 entry |
 | Routing | 1.0.0 | Passed | 21/21 requests sorted as expected, in order, in both runs | 60,132 | — | [routing](#2026-11-06-routing-100) |
-| guide | 1.0.0 | Passed | The README gives the folder, Python 3.9+, the exact command, its output, and the expected JSON; a fresh trial user packed and checked the samples on the first try | 89,531 | pending | [cases](#2026-11-06-cases-100) |
+| guide | 1.0.0 | Passed | The README gives the folder, Python 3.9+, the exact command, its output, and the expected JSON; a fresh trial user packed and checked the samples on the first try; regression only | 89,531 | 4/4 | [cases](#2026-11-06-cases-100) |
 | review | 1.0.0 | Passed | Found the unowned publishing step and the command check placed after publication, left owners as blanks to fill, and changed no file | 76,798 | pending | [cases](#2026-11-06-cases-100) |
 | ready | 1.0.0 | Passed | Checked the empty-folder result (`0`, exit 0) against the CLI, rejected the retry suggestion, and changed no file | 83,796 | pending | [cases](#2026-11-06-cases-100) |
 | refactor | 1.0.0 | Passed | Source 125 → 83 lines; sample outputs, refusals, and `--help` unchanged; the skipped invalid amount fixed with a test that fails on the original | 117,548 | pending | [cases](#2026-11-06-cases-100) |
@@ -590,3 +590,53 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   sends every evaluator to the user wiki; the runs read two to four of its
   pages, about 1,350 words for four, so token comparisons with those baselines
   include this change.
+
+## 2026-11-06 control (1.0.0)
+
+- Date: 2026-11-06. macOS 27.0.1 (26A434), Python 3.13.16; `/usr/bin/python3` is
+  3.9.6.
+- `shasum -a 256 ~/.claude/CLAUDE.md`:
+  `bdeb943b66445a9e4c5532dd0f362847f18560adfa763ee8420123a9af2a6df3`.
+- `git -C ~/.claude/user-wiki rev-parse --short HEAD`: `f262154`.
+- Each run used a new `--control` workspace, which holds no skill and whose
+  `requests.md` begins "Do not use any Loopy skill.", with its `prompt.md` as
+  the whole prompt and a fresh `general-purpose` subagent with
+  `model: "opus"` and `effort: "xhigh"`, one run at a time. Criteria were
+  judged as in the cases entry, and the trials used the same prompts.
+
+### guide (control)
+
+- Slot `guide (control)`, run commit `2f10c46`, attempt 1. Claude Code
+  2.1.317, effort `xhigh`, model `claude-opus-5-5`.
+- Tokens: 81,995, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 25 tool
+  calls in the evaluator's transcript and the nested transcript of its one
+  Agent call, a fresh reader of a copy of the task. `git status --short` was
+  empty after the run. The nested agent wrote and deleted a temporary file in
+  the session scratchpad, which Judging excludes.
+- The evaluator changed only `README.md`; `parcel.py` and both notes equal the
+  fixture byte for byte.
+- `guide#1` passed: the README says "Open a terminal in this folder, the one
+  that contains `parcel.py`", names Python 3.9 or later with nothing to
+  install, gives `python3 parcel.py notes --output notes.json`, and shows the
+  printed line and the exact `notes.json` to compare with.
+- `guide#2` passed: in a clean copy, that command printed
+  `Packed 2 notes into notes.json` and wrote a `notes.json` that equals the
+  README's JSON block byte for byte and holds both notes.
+- `guide#3` passed: the README says "Parcel does not overwrite an existing
+  file" and shows the refusal; a second run in the clean copy exited 2 with
+  those two lines and left the file unchanged, and `--replace` is named as the
+  way to overwrite.
+- `guide#4` passed. Use: in the coordinator trial below, a fresh user packed
+  and checked the samples on the first try. Record: `run.md` reports a
+  fresh-context check by one subagent, and the transcript holds that Agent call
+  and its nested transcript.
+- The README's other claims held in the clean copy: both wrong-folder errors,
+  `Packed 0 notes` for a folder without `.txt` files, created output folders,
+  and a `UnicodeDecodeError` with nothing written.
+- Coordinator trial: 60,470 tokens, Claude Code 2.1.317, effort `xhigh`, model
+  `claude-opus-5-5`; isolation audit exit 0 over 7 tool calls, no nested
+  transcript. The trial user guessed whether "exactly" includes the final line
+  break, how to check the Python version, and how to open the file; none of
+  these stopped it.
+- Loopy-only criteria: none.
