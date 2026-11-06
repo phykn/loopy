@@ -10,7 +10,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | Routing | 1.0.0 | Passed | 21/21 requests sorted as expected, in order, in both runs | 60,132 | — | [routing](#2026-11-06-routing-100) |
 | guide | 1.0.0 | Passed | The README gives the folder, Python 3.9+, the exact command, its output, and the expected JSON; a fresh trial user packed and checked the samples on the first try; regression only | 89,531 | 4/4 | [cases](#2026-11-06-cases-100) |
 | review | 1.0.0 | Passed | Found the unowned publishing step and the command check placed after publication, left owners as blanks to fill, and changed no file; regression only | 76,798 | 3/3 | [cases](#2026-11-06-cases-100) |
-| ready | 1.0.0 | Passed | Checked the empty-folder result (`0`, exit 0) against the CLI, rejected the retry suggestion, and changed no file | 83,796 | pending | [cases](#2026-11-06-cases-100) |
+| ready | 1.0.0 | Passed | Checked the empty-folder result (`0`, exit 0) against the CLI, rejected the retry suggestion, and changed no file; regression only | 83,796 | 3/3 | [cases](#2026-11-06-cases-100) |
 | refactor | 1.0.0 | Passed | Source 125 → 83 lines; sample outputs, refusals, and `--help` unchanged; the skipped invalid amount fixed with a test that fails on the original | 117,548 | pending | [cases](#2026-11-06-cases-100) |
 | fix | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration line and one test changed | 78,578 | pending | [cases](#2026-11-06-cases-100) |
 | cause | 1.0.0 | Passed | Return sign fixed after the parsed moves showed `('gadget', -2)`; no clamp; the new test fails on the original and on a clamped copy | 74,896 | pending | [cases](#2026-11-06-cases-100) |
@@ -657,4 +657,24 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   authorization.
 - `review#3` passed: `plan.md` equals the fixture byte for byte, and the only
   file the evaluator wrote was `run.md`.
+- Loopy-only criteria: none.
+
+### ready (control)
+
+- Slot `ready (control)`, run commit `cee1fa8`, attempt 1. Claude Code
+  2.1.317, effort `xhigh`, model `claude-opus-5-5`.
+- Tokens: 71,974, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 11 tool calls;
+  no Agent call. `git status --short` was empty after the run.
+- `ready#1` passed: the evaluator's check script ran an existing empty folder
+  and got `0` with exit 0, and a missing folder with exit 2, on Python 3.9.6,
+  3.12.15, 3.13.16, and 3.14.9; in a clean copy, an empty folder printed `0`
+  and exited 0.
+- `ready#2` passed: `README.md`, `count.py`, and the note equal the fixture
+  byte for byte, and the reply says "이전 리뷰의 "0이면 실패이니 재시도 안내"
+  의견은 반영하지 않았습니다" because `0` ends with exit 0 and nothing on
+  stderr.
+- `ready#3` passed: the evaluator made no edit and started no reviewer, and
+  stopped after its checks; besides `run.md` it wrote only `scratch/check.sh`,
+  in the workspace outside the task.
 - Loopy-only criteria: none.
