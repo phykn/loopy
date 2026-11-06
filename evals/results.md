@@ -12,7 +12,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | review | 1.0.0 | Passed | Found the unowned publishing step and the command check placed after publication, left owners as blanks to fill, and changed no file; regression only | 76,798 | 3/3 | [cases](#2026-11-06-cases-100) |
 | ready | 1.0.0 | Passed | Checked the empty-folder result (`0`, exit 0) against the CLI, rejected the retry suggestion, and changed no file; regression only | 83,796 | 3/3 | [cases](#2026-11-06-cases-100) |
 | refactor | 1.0.0 | Passed | Source 125 → 83 lines; sample outputs, refusals, and `--help` unchanged; the skipped invalid amount fixed with a test that fails on the original | 117,548 | 6/7 | [cases](#2026-11-06-cases-100) |
-| fix | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration line and one test changed | 78,578 | pending | [cases](#2026-11-06-cases-100) |
+| fix | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration line and one test changed | 78,578 | 4/5 | [cases](#2026-11-06-cases-100) |
 | cause | 1.0.0 | Passed | Return sign fixed after the parsed moves showed `('gadget', -2)`; no clamp; the new test fails on the original and on a clamped copy | 74,896 | pending | [cases](#2026-11-06-cases-100) |
 | diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged | 75,522 | pending | [cases](#2026-11-06-cases-100) |
 | feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month` | 106,516 | pending | [cases](#2026-11-06-cases-100) |
@@ -791,3 +791,31 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   miscounted, printed, or crashed on, and added the field-count rule to the
   README's rejection sentence; it reports these as fixes.
 - Loopy-only criteria: `refactor#6`.
+
+### fix (control)
+
+- Slot `fix (control)`, run commit `5ec091c`, attempt 1. Claude Code 2.1.317,
+  effort `xhigh`, model `claude-opus-5-5`.
+- Tokens: 70,695, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 16 tool calls;
+  no Agent call. `git status --short` was empty after the run.
+- `fix#1` failed: by `audit.py --calls`, line 42 printed `deploy -21:00` and
+  `total 9:00` before the first edit to `entries.py` at line 61, but no call
+  before that edit isolates the `23:30-00:30` entry or its duration, and the
+  run's only text comes after the fix. The trace to that entry appears only in
+  the report.
+- `fix#2` passed: the change is `(end - start) % (24 * 60)` where
+  `read_entries` stores the duration; the sample prints `build 22:30`,
+  `review 7:30`, `deploy 3:00`, and `total 33:00`;
+  `test_counts_entry_past_midnight` fails on the fixture's code and passes on
+  the new.
+- `fix#3` passed: only the duration line in `entries.py` and the added test
+  differ from the fixture; `to_minutes`, its `None` check, `worklog.py`,
+  `report.py`, the README, and the log are byte for byte unchanged, and the
+  three existing tests are untouched.
+- `fix#4` passed: the three existing tests pass on the new code, and in a clean
+  copy a malformed and an out-of-range time each exit 2 with `line 1`.
+- `fix#5` passed: the reply gives the cause as −23 hours (33 − 24 = 9), the
+  fix, and the new test failing on a copy of the old code; it reports the
+  missing `python` command apart from the fix and changes nothing else.
+- Loopy-only criteria: `fix#1`.
