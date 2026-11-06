@@ -101,6 +101,18 @@ class AuditTests(unittest.TestCase):
             with self.subTest(command=command):
                 self.assertEqual(self.verdict("Bash", {"command": command}), 0)
 
+    def test_allowed_folder_counts_like_the_workspace_for_searches(self):
+        wiki = ".claude/user-wiki"
+        for name, data in (
+            ("Bash", {"command": "cd ~/.claude/user-wiki && ls -R graph"}),
+            ("Grep", {"pattern": "rule", "path": f"{HOME}/.claude/user-wiki"}),
+        ):
+            with self.subTest(name=name):
+                self.assertEqual(self.verdict(name, data), 1)
+                self.assertEqual(self.verdict(name, data, "--allow", wiki), 0)
+        command = f"cd ~/.claude/user-wiki && cat {REPO}/evals/cases.json"
+        self.assertEqual(self.verdict("Bash", {"command": command}, "--allow", wiki), 1)
+
     def test_calls_prints_text_calls_and_results_in_order(self):
         read = ("toolu_1", "Read", {"file_path": f"{WS}/requests.md"})
         path = self.transcript(

@@ -249,23 +249,25 @@ transcript from the agent ID that the Agent tool result reports:
 `agent-*.jsonl` in the same folder that was not in the saved list. Run
 
 ```console
-python3 evals/audit.py --forbid <checkout> --forbid <session ID>/tasks <transcripts>
+python3 evals/audit.py --forbid <checkout> --forbid <session ID>/tasks --allow <folder> <transcripts>
 ```
 
 with one `--forbid` for the path of every checkout of this repository,
-worktrees included. The second string covers the `…/<session ID>/tasks/*.output`
-links to earlier subagent transcripts. If the evaluator's transcript holds an
-Agent call but no new transcript appeared, record that the nested run could not
-be checked.
+worktrees included, and one `--allow` for each folder the global instructions
+send agents to, such as a wiki; for a folder under the home folder, leave out
+`~/` so either spelling matches. The second string covers the
+`…/<session ID>/tasks/*.output` links to earlier subagent transcripts. If the
+evaluator's transcript holds an Agent call but no new transcript appeared,
+record that the nested run could not be checked.
 
 [audit.py](audit.py) reads only the tool calls in assistant lines. It reports a
 call whose input names the repository, an installed Loopy, the session
 transcripts, or an evaluation file; a `Skill` call for Loopy; a `Grep` or `Glob`
-without a workspace path; and a recursive shell search that does not name the
-workspace. A nonzero exit makes the run invalid: record it and rerun with a new
-workspace and a new evaluator. The evaluator's shell starts in the
-coordinator's checkout, so a relative read with no forbidden string or
-recursive search goes unseen; record this limit.
+whose path is neither in the workspace nor an allowed folder; and a recursive
+shell search that names neither. A nonzero exit makes the run invalid: record
+it and rerun with a new workspace and a new evaluator. The evaluator's shell
+starts in the coordinator's checkout, so a relative read with no forbidden
+string or recursive search goes unseen; record this limit.
 
 For a Codex run, write the same strings with
 `python3 evals/audit.py --forbid <checkout> --forbid <session ID>/tasks --print-forbidden > <tmp>/forbidden.txt`;
