@@ -152,7 +152,7 @@
   },
   {
     "id": "r21",
-    "request": "Change the default page size of the list endpoint from 20 to 50.",
+    "request": "Let callers of the list endpoint choose the page size instead of always getting 20 items.",
     "kinds": [
       "Build"
     ]

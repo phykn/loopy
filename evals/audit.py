@@ -81,7 +81,7 @@ def audit(records, forbidden):
             if not isinstance(item, dict):
                 continue
             if record.get("type") == "assistant" and item.get("type") == "text":
-                events.append(f"{number}: text {item.get('text', '')}")
+                events.append(f"{number}: text {one_line(item.get('text', ''))}")
             elif record.get("type") == "assistant" and item.get("type") == "tool_use":
                 key = item.get("id") or (number, index)
                 if key in seen:
@@ -93,7 +93,7 @@ def audit(records, forbidden):
                 if outside(name, data if isinstance(data, dict) else {}, text, forbidden):
                     problems.append(f"{number}: {name} {text[:120]}")
             elif record.get("type") == "user" and item.get("type") == "tool_result":
-                events.append(f"{number}: result {result_text(item.get('content'))[:500]}")
+                events.append(f"{number}: result {one_line(result_text(item.get('content')))[:500]}")
     return problems, events, len(seen)
 
 
@@ -108,6 +108,10 @@ def outside(name, data, text, forbidden):
         command = str(data.get("command", ""))
         return "loopy-eval-" not in command and bool(RECURSIVE.search(command))
     return False
+
+
+def one_line(text):
+    return " ".join(str(text).split())
 
 
 def result_text(content):

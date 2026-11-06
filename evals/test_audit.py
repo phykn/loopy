@@ -105,7 +105,7 @@ class AuditTests(unittest.TestCase):
         read = ("toolu_1", "Read", {"file_path": f"{WS}/requests.md"})
         path = self.transcript(
             assistant(read, text="Start."),
-            result("toolu_1", "x" * 600),
+            result("toolu_1", "first\nsecond " + "x" * 600),
             assistant(("toolu_2", "Bash", {"command": f"ls {WS}"})),
             assistant(read),
         )
@@ -115,7 +115,7 @@ class AuditTests(unittest.TestCase):
             f"== {path}",
             "1: text Start.",
             f"1: Read {json.dumps(read[2])}",
-            "2: result " + "x" * 500,
+            "2: result " + ("first second " + "x" * 600)[:500],
             f"3: Bash {json.dumps({'command': f'ls {WS}'})}",
         ])
         self.assertIn("2 tool calls", result_.stdout.splitlines()[5])
