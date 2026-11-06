@@ -9,6 +9,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | Activation | 0.9.0 description (unchanged in 1.0.0) | Passed | Three repetitions: `tune` 36/36 should-trigger and 0/24 near misses; `holdout` 24/24 and 0/27, counting the three dictated fixes | — | — | d1d8e0b `evals/results.md`, 0.9.0 entry |
 | Routing | 1.0.0 | Passed | 21/21 requests sorted as expected, in order, in both runs | 60,132 | — | [routing](#2026-11-06-routing-100) |
 | guide | 1.0.0 | Passed | The README gives the folder, Python 3.9+, the exact command, its output, and the expected JSON; a fresh trial user packed and checked the samples on the first try | 89,531 | pending | [cases](#2026-11-06-cases-100) |
+| review | 1.0.0 | Passed | Found the unowned publishing step and the command check placed after publication, left owners as blanks to fill, and changed no file | 76,798 | pending | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -101,6 +102,22 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   wiki, but the audit flags every recursive search that does not name the
   workspace, so the run was not judged and was rerun with a new workspace and
   evaluator. `git status --short` was empty, and `plan.md` was unchanged.
+
+- Attempt 2: slot `review`, run commit `4a82d9e`. Claude Code 2.1.317, effort
+  `xhigh`, model `claude-opus-5-5`.
+- Tokens: 76,798, the host's report, equal to the transcript's last usage.
+- Isolation audit: exit 0 over 15 tool calls in the evaluator's transcript and
+  the nested transcript of its one Agent call, a fresh agent that read only
+  `plan.md`. `git status --short` was empty after the run.
+- `review#1` passed: the reply names the unowned step, "6행 "Publish the guide on
+  Friday."에 담당자가 없습니다", and the late check, "검증이 게시 뒤에 있고, 완료
+  기준이 "페이지 온라인"뿐입니다 (7행, 9행)", with the missing failure path,
+  location, handoffs, and test environment.
+- `review#2` passed: each finding quotes the plan's current lines, each proposal
+  is marked "제안:", and the example revision leaves `<게시 담당자>` and
+  `<결정자>` for the team to fill; nothing claims the user's authorization.
+- `review#3` passed: `plan.md` equals the fixture byte for byte, and the only
+  file the evaluator wrote was `run.md`.
 
 ### Limits
 
