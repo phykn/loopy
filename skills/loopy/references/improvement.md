@@ -4,7 +4,7 @@ Improvement moves an existing artifact toward a goal, such as shorter, faster, o
 
 ## Define better
 
-Before editing, turn the goal into observable criteria: a task the intended user must still complete, a measure such as length or run time, and the rules or interfaces that must survive. If the request names no goal and evidence does not settle one, ask. Record the baseline on those tasks and measures. `Preserve` holds only what the user stated, what consumers depend on, and what the goal needs; the rest is a candidate.
+If the request names no goal and evidence does not settle one, ask. Before editing, turn the goal into observable criteria: a task the intended user must still complete, a measure such as length or run time, and the rules or interfaces that must survive; then run those tasks and measures on the current version and record the results as the baseline. `Preserve` holds only what the user stated, what consumers depend on, and what the goal needs; the rest is a candidate.
 
 ## Choose changes
 
