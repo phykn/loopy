@@ -11,7 +11,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | guide | 1.0.0 | Passed | The README gives the folder, Python 3.9+, the exact command, its output, and the expected JSON; a fresh trial user packed and checked the samples on the first try; regression only | 89,531 | 4/4 | [cases](#2026-11-06-cases-100) |
 | review | 1.0.0 | Passed | Found the unowned publishing step and the command check placed after publication, left owners as blanks to fill, and changed no file; regression only | 76,798 | 3/3 | [cases](#2026-11-06-cases-100) |
 | ready | 1.0.0 | Passed | Checked the empty-folder result (`0`, exit 0) against the CLI, rejected the retry suggestion, and changed no file; regression only | 83,796 | 3/3 | [cases](#2026-11-06-cases-100) |
-| refactor | 1.0.0 | Passed | Source 125 → 83 lines; sample outputs, refusals, and `--help` unchanged; the skipped invalid amount fixed with a test that fails on the original | 117,548 | pending | [cases](#2026-11-06-cases-100) |
+| refactor | 1.0.0 | Passed | Source 125 → 83 lines; sample outputs, refusals, and `--help` unchanged; the skipped invalid amount fixed with a test that fails on the original | 117,548 | 6/7 | [cases](#2026-11-06-cases-100) |
 | fix | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration line and one test changed | 78,578 | pending | [cases](#2026-11-06-cases-100) |
 | cause | 1.0.0 | Passed | Return sign fixed after the parsed moves showed `('gadget', -2)`; no clamp; the new test fails on the original and on a clamped copy | 74,896 | pending | [cases](#2026-11-06-cases-100) |
 | diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged | 75,522 | pending | [cases](#2026-11-06-cases-100) |
@@ -678,3 +678,46 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   stopped after its checks; besides `run.md` it wrote only `scratch/check.sh`,
   in the workspace outside the task.
 - Loopy-only criteria: none.
+
+### refactor (control)
+
+- Slot `refactor (control)`, run commit `814c3df`, attempt 1. Claude Code
+  2.1.317, effort `xhigh`, model `claude-opus-5-5`.
+- Tokens: 120,260, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 35 tool
+  calls in the evaluator's transcript and the nested transcript of its one
+  Agent call, a read-only reviewer of the task. `git status --short` was empty
+  after the run.
+- `refactor#1` passed: in fresh copies of the fixture and the result, the
+  sample's text, the JSON run and file bytes, the existing-output refusal, the
+  wrong-header rejection, `--help`, a missing source, and a CSV without a BOM
+  gave the same output and exit status.
+- `refactor#2` passed: `records.py` keeps "Bank exports start with a byte order
+  mark; utf-8-sig drops it so the header matches."; `cli.py` still checks the
+  source and the existing output, and `read_records` still checks the header.
+- `refactor#3` passed: no file-top docstring is left, and the `--help` text is
+  the `description` argument. The restating comments, commented-out code,
+  `format_amount_old`, the `os` and `sys` imports, `DEBUG`, `load`, the `sort`
+  option, the `None` guard, the second category normalization, and the second
+  total calculation are gone; one `build_report` makes the totals for both
+  outputs.
+- `refactor#4` passed: a row with amount `abc` now exits 2 with
+  `line 3: amount is not a number: 'abc'` and writes no JSON, and an empty
+  amount likewise, where the original exited 0 and skipped the row.
+  `test_rejects_bad_row` fails on the original code (7 failures with
+  `test_rejects_malformed_csv`) and passes on the new, and `run.md` and the
+  reply report the fixes under their own heading.
+- `refactor#5` passed: the six tests cover the text totals, the JSON file in a
+  new folder, the existing-output refusal, and the header, row, and CSV
+  rejections; `test_prints_total_line` is gone.
+- `refactor#6` failed: source lines went 125 → 95 with plain names such as
+  `build_report` and `parse_row`, and the bug-fix table names the additions,
+  but neither `run.md` nor the reply gives the change in lines for source,
+  tests (61 → 88), or docs.
+- `refactor#7` passed: all three modules and the test file changed for findings
+  `run.md` names, and the README changed for the field-count rule.
+- The evaluator also rejects rows without exactly three fields, `NaN`,
+  infinite, and `sNaN` amounts, and malformed CSV, which the original skipped,
+  miscounted, printed, or crashed on, and added the field-count rule to the
+  README's rejection sentence; it reports these as fixes.
+- Loopy-only criteria: `refactor#6`.
