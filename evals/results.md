@@ -13,6 +13,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | ready | 1.0.0 | Passed | Checked the empty-folder result (`0`, exit 0) against the CLI, rejected the retry suggestion, and changed no file | 83,796 | pending | [cases](#2026-11-06-cases-100) |
 | refactor | 1.0.0 | Passed | Source 125 → 83 lines; sample outputs, refusals, and `--help` unchanged; the skipped invalid amount fixed with a test that fails on the original | 117,548 | pending | [cases](#2026-11-06-cases-100) |
 | fix | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration line and one test changed | 78,578 | pending | [cases](#2026-11-06-cases-100) |
+| cause | 1.0.0 | Passed | Return sign fixed after the parsed moves showed `('gadget', -2)`; no clamp; the new test fails on the original and on a clamped copy | 74,896 | pending | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -206,6 +207,33 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   the new test failing as `deploy -22:45` before the fix and passing after; it
   reports the missing `python` command apart from the fix, as the 0.10.0 run
   did, and changes nothing else.
+
+### cause
+
+- Slot `cause`, run commit `ebc9369`, attempt 1. Claude Code 2.1.317, effort
+  `xhigh`, model `claude-opus-5-5`.
+- Tokens: 74,896, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 18 tool
+  calls; no Agent call. `git status --short` was empty after the run.
+- `cause#1` passed: by `audit.py --calls`, line 52 printed `gadget -4`,
+  `total 11`, and the parsed moves with `('gadget', -2)` for the return; the
+  new test failed at line 71, and line 75 says "Fails for the predicted reason
+  (return subtracted: 3-3-2 = -2)" before the only code edit, at line 76.
+- `cause#2` passed: `moves.py` now negates only `out`
+  (`if kind == "out":`); the sample prints `widget 9`, `gadget 0`, `bolt 6`,
+  and `total 15`. The run made three edits, two to the test file and that
+  line, and none adds or removes a clamp.
+- `cause#3` passed: `test_returns_go_back_into_stock` (`in 3`, `out 3`,
+  `return 2` giving `gadget 2`) fails on the fixture's code and passes on the
+  new. On a copy of the fixture that clamps stock at zero, the sample prints
+  the right totals but this test fails.
+- `cause#4` passed: only that line of `moves.py` and the added test differ from
+  the fixture; `stock.py`, `report.py`, the README, and the log are byte for
+  byte unchanged, and the three existing tests are untouched and pass.
+- `cause#5` passed: the reply says the October 8 gadget return was subtracted
+  instead of added, which gave `-4` and `11`; that only `out` is negated now; and
+  that the new test failed as `gadget -2` before the fix and passes after. It
+  leaves negative stock from over-shipping as a question instead of clamping.
 
 ### Changes during this work
 
