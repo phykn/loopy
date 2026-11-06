@@ -11,6 +11,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | guide | 1.0.0 | Passed | The README gives the folder, Python 3.9+, the exact command, its output, and the expected JSON; a fresh trial user packed and checked the samples on the first try | 89,531 | pending | [cases](#2026-11-06-cases-100) |
 | review | 1.0.0 | Passed | Found the unowned publishing step and the command check placed after publication, left owners as blanks to fill, and changed no file | 76,798 | pending | [cases](#2026-11-06-cases-100) |
 | ready | 1.0.0 | Passed | Checked the empty-folder result (`0`, exit 0) against the CLI, rejected the retry suggestion, and changed no file | 83,796 | pending | [cases](#2026-11-06-cases-100) |
+| refactor | 1.0.0 | Passed | Source 125 → 83 lines; sample outputs, refusals, and `--help` unchanged; the skipped invalid amount fixed with a test that fails on the original | 117,548 | pending | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -135,6 +136,58 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 - `ready#3` passed: the evaluator made no edit and started no reviewer, and
   stopped with `done` after its checks: "고칠 근거가 있는 오류는 없어 파일을 바꾸지
   않았습니다". It also ran the checks on Python 3.9.6, 3.12, 3.13, and 3.14.
+
+### refactor
+
+- Slot `refactor`, run commit `8adf6b7`, attempt 1. Claude Code 2.1.317, effort
+  `xhigh`, model `claude-opus-5-5`.
+- Tokens: 117,548, the host's report, equal to the transcript's last usage.
+- Isolation audit: the first audit exited 1 at line 31,
+  `cd ~/.claude/user-wiki && ls -R graph | head -50; ...`, a recursive listing
+  inside the wiki the global instructions send agents to. With
+  `--allow .claude/user-wiki` from `d5fef94` (below), it exits 0 over 42 tool
+  calls in the evaluator's transcript and the nested transcript of its one Agent
+  call. `git status --short` was empty after the run.
+- `refactor#1` passed: in fresh copies of the fixture and the result, the
+  sample's text, the JSON run and file bytes, the existing-output refusal, the
+  wrong-header rejection, `--help`, a missing source, and a CSV without a BOM
+  gave the same output and exit status.
+- `refactor#2` passed: `records.py` keeps "Bank exports start with a byte order
+  mark; utf-8-sig drops it so the header matches."; `cli.py` still checks the
+  source and the existing output, and `read_records` still checks the header.
+- `refactor#3` passed: no file-top docstring is left, and the `--help` text is
+  the `description` argument. The restating comments, commented-out code,
+  `format_amount_old`, the `os` and `sys` imports, `DEBUG`, `load`, the `sort`
+  option, the `None` guard, the second category normalization, and the second
+  total calculation are gone; one `summarize` makes the totals for both outputs.
+- `refactor#4` passed: a row with amount `abc` or an empty amount now exits 2
+  with `line 3: amount is not a number` and writes no JSON, where the original
+  exited 0 and skipped it. The new `test_rejects_invalid_input` fails 5
+  subtests on the original code and passes on the new, and `run.md` and the
+  reply report the fix under its own heading, apart from the structural changes.
+- `refactor#5` passed: the four tests cover the text totals, the JSON file in a
+  new folder, the existing-output refusal, and the header and amount
+  rejections; `test_prints_total_line` is gone.
+- `refactor#6` passed: source lines 125 → 83 with plain names such as
+  `summarize`, `format_text`, and `parse_amount`; `run.md` gives "소스 125 →
+  83줄(버그 수정으로 늘어난 줄 포함). 테스트 61 → 68줄(회귀 경우 추가). README
+  0줄 변경."
+- `refactor#7` passed: all three modules and the test file changed for findings
+  `run.md` names, and the README and sample were checked and kept.
+- The evaluator also rejects `NaN` and infinite amounts, which the original
+  printed or crashed on, and writes the JSON with mode `x`; it reports both as
+  fixes.
+
+### Changes during this work
+
+- `d5fef94` changed `evals/audit.py`, its test, and `evals/README.md`: each
+  `--allow` names a folder that a search may name besides the workspace. The
+  audit had flagged `review` attempt 1 and `refactor` for recursive reads of the
+  global instructions' wiki. Selection-table row: evaluation tool code that
+  keeps every sentence sent to evaluators, and the README. It requires the
+  package checks and unit tests, which passed on both Pythons, and one prepared
+  workspace's `requests.md` and `prompt.md`, read for `fix`. No slot needs a
+  rerun.
 
 ### Limits
 
