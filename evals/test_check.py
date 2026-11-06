@@ -86,6 +86,12 @@ class CheckTests(unittest.TestCase):
         self.assertIn("acceptance", result.stderr)
         self.assertNotIn("Traceback", result.stderr)
 
+    def test_duplicate_routing_id_is_rejected(self):
+        path = self.root / "evals" / "routing.json"
+        items = json.loads(path.read_text(encoding="utf-8"))
+        path.write_text(json.dumps(items + [items[0]]), encoding="utf-8")
+        self.assert_rejected("duplicate request ID")
+
     def edit_skill(self, old, new):
         path = self.root / "skills" / "loopy" / "SKILL.md"
         text = path.read_text(encoding="utf-8")

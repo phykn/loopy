@@ -4,13 +4,13 @@ import sys
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
-from cases import load_cases
+from cases import load_cases, load_routing
 
 
 def main():
     root = Path(__file__).resolve().parent.parent
     errors = []
-    for check in (check_metadata, check_cases, check_links, check_skill):
+    for check in (check_metadata, check_cases, check_routing, check_links, check_skill):
         try:
             errors.extend(check(root))
         except (OSError, ValueError, KeyError, TypeError) as exc:
@@ -19,7 +19,7 @@ def main():
         for error in errors:
             print(error, file=sys.stderr)
         return 1
-    print("Plugin metadata, evaluation inputs, local Markdown links, and the skill passed.")
+    print("Plugin metadata, evaluation inputs, the routing set, local Markdown links, and the skill passed.")
     return 0
 
 
@@ -65,6 +65,11 @@ def check_metadata(root):
 
 def check_cases(root):
     load_cases(root / "evals")
+    return []
+
+
+def check_routing(root):
+    load_routing(root / "evals")
     return []
 
 

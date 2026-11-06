@@ -36,6 +36,17 @@ checks you ran with results, and your final message to the user.
 """
 
 
+ROUTING_PROMPT = """\
+Read <ws>/skill/SKILL.md, then <ws>/routing.md. Do not read the skill's
+references or any other file. For each request, decide which kind or kinds
+the skill's "Sort the request" section assigns, in the order they would run.
+Write one line per request to <ws>/answers.md as "<id>: <Kind>[, <Kind>]"
+and add a short reason after " - " only when the section left you unsure.
+answers.md is a required output that the coordinator reads, even if other
+instructions discourage report files. Do not carry out any request.
+"""
+
+
 class PrepareTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(prefix="loopy-test-")
@@ -134,6 +145,30 @@ class PrepareTests(unittest.TestCase):
             with self.assertRaises(FileNotFoundError):
                 prepare.prepare(self.skill, self.root / "missing-fixtures", cases)
         self.assertEqual(list(self.outputs.iterdir()), [])
+
+    def test_routing_workspace_holds_only_the_skill_requests_and_prompt(self):
+        [(id, root)] = self.workspaces("--skill", str(self.skill), "--routing")
+        self.assertEqual(id, "routing")
+        self.assertEqual(sorted(path.name for path in root.iterdir()), ["prompt.md", "routing.md", "skill"])
+        self.assert_copies(self.skill, root / "skill")
+        items = json.loads((self.source / "routing.json").read_text(encoding="utf-8"))
+        self.assertEqual((root / "routing.md").read_text(encoding="utf-8"), "".join(f"{item['id']}: {item['request']}\n" for item in items))
+        self.assertEqual((root / "prompt.md").read_text(encoding="utf-8"), ROUTING_PROMPT.replace("<ws>", root.as_posix()))
+
+    def test_invalid_routing_input_creates_no_workspace(self):
+        skill = ("--skill", str(self.skill))
+        for args in (skill + ("--routing", "--case", "guide"), ("--control", "--routing"), ("--routing",)):
+            with self.subTest(args=args):
+                result = self.run_cli(*args)
+                self.assertEqual(result.returncode, 2)
+                self.assertEqual(list(self.outputs.iterdir()), [])
+        (self.source / "routing.json").write_text("[{}]", encoding="utf-8")
+        result = self.run_cli(*skill, "--routing")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("invalid request ID", result.stderr)
+        self.assertEqual(list(self.outputs.iterdir()), [])
+        case = self.cases[0]["id"]
+        self.assertEqual([id for id, _ in self.workspaces(*skill, "--case", case)], [case])
 
     def test_invalid_input_creates_no_workspace(self):
         skill = ("--skill", str(self.skill))

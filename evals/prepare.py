@@ -4,7 +4,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from cases import load_cases
+from cases import load_cases, load_routing
 
 SKILL_PACKET = """\
 Apply Loopy from <ws>/skill/SKILL.md. Use only the skill files under <ws>/skill/; do not invoke an installed Loopy skill.
@@ -34,6 +34,16 @@ discourage report files. Finish with a short reply: what you changed, the
 checks you ran with results, and your final message to the user.
 """
 
+ROUTING_PROMPT = """\
+Read <ws>/skill/SKILL.md, then <ws>/routing.md. Do not read the skill's
+references or any other file. For each request, decide which kind or kinds
+the skill's "Sort the request" section assigns, in the order they would run.
+Write one line per request to <ws>/answers.md as "<id>: <Kind>[, <Kind>]"
+and add a short reason after " - " only when the section left you unsure.
+answers.md is a required output that the coordinator reads, even if other
+instructions discourage report files. Do not carry out any request.
+"""
+
 
 def main():
     parser = argparse.ArgumentParser(description="Make one isolated evaluation workspace per Loopy case.")
@@ -41,13 +51,27 @@ def main():
     kind.add_argument("--skill", type=Path, help="skill folder containing SKILL.md")
     kind.add_argument("--control", action="store_true", help="make control workspaces that hold no skill")
     parser.add_argument("--case", action="append", dest="ids", help="case ID to include; repeat to select several (default: all)")
+    parser.add_argument("--routing", action="store_true", help="make one workspace that checks how the skill sorts requests")
     args = parser.parse_args()
+    if args.routing and (args.control or args.ids):
+        parser.error("--routing takes --skill and cannot be combined with --control or --case")
     skill = None
     if args.skill:
         skill = args.skill.resolve()
         if not (skill / "SKILL.md").is_file():
             parser.error("--skill must contain SKILL.md")
     source = Path(__file__).resolve().parent
+    if args.routing:
+        try:
+            items = load_routing(source)
+        except (OSError, ValueError) as exc:
+            parser.error(str(exc))
+        try:
+            root = prepare_routing(skill, items)
+        except OSError as exc:
+            sys.exit(f"prepare.py: no workspace was kept: {exc}")
+        print(f"routing\t{root}")
+        return
     try:
         cases = load_cases(source)
     except (OSError, ValueError) as exc:
@@ -84,6 +108,18 @@ def prepare(skill, fixtures, cases):
     return made
 
 
+def prepare_routing(skill, items):
+    root = Path(tempfile.mkdtemp(prefix="loopy-eval-")).resolve()
+    try:
+        shutil.copytree(skill, root / "skill")
+        (root / "routing.md").write_text("".join(f"{item['id']}: {item['request']}\n" for item in items), encoding="utf-8")
+        (root / "prompt.md").write_text(render_prompt(root, ROUTING_PROMPT), encoding="utf-8")
+    except BaseException:
+        shutil.rmtree(root, ignore_errors=True)
+        raise
+    return root
+
+
 def render_requests(root, case, control=False):
     lines = SKILL_PACKET.replace("<ws>", root.as_posix()).splitlines()
     if control:
@@ -93,8 +129,8 @@ def render_requests(root, case, control=False):
     return "\n".join(lines) + "\n"
 
 
-def render_prompt(root):
-    return COORDINATOR_PROMPT.replace("<ws>", root.as_posix())
+def render_prompt(root, template=COORDINATOR_PROMPT):
+    return template.replace("<ws>", root.as_posix())
 
 
 if __name__ == "__main__":

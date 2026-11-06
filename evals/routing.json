@@ -1,0 +1,160 @@
+[
+  {
+    "id": "r01",
+    "request": "Review `billing.py` and tell me whether its rounding is right; don't change anything.",
+    "kinds": [
+      "Assess"
+    ]
+  },
+  {
+    "id": "r02",
+    "request": "Add a `--json` flag to the `report` command that prints the same totals as JSON.",
+    "kinds": [
+      "Build"
+    ]
+  },
+  {
+    "id": "r03",
+    "request": "The CLI crashes on an empty input file, but the docs say it prints `no entries` and exits 0. Please repair it.",
+    "kinds": [
+      "Debug"
+    ]
+  },
+  {
+    "id": "r04",
+    "request": "이 모듈 정리해 줘. 동작은 그대로 두고 중복만 없애 줘.",
+    "kinds": [
+      "Refactor"
+    ]
+  },
+  {
+    "id": "r05",
+    "request": "Make our onboarding guide easier for new hires to follow.",
+    "kinds": [
+      "Improve"
+    ]
+  },
+  {
+    "id": "r06",
+    "request": "Delete the `legacy_mode` and `fast_path` parameters from `load()`; I searched the codebase and nothing passes them.",
+    "kinds": [
+      "Refactor"
+    ],
+    "example": "unused-options"
+  },
+  {
+    "id": "r07",
+    "request": "Trim the wording of CONTRIBUTING.md; every rule and command in it must stay as it is.",
+    "kinds": [
+      "Refactor"
+    ],
+    "example": "shorter-keep"
+  },
+  {
+    "id": "r08",
+    "request": "이 시스템 프롬프트가 너무 길어. 쓸모없는 지시는 빼도 되니까 줄여 줘.",
+    "kinds": [
+      "Improve"
+    ],
+    "example": "shorter-cut"
+  },
+  {
+    "id": "r09",
+    "request": "The API docs promise that `/search` answers within 200 ms, but it now takes two seconds. Sort that out.",
+    "kinds": [
+      "Debug"
+    ],
+    "example": "slow-contract"
+  },
+  {
+    "id": "r10",
+    "request": "The nightly import takes 40 minutes. Nothing documents how long it should take, but faster would help.",
+    "kinds": [
+      "Improve"
+    ],
+    "example": "slow-no-contract"
+  },
+  {
+    "id": "r11",
+    "request": "`test_cache.py` 테스트가 가끔 실패해. 왜 그런지만 알아봐 줘, 코드는 건드리지 말고.",
+    "kinds": [
+      "Assess"
+    ],
+    "example": "find-why"
+  },
+  {
+    "id": "r12",
+    "request": "Totals in the monthly report are sometimes off by one cent; figure out the cause and repair it.",
+    "kinds": [
+      "Debug"
+    ],
+    "example": "find-why-fix"
+  },
+  {
+    "id": "r13",
+    "request": "Go through the config loader looking for bugs, and correct whatever breaks its documented behavior.",
+    "kinds": [
+      "Assess",
+      "Debug"
+    ],
+    "example": "check-fix"
+  },
+  {
+    "id": "r14",
+    "request": "Clean up the error handling in `client.py`; the retry behavior must remain exactly as it is.",
+    "kinds": [
+      "Refactor"
+    ],
+    "example": "must-stay"
+  },
+  {
+    "id": "r15",
+    "request": "사용자 목록 화면에 이메일로 검색하는 기능을 추가해 줘.",
+    "kinds": [
+      "Build"
+    ]
+  },
+  {
+    "id": "r16",
+    "request": "이 PR 검토해 줘. 문제가 있으면 알려만 줘.",
+    "kinds": [
+      "Assess"
+    ]
+  },
+  {
+    "id": "r17",
+    "request": "Make the error messages in the CLI more helpful.",
+    "kinds": [
+      "Improve"
+    ]
+  },
+  {
+    "id": "r18",
+    "request": "README에는 `--dry-run`이면 파일을 쓰지 않는다고 돼 있는데 실제로는 써. 고쳐 줘.",
+    "kinds": [
+      "Debug"
+    ]
+  },
+  {
+    "id": "r19",
+    "request": "Port the shell deploy script to Python without changing what it does.",
+    "kinds": [
+      "Refactor"
+    ]
+  },
+  {
+    "id": "r20",
+    "request": "로그인 모듈을 점검하고, 문서와 다르게 동작하는 부분은 고쳐 줘.",
+    "kinds": [
+      "Assess",
+      "Debug"
+    ]
+  },
+  {
+    "id": "r21",
+    "request": "Change the default page size of the list endpoint from 20 to 50.",
+    "kinds": [
+      "Build"
+    ]
+  }
+]
