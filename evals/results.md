@@ -10,6 +10,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | Routing | 1.0.0 | Passed | 21/21 requests sorted as expected, in order, in both runs | 60,132 | — | [routing](#2026-11-06-routing-100) |
 | guide | 1.0.0 | Passed | The README gives the folder, Python 3.9+, the exact command, its output, and the expected JSON; a fresh trial user packed and checked the samples on the first try | 89,531 | pending | [cases](#2026-11-06-cases-100) |
 | review | 1.0.0 | Passed | Found the unowned publishing step and the command check placed after publication, left owners as blanks to fill, and changed no file | 76,798 | pending | [cases](#2026-11-06-cases-100) |
+| ready | 1.0.0 | Passed | Checked the empty-folder result (`0`, exit 0) against the CLI, rejected the retry suggestion, and changed no file | 83,796 | pending | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -102,7 +103,6 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   wiki, but the audit flags every recursive search that does not name the
   workspace, so the run was not judged and was rerun with a new workspace and
   evaluator. `git status --short` was empty, and `plan.md` was unchanged.
-
 - Attempt 2: slot `review`, run commit `4a82d9e`. Claude Code 2.1.317, effort
   `xhigh`, model `claude-opus-5-5`.
 - Tokens: 76,798, the host's report, equal to the transcript's last usage.
@@ -119,9 +119,30 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 - `review#3` passed: `plan.md` equals the fixture byte for byte, and the only
   file the evaluator wrote was `run.md`.
 
+### ready
+
+- Slot `ready`, run commit `2648b82`, attempt 1. Claude Code 2.1.317, effort
+  `xhigh`, model `claude-opus-5-5`.
+- Tokens: 83,796, the host's report, equal to the transcript's last usage.
+- Isolation audit: exit 0 over 14 tool calls; no Agent call. `git status --short`
+  was empty after the run.
+- `ready#1` passed: the evaluator ran an existing empty folder and got `0` with
+  exit 0, and a missing folder with exit 2; in a clean copy, an empty folder
+  printed `0` and exited 0.
+- `ready#2` passed: `README.md`, `count.py`, and the note equal the fixture byte
+  for byte, and the reply says "이전 리뷰의 "0이면 실패이니 재시도 안내" 의견은
+  반영하지 않았습니다" because `0` is the documented empty result.
+- `ready#3` passed: the evaluator made no edit and started no reviewer, and
+  stopped with `done` after its checks: "고칠 근거가 있는 오류는 없어 파일을 바꾸지
+  않았습니다". It also ran the checks on Python 3.9.6, 3.12, 3.13, and 3.14.
+
 ### Limits
 
 - An evaluator's shell starts in the coordinator's checkout, so a relative read
   with no forbidden string or recursive search would not show in the audit.
 - Evaluators and trial users are agents, so a trial shows use by a fresh agent,
   not by a person.
+- `~/.claude/CLAUDE.md` changed on 2026-11-06, after the 0.10.0 baselines, and
+  sends every evaluator to the user wiki; the runs read two to four of its
+  pages, about 1,350 words for four, so token comparisons with those baselines
+  include this change.
