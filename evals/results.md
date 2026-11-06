@@ -12,6 +12,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | review | 1.0.0 | Passed | Found the unowned publishing step and the command check placed after publication, left owners as blanks to fill, and changed no file | 76,798 | pending | [cases](#2026-11-06-cases-100) |
 | ready | 1.0.0 | Passed | Checked the empty-folder result (`0`, exit 0) against the CLI, rejected the retry suggestion, and changed no file | 83,796 | pending | [cases](#2026-11-06-cases-100) |
 | refactor | 1.0.0 | Passed | Source 125 → 83 lines; sample outputs, refusals, and `--help` unchanged; the skipped invalid amount fixed with a test that fails on the original | 117,548 | pending | [cases](#2026-11-06-cases-100) |
+| fix | 1.0.0 | Passed | Reproduced `total 9:00` and the −1380-minute entry before editing; `total 33:00`; only the duration line and one test changed | 78,578 | pending | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -177,6 +178,34 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 - The evaluator also rejects `NaN` and infinite amounts, which the original
   printed or crashed on, and writes the JSON with mode `x`; it reports both as
   fixes.
+
+### fix
+
+- Slot `fix`, run commit `1e4ce81`, attempt 1. Claude Code 2.1.317, effort
+  `xhigh`, model `claude-opus-5-5`.
+- Tokens: 78,578, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 22 tool
+  calls; no Agent call. `git status --short` was empty after the run. The
+  evaluator wrote one input file to the session scratchpad, deleted it, and
+  recorded it; the scratchpad is exempt under Judging.
+- `fix#1` passed: by `audit.py --calls`, line 55 printed `deploy -21:00`,
+  `total 9:00`, and the parsed `('deploy', -1380)` for `23:30-00:30`; the new
+  test failed at line 74, and the first edit to `entries.py` came at line 83.
+- `fix#2` passed: the change is `(end - start) % MINUTES_PER_DAY` where
+  `read_entries` stores the duration; the sample prints `build 22:30`,
+  `review 7:30`, `deploy 3:00`, and `total 33:00`; `test_counts_entry_past_midnight`
+  fails on the fixture's code and passes on the new.
+- `fix#3` passed: only `entries.py` (the duration line, its constant, and a
+  why-comment) and the added test differ from the fixture; `to_minutes`, its
+  `None` check, `worklog.py`, `report.py`, the README, and the log are byte for
+  byte unchanged, and the three existing tests are untouched.
+- `fix#4` passed: the three existing tests pass on the new code, covering task
+  order, `H:MM`, ignored blank and comment lines, and exit 2 with the line
+  number for malformed and out-of-range times.
+- `fix#5` passed: the reply gives the cause with the −1380 minutes, the fix, and
+  the new test failing as `deploy -22:45` before the fix and passing after; it
+  reports the missing `python` command apart from the fix, as the 0.10.0 run
+  did, and changes nothing else.
 
 ### Changes during this work
 
