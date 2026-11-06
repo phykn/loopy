@@ -7,7 +7,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | Run | Skill | Result | Key outcome | Tokens | Control | Entry |
 | --- | --- | --- | --- | --- | --- | --- |
 | Activation | 0.9.0 description (unchanged in 1.0.0) | Passed | Three repetitions: `tune` 36/36 should-trigger and 0/24 near misses; `holdout` 24/24 and 0/27, counting the three dictated fixes | — | — | d1d8e0b `evals/results.md`, 0.9.0 entry |
-| Routing | 1.0.0 | Passed | 21/21 requests sorted as expected, in order | 60,603 | — | [routing](#2026-11-06-routing-100) |
+| Routing | 1.0.0 | Passed | 21/21 requests sorted as expected, in order, in both runs | 60,132 | — | [routing](#2026-11-06-routing-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -30,3 +30,17 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 - The evaluator remarked that `r21` was an exact edit the user dictates, which
   the skill's description excludes. `r21` became an undictated Build request,
   and the check ran again as Run 2.
+
+### Run 2
+
+- Slot `Routing`, run commit `416aba2`, attempt 1 on the revised set. Claude
+  Code 2.1.317, effort `xhigh`, model `claude-opus-5-5`.
+- Tokens: 60,132, the host's report, equal to the transcript's last usage.
+- Isolation audit: exit 0 over 4 tool calls; no nested transcript.
+  `git status --short` was empty after the run.
+- Result: all 21 requests matched their `kinds` in order, with no reason given.
+  The evaluator called `r14` the closest call and chose Refactor because the
+  request names only what must stay.
+- `416aba2` changed no file under `skills/loopy/`, `evals/prepare.py`, or
+  `evals/README.md`, so [Final text](README.md#final-text) requires no rerun.
+
