@@ -17,7 +17,7 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
 | diagnose | 1.0.0 | Passed | Cause confirmed from the normalized keys and the README's two-row example (`members 2`); expected 5; task files unchanged; regression only | 75,522 | 5/5 | [cases](#2026-11-06-cases-100) |
 | feature | 1.0.0 | Passed | January totals 512.50; output without `--month` unchanged; the month checked at the CLI and rows' dates checked only with `--month`; regression only | 106,516 | 5/5 | [cases](#2026-11-06-cases-100) |
 | docs | 1.0.0 | Passed | Documentation 94 → 75 lines in two files; the FAQ's overwrite claim corrected and the broken link removed; code unchanged | 98,859 | 5/7 | [cases](#2026-11-06-cases-100) |
-| improve | 1.0.0 | Passed | Attempt 6, after a fourth wording fix the person chose: the criteria and a walkthrough of the sample under the original prompt were written before the first edit; every hard rule kept at 405 → 232 words (42.7%), and the trial bot posted the expected blocker | 96,438 | pending | [cases](#2026-11-06-cases-100) |
+| improve | 1.0.0 | Passed | Attempt 6, after a fourth wording fix the person chose: the criteria and a walkthrough of the sample under the original prompt were written before the first edit; every hard rule kept at 405 → 232 words (42.7%), and the trial bot posted the expected blocker | 96,438 | 3/6 | [cases](#2026-11-06-cases-100) |
 
 ## 2026-11-06 routing (1.0.0)
 
@@ -941,3 +941,44 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   block, and the `--json` command exits 0 and writes a file equal to the JSON
   block in `docs/usage.md`.
 - Loopy-only criteria: `docs#4`, `docs#6`.
+
+### improve (control)
+
+- Slot `improve (control)`, run commit `93ab4dc`, attempt 1. Claude Code
+  2.1.317, effort `xhigh`, model `claude-opus-5-5`.
+- Tokens: 77,133, the host's report, equal to the transcript's last usage.
+- Isolation audit (with `--allow .claude/user-wiki`): exit 0 over 16 tool
+  calls in the evaluator's transcript and the nested transcript of its one
+  Agent call, a fresh agent given only the revised prompt, the sample, and the
+  two tool signatures. `git status --short` was empty after the run.
+- The evaluator changed only `review-bot.md`; both notes and the sample equal
+  the fixture byte for byte.
+- `improve#1` failed: before the first write to `review-bot.md`, at line 43,
+  the calls are reads and a copy of the original with `wc -w -l`; no call
+  states criteria, and no review of `samples/pr-42.diff` under the original
+  prompt appears anywhere in the run.
+- `improve#2` passed: "Rules" and "Steps" keep never approve or merge, changed
+  lines only, the exact format with `blocker`, `major`, and `minor`, skipping
+  `gen/` and lockfiles, the author's language with English when unsure, at
+  most 10 comments with blockers first, and `request_changes` on a blocker.
+- `improve#3` failed: the history and the repeated exhortations are gone, but
+  "Good code is readable, maintainable" survives as a review target, "code
+  that is hard to read or maintain", which `run.md` lists as kept, and the
+  role now asks for "clear, respectful comments".
+- `improve#4` passed: the `ircbot` step is gone because the tool was removed in
+  March 2026 (`notes/tools.md`); the style rule went and the formatting rule
+  stayed, now naming spacing, quotes, and line length; the forced praise went
+  because the feedback calls it noise.
+- `improve#5` failed: the prompt shrank 405 → 230 words, 43.2% by
+  `len(text.split())`, and `run.md` and the reply give the counts, but one
+  "Removed" list mixes the history and filler with the style rule, the praise,
+  and the `ircbot` step, and names nothing lost.
+- `improve#6` passed. Use: in the coordinator trial, the bot posted one Korean
+  `[blocker] app/history.py:5` comment in the required form on the off-by-one,
+  called `request_changes`, and skipped the quote change and `gen/schema.py`,
+  with no `ircbot` call and no approval. The notes and the sample equal the
+  fixture in the workspace and in the trial copy.
+- Coordinator trial: 59,593 tokens, Claude Code 2.1.317, effort `xhigh`, model
+  `claude-opus-5-5`; isolation audit exit 0 over 4 tool calls, no nested
+  transcript.
+- Loopy-only criteria: `improve#1`, `improve#3`, `improve#5`.
