@@ -506,6 +506,8 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   counts only what the transcript shows before the first edit.
 - The three skill fixes Failure triage allows in one task are used, so the
   slot is not rerun. T10 stays unchecked, and this failure goes to the person.
+- The person chose one more fix beyond the cap ("나로 해봐", 2026-11-06). The
+  fourth change below follows, and the slot reruns as attempt 6.
 
 ### Token total
 
@@ -579,6 +581,19 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   package checks and unit tests passed on both Pythons, and the references
   total 2,100 words, the cap. This is the last of the three skill fixes Failure
   triage allows in this task.
+- `9230073` changed `references/improvement.md` a fourth time, beyond the cap,
+  because the person chose one more fix ("나로 해봐", 2026-11-06). "Before the
+  first edit, write down the criteria and baseline: run each task and measure
+  on the current version, yourself if no fresh evaluator is left; written
+  later, they are hindsight." This followed `improve` attempt 5, whose
+  transcript shows neither the criteria nor a review of the sample before the
+  first edit. To stay within the 2,100-word cap, "easier to follow" became
+  "clearer", and "when it is a judgment call that materially affects users"
+  became "when a judgment call materially affects users". Selection-table row:
+  one reference, `improvement.md` → `improve`. It requires `improve`, rerun as
+  attempt 6, and `improve (Codex)`, which T12 runs after this commit. The
+  package checks and unit tests passed on both Pythons, and the references
+  total 2,100 words.
 
 ### Limits
 
