@@ -91,6 +91,17 @@ Records through 0.10.0 are in this file at commit d1d8e0b.
   parsed-JSON assert. It guessed how to compare the file, how to check the
   Python version, and the exit codes; none of these stopped it.
 
+### review
+
+- Attempt 1, invalid: slot `review`, run commit `54e2cca`. Claude Code 2.1.317,
+  effort `xhigh`, model `claude-opus-5-5`. Tokens: 78,256, recorded apart from
+  the total. Isolation audit: exit 1 at line 30,
+  `cd ~/.claude/user-wiki && ls; cat graph/workflow.md 2>/dev/null || find . -name 'workflow*'`,
+  run while reading the global instructions' wiki. The `find .` searched the
+  wiki, but the audit flags every recursive search that does not name the
+  workspace, so the run was not judged and was rerun with a new workspace and
+  evaluator. `git status --short` was empty, and `plan.md` was unchanged.
+
 ### Limits
 
 - An evaluator's shell starts in the coordinator's checkout, so a relative read
